@@ -4,13 +4,14 @@
   "description": "Rust tokio-tungstenite template for AsyncAPI Generator",
   "main": "index.js",
   "scripts": {
+    "start": "node src/index.js",
     "test": "echo \"No test specified yet\"",
-    "lint": "echo \"No linter specified yet\"",
+    "lint": "echo \"No linter specified yet\""
   },
   "author": "Sho Kaneko <kanekoshoyu@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kanekoshoyu/asyncapi-rust-websocket-template.git"
-  },
+  }
 }
