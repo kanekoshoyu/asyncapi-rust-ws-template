@@ -1,13 +1,22 @@
 {
-  "name": "asyncapi-rust-websocket-template",
+  "name": "asyncapi-rust-ws-template",
   "version": "0.1.0",
-  "description": "Rust tokio-tungstenite template for AsyncAPI Generator",
+  "description": "Rust WebSocket client template for AsyncAPI Generator",
   "main": "index.js",
   "scripts": {
-    "start": "echo \"No bin specified yet\"",
+    "release": "semantic-release",
     "test": "echo \"No test specified yet\"",
-    "lint": "echo \"No linter specified yet\""
+    "lint": "echo \"No linter specified yet\"",
+    "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
   },
+  "keywords": [
+    "asyncapi",
+    "generator",
+    "rust",
+    "websocket",
+    "tokio",
+    "template"
+  ],
   "author": "Sho Kaneko <kanekoshoyu@gmail.com>",
   "license": "MIT",
   "repository": {
@@ -15,17 +24,16 @@
     "url": "git+https://github.com/kanekoshoyu/asyncapi-rust-websocket-template.git"
   },
   "dependencies": {
-    "@asyncapi/generator-filters": "^2.1.0",
+    "@asyncapi/generator-filters": "2.1.0",
     "@asyncapi/generator-hooks": "0.1.0",
     "@asyncapi/generator-react-sdk": "1.1.2",
     "@asyncapi/modelina": "3.7.0"
   },
   "generator": {
-    "renderer": "react",
     "parameters": {
-      "moduleName": {
-        "description": "name of the go module to be generated",
-        "default": "rust-async-api"
+      "view": {
+        "description": "The view that the template uses. By default it is the client view, which means that when the document says publish, we subscribe. In the case of the provider view, when the document says publish, we publish. Values are client or provider. The default is client.",
+        "required": false
       }
     },
     "generator": ">=1.3.0 <3.0.0"
