@@ -1,6 +1,6 @@
 [package]
-name = "exchange-collection-{{'protocol'}}-{{'exchange'}}"
-version = "1.1.0"
+name = "exchange-collection-ws-{{ asyncapi.info().title() }}"
+version = "{{ asyncapi.info().version() }}"
 edition = "2021"
 
 [dependencies.reqwest]

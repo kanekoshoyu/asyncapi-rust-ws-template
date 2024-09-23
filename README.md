@@ -2,10 +2,10 @@
 > AsyncAPI Generator for Rust WebSocket Client
 
 ## contents
-| name                        | description |
-| --------------------------- | ----------- |
-| [index.js](./src/index.js)  | main code   |
-| [CHANGELOG](./CHANGELOG.md) | change log  |
+| name                             | description |
+| -------------------------------- | ----------- |
+| [template](./template/README.md) | main code   |
+| [CHANGELOG](./CHANGELOG.md)      | change log  |
 
 ## command
 test generate at output
