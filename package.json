@@ -13,5 +13,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kanekoshoyu/asyncapi-rust-websocket-template.git"
+  },
+  "dependencies": {
+    "@asyncapi/generator-react-sdk": "1.1.2",
+    "@asyncapi/modelina": "3.7.0"
   }
 }
