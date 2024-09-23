@@ -6,3 +6,5 @@ All notable changes to the template will be documented in this file.
 - hello world
 - npm package
 - MIT license
+- tutorial on testing
+
