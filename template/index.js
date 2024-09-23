@@ -40,7 +40,7 @@ export default function ({ asyncapi, params }) {
       AMQP Publisher
   `;
     return (
-        <File name="main.go">
+        <File name="main.rs">
             {`
 package main
 
