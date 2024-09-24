@@ -1,3 +1,5 @@
+[![AsyncAPI logo](./assets/logo_banner.png)](https://www.asyncapi.com)
+
 # asyncapi-rust-websocket-template
 > AsyncAPI generator for rust websocket client using react renderer
 
