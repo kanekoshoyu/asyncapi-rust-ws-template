@@ -41,6 +41,6 @@ export default function ({ asyncapi, params }) {
       AMQP Publisher
   `;
   return [
-    <File name="main.rs">main_rs_content()</File>
+    <File name="main.rs">{main_rs_content()}</File>
   ];
 }
