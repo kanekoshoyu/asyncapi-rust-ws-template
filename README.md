@@ -4,7 +4,7 @@
 > AsyncAPI generator for rust websocket client using react renderer
 
 ## design
-- chose react over nunjacks, for its versatility
+- chose react over nunjucks, for its versatility. for details, click [here](https://www.asyncapi.com/docs/tools/generator/file-templates)
 
 ## contents
 | name                                     | description                    |
