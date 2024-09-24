@@ -1,3 +1,5 @@
+function content() {
+    return `
 [package]
 name = "exchange-collection-ws-{{ asyncapi.info().title() }}"
 version = "{{ asyncapi.info().version() }}"
@@ -17,3 +19,9 @@ workspace = true
 
 [dependencies.url]
 workspace = true
+`;
+}
+
+export function render_cargo() {
+    return <File name="Cargo.toml" > {content()} </File>;
+}

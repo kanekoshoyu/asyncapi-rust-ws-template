@@ -1,14 +1,14 @@
-function content_main_rs() {
-    return `
-  // main.rs
-  use tokio;
-  
-  fn main() {
-    println!("Hello world");
-  }
-  `;
+function content() {
+  return `
+// main.rs
+use tokio;
+
+fn main() {
+  println!("Hello world");
+}
+`;
 }
 
-export function render() {
-    return <File name="main.rs" > {content_main_rs()} </File>;
+export function render_main() {
+  return <File name="main.rs" > {content()} </File>;
 }
