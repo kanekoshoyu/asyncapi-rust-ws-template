@@ -1,20 +1,17 @@
-// import { GetSubscriberFlags, GetPublisherFlags, hasPubOrSub, hasSub } from '../components/common';
-// import { publishConfigsFrom } from '../components/Handlers';
-import { render_main } from "./main.rs"
-import { render_readme } from './README.md'
-import { render_cargo } from "./Cargo.toml"
-
-// guidelines
-// render_X() -> returns <file>
-// conent_X() -> returns String
-
-// return array of file objects for render 
-export default function ({ asyncapi, params }) {
-  console.log("Hello, World!");
-  // console.log(asyncapi);
-  let version = asyncapi.version();
-  console.log(version);
-  // console.log(params);
-
-  return [render_main(), render_readme(), render_cargo()];
+"use strict";
+// npm install react
+// npm install @types/react --save-devnpm install typescript @types/node --save-dev
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = default_1;
+const react_1 = __importDefault(require("react"));
+const generator_react_sdk_1 = require("@asyncapi/generator-react-sdk");
+function default_1({ asyncapi, params }) {
+    const content = () => {
+        // Your logic to generate file content
+        return `// Generated content based on AsyncAPI document.`;
+    };
+    react_1.default.createElement(generator_react_sdk_1.File, { name: "main.rs" }, content());
 }
