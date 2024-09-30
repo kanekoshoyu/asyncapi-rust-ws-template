@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.render_cargo = render_cargo;
+const tool_1 = require("./tool");
 function content() {
     return `
 [package]
@@ -25,8 +26,5 @@ workspace = true
 `;
 }
 function render_cargo() {
-    return React.createElement(File, { name: "Cargo.toml" },
-        " ",
-        content(),
-        " ");
+    return (0, tool_1.render)("Cargo.toml", content());
 }

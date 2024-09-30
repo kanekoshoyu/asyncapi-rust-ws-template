@@ -1,17 +1,10 @@
 "use strict";
-// npm install react
-// npm install @types/react --save-devnpm install typescript @types/node --save-dev
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = default_1;
-const react_1 = __importDefault(require("react"));
-const generator_react_sdk_1 = require("@asyncapi/generator-react-sdk");
+const main_rs_1 = require("./main.rs");
+const README_md_1 = require("./README.md");
+const Cargo_toml_1 = require("./Cargo.toml");
 function default_1({ asyncapi, params }) {
-    const content = () => {
-        // Your logic to generate file content
-        return `// Generated content based on AsyncAPI document.`;
-    };
-    react_1.default.createElement(generator_react_sdk_1.File, { name: "main.rs" }, content());
+    // return a set of files
+    return [(0, main_rs_1.render_main)(), (0, README_md_1.render_readme)(), (0, Cargo_toml_1.render_cargo)()];
 }

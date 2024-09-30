@@ -1,3 +1,5 @@
+import { render } from './tool';
+
 function content() {
     return `
 [package]
@@ -23,5 +25,5 @@ workspace = true
 }
 
 export function render_cargo() {
-    return <File name="Cargo.toml" > {content()} </File>;
+    return render("Cargo.toml", content());
 }
