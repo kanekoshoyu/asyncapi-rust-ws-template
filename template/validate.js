@@ -28,12 +28,13 @@ function validateFile(subject) {
     else {
         missing = missing.concat(validateChannels(subject.channels()));
     }
-    // let components = 'components';
-    // if (!containSubFunction(subject, components)) {
-    //   missing.push(components)
-    // } else {
-    //   missing.push(validateComponents(subject.components()))
-    // }
+    let components = 'components';
+    if (!containSubFunction(subject, components)) {
+        missing.push(components);
+    }
+    else {
+        missing = missing.concat(validateComponents(subject.components()));
+    }
     return missing;
 }
 function validateInfo(subject) {
@@ -104,6 +105,16 @@ function validateMessages(subject) {
     let missing = [];
     if (Object.keys(subject).length === 0) {
         missing.push('missing messages');
+    }
+    return missing;
+}
+function validateComponents(subject) {
+    let missing = [];
+    if (Object.keys(subject.messages()).length === 0) {
+        missing.push('missing messages');
+    }
+    if (Object.keys(subject.schemas()).length === 0) {
+        missing.push('missing schemas');
     }
     return missing;
 }

@@ -34,7 +34,7 @@ export function validateFile(subject: AsyncAPIDocumentV2): string[] {
   if (!containSubFunction(subject, components)) {
     missing.push(components)
   } else {
-    missing.push(validateComponents(subject.components()))
+    missing = missing.concat(validateComponents(subject.components()))
   }
   return missing;
 }

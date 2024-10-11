@@ -22,7 +22,7 @@
     "build": "tsc",
     "release": "semantic-release",
     "test": "npm run clear_all && npm run build && npm run generate_test",
-    "generate_test": "ag https://raw.githubusercontent.com/kanekoshoyu/exchange-collection/main/asset/bitwyre_ws_asyncapi.yaml ./ -o output",
+    "generate_test": "ag sample/b.yaml ./ -o output -p validate=true",
     "clear_template": "rm -rf template",
     "clear_output": "rm -rf output",
     "clear_all": "npm run clear_template && npm run clear_output",
@@ -34,7 +34,8 @@
     "@asyncapi/generator-hooks": "0.1.0",
     "@asyncapi/generator-react-sdk": "1.1.2",
     "@asyncapi/modelina": "3.7.0",
-    "react": "^18.3.1"
+    "react": "^18.3.1",
+    "node-fetch": "3.3.2"
   },
   "generator": {
     "renderer": "react",
@@ -43,6 +44,10 @@
       "framework": {
         "description": "selection between: tokio-tungstenite, async-tungstenite",
         "default": "tokio-tungstenite"
+      },
+      "validate": {
+        "description": "selection between: true, false",
+        "default": true
       }
     }
   },
