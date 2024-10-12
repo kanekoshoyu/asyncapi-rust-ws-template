@@ -7,7 +7,8 @@ function content(exchangeName: string, info: InfoInterface) {
 [package]
 name = "exchange-collection-ws-${exchangeName}"
 version = "${info.version()}"
-description = "${info.description()?.replace(/"/g, '\"')}"
+description = "${info.description()?.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"
+
 [dependencies.reqwest]
 workspace = true
 

@@ -9,7 +9,8 @@ function content(exchangeName, info) {
 [package]
 name = "exchange-collection-ws-${exchangeName}"
 version = "${info.version()}"
-description = "${(_a = info.description()) === null || _a === void 0 ? void 0 : _a.replace(/"/g, '\"')}"
+description = "${(_a = info.description()) === null || _a === void 0 ? void 0 : _a.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"
+
 [dependencies.reqwest]
 workspace = true
 
