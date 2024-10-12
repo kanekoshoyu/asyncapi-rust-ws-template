@@ -36,10 +36,11 @@ export default async function ({ asyncapi, params }: TemplateProps) {
       console.log("all files verified");
     }
   }
+  let exchangeName = "binance";
 
   // generates websocket client
   if (params.generate) {
-    let result = [render_main(), render_readme(), render_cargo(asyncapi.info())];
+    let result = [render_main(), render_readme(), render_cargo(exchangeName, asyncapi.info())];
     let top_down = generateAsyncApi(asyncapi);
     console.log("all files generated");
     return result;

@@ -20,9 +20,10 @@ async function default_1({ asyncapi, params }) {
             console.log("all files verified");
         }
     }
+    let exchangeName = "binance";
     // generates websocket client
     if (params.generate) {
-        let result = [(0, main_rs_1.render_main)(), (0, README_md_1.render_readme)(), (0, Cargo_toml_1.render_cargo)(asyncapi.info())];
+        let result = [(0, main_rs_1.render_main)(), (0, README_md_1.render_readme)(), (0, Cargo_toml_1.render_cargo)(exchangeName, asyncapi.info())];
         let top_down = (0, generate_1.generateAsyncApi)(asyncapi);
         console.log("all files generated");
         return result;

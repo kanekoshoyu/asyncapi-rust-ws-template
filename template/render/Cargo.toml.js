@@ -2,14 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.render_cargo = render_cargo;
 const tool_1 = require("./tool");
-function content(info) {
+function content(exchangeName, info) {
     var _a;
-    let name = "name = \"exchange-collection-ws-" + info.title() + "\"\n";
-    let version = "version = \"" + info.version() + "\"\n";
-    let description = "description = \"" + ((_a = info.description()) === null || _a === void 0 ? void 0 : _a.replace('"', '\"')) + "\"\n";
-    let meta = `[package]\n` + name + version + description;
-    return meta + `
-[dependencies.reqwest]` + `
+    info.contact();
+    return `
+[package]
+name = "exchange-collection-ws-${exchangeName}"
+version = "${info.version()}"
+description = "${(_a = info.description()) === null || _a === void 0 ? void 0 : _a.replace(/"/g, '\"')}"
+[dependencies.reqwest]
 workspace = true
 
 [dependencies.serde]
@@ -25,6 +26,6 @@ workspace = true
 workspace = true
 `;
 }
-function render_cargo(info) {
-    return (0, tool_1.render)("Cargo.toml", content(info));
+function render_cargo(exchangeName, info) {
+    return (0, tool_1.render)("Cargo.toml", content(exchangeName, info));
 }
