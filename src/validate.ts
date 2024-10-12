@@ -1,11 +1,11 @@
 import { AsyncAPIDocumentV2, ChannelInterface, ChannelsInterface, ComponentsInterface, InfoInterface, MessageInterface, MessagesInterface, SchemaInterface, ServerInterface, ServersInterface, ServerVariableInterface, ServerVariablesInterface } from '@asyncapi/parser';
 
 /// determines the sub function availability
-function containSubFunction(object: any, funcName: string): boolean {
+export function containSubFunction(object: any, funcName: string): boolean {
   return (typeof object[funcName] === 'function')
 }
 
-export function validateFile(subject: AsyncAPIDocumentV2): string[] {
+export function validateAsyncApi(subject: AsyncAPIDocumentV2): string[] {
   let missing: string[] = [];
 
   let info = 'info';

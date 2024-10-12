@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateFile = validateFile;
+exports.containSubFunction = containSubFunction;
+exports.validateAsyncApi = validateAsyncApi;
 /// determines the sub function availability
 function containSubFunction(object, funcName) {
     return (typeof object[funcName] === 'function');
 }
-function validateFile(subject) {
+function validateAsyncApi(subject) {
     let missing = [];
     let info = 'info';
     if (!containSubFunction(subject, info)) {
