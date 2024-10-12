@@ -14,6 +14,7 @@ async function default_1({ asyncapi, params }) {
         let missing = (0, validate_1.validateAsyncApi)(asyncapi);
         if (missing.length > 0) {
             console.log("missing: " + missing);
+            return [];
         }
         else {
             console.log("all files verified");
@@ -21,7 +22,7 @@ async function default_1({ asyncapi, params }) {
     }
     // generates websocket client
     if (params.generate) {
-        let result = [(0, main_rs_1.render_main)(), (0, README_md_1.render_readme)(), (0, Cargo_toml_1.render_cargo)()];
+        let result = [(0, main_rs_1.render_main)(), (0, README_md_1.render_readme)(), (0, Cargo_toml_1.render_cargo)(asyncapi.info())];
         let top_down = (0, generate_1.generateAsyncApi)(asyncapi);
         console.log("all files generated");
         return result;

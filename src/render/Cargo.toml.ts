@@ -1,13 +1,14 @@
 import { render } from './tool';
+import { InfoInterface } from '@asyncapi/parser';
 
-function content() {
-    return `
-[package]
-name = "exchange-collection-ws-{{ asyncapi.info().title() }}"
-version = "{{ asyncapi.info().version() }}"
-edition = "2021"
+function content(info: InfoInterface) {
+    let name = "name = \"exchange-collection-ws-" + info.title() + "\"\n";
+    let version = "version = \"" + info.version() + "\"\n";
+    let description = "description = \"" + info.description()?.replace('"', '\"') + "\"\n";
+    let meta = `[package]\n` + name + version + description;
 
-[dependencies.reqwest]
+    return meta + `
+[dependencies.reqwest]`+ `
 workspace = true
 
 [dependencies.serde]
@@ -24,6 +25,6 @@ workspace = true
 `;
 }
 
-export function render_cargo() {
-    return render("Cargo.toml", content());
+export function render_cargo(info: InfoInterface) {
+    return render("Cargo.toml", content(info));
 }

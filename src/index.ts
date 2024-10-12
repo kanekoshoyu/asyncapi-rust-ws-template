@@ -31,6 +31,7 @@ export default async function ({ asyncapi, params }: TemplateProps) {
     let missing = validateAsyncApi(asyncapi);
     if (missing.length > 0) {
       console.log("missing: " + missing);
+      return [];
     } else {
       console.log("all files verified");
     }
@@ -38,7 +39,7 @@ export default async function ({ asyncapi, params }: TemplateProps) {
 
   // generates websocket client
   if (params.generate) {
-    let result = [render_main(), render_readme(), render_cargo()];
+    let result = [render_main(), render_readme(), render_cargo(asyncapi.info())];
     let top_down = generateAsyncApi(asyncapi);
     console.log("all files generated");
     return result;
