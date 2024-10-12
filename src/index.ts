@@ -1,5 +1,6 @@
 
 import { AsyncAPIDocumentV2, ChannelInterface, ComponentsInterface, InfoInterface, SchemaInterface, ServerInterface } from '@asyncapi/parser';
+import { RustGenerator } from '@asyncapi/modelina';
 import { render_main } from "./main.rs";
 import { render_readme } from './README.md';
 import { render_cargo } from './Cargo.toml';
@@ -24,7 +25,7 @@ interface TemplateProps {
 }
 
 
-export default function ({ asyncapi, params }: TemplateProps) {
+export default async function ({ asyncapi, params }: TemplateProps) {
   // validates a AsyncAPI file
   if (params.validate) {
     let missing = validateFile(asyncapi);
@@ -46,3 +47,11 @@ export default function ({ asyncapi, params }: TemplateProps) {
 }
 
 
+/**
+* Experimental use of modellina
+* TODO: complete this
+*/
+export async function render_model(asyncapi: AsyncAPIDocumentV2) {
+  const generator = new RustGenerator();
+  const models = await generator.generate(asyncapi);
+}
