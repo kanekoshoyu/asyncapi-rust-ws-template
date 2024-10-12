@@ -12,7 +12,8 @@ interface TemplateParams {
   schema?: string;
   forceWrite?: boolean;
   // custom input
-  validate?: boolean;
+  validate: boolean;
+  generate: boolean;
   framework?: 'tokio-tungstenite' | 'async-tungstenite';
 }
 
@@ -24,20 +25,24 @@ interface TemplateProps {
 
 
 export default function ({ asyncapi, params }: TemplateProps) {
-  // TODO: there should be server and channel
+  // validates a AsyncAPI file
   if (params.validate) {
-  // validate remote file
     let missing = validateFile(asyncapi);
     if (missing.length > 0) {
       console.log("missing: " + missing);
     } else {
-      console.log("verified");
+      console.log("all files verified");
     }
   }
 
-
-  // return a set of files
-  return [render_main(), render_readme(), render_cargo()];
+  // generates websocket client
+  if (params.generate) {
+    let result = [render_main(), render_readme(), render_cargo()];
+    console.log("all files generated");
+    return result;
+  } else {
+    return [];
+  }
 }
 
 

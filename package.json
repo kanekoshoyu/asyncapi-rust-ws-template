@@ -42,11 +42,15 @@
     "generator": ">=1.3.0 <3.0.0",
     "parameters": {
       "framework": {
-        "description": "selection between: tokio-tungstenite, async-tungstenite",
+        "description": "generate websocket client: [tokio-tungstenite, async-tungstenite]",
         "default": "tokio-tungstenite"
       },
       "validate": {
-        "description": "selection between: true, false",
+        "description": "validate a file: [true: default, false]",
+        "default": true
+      },
+      "generate": {
+        "description": "generate websocket client: [true: default, false]",
         "default": true
       }
     }
