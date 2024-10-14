@@ -21,8 +21,10 @@
     "start": "tsc --watch",
     "build": "tsc",
     "release": "semantic-release",
-    "test": "npm run clear_all && npm run build && npm run generate_test",
-    "generate_test": "ag sample/b.yaml ./ -o output -p validate=true",
+    "test": "npm run clear_all && npm run build && npm run validate",
+    "validate": "ag sample/b.yaml ./ -o output -p validate=true",
+    "render": "ag sample/b.yaml ./ -o output -p render=true",
+    "validate_render": "ag sample/b.yaml ./ -o output -p validate=true",
     "clear_template": "rm -rf template",
     "clear_output": "rm -rf output",
     "clear_all": "npm run clear_template && npm run clear_output",
@@ -43,11 +45,11 @@
     "parameters": {
       "validate": {
         "description": "validate a file: [true: default, false]",
-        "default": true
+        "default": false
       },
       "render": {
         "description": "render websocket client: [true: default, false]",
-        "default": true
+        "default": false
       },
       "framework": {
         "description": "type of websocket framework to render: [tokio-tungstenite, async-tungstenite]",

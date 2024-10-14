@@ -6,8 +6,6 @@ const modelina_1 = require("@asyncapi/modelina");
 const validate_1 = require("./validate");
 const render_1 = require("./render");
 async function default_1({ asyncapi, params }) {
-    // parameter
-    console.log("params: " + params);
     // validates a AsyncAPI file
     if (params.validate) {
         let missing = (0, validate_1.validateAsyncApi)(asyncapi);

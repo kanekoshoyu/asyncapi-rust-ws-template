@@ -1,11 +1,8 @@
 
 import { AsyncAPIDocumentV2, ChannelInterface, ComponentsInterface, InfoInterface, SchemaInterface, ServerInterface } from '@asyncapi/parser';
 import { RustGenerator } from '@asyncapi/modelina';
-import { render_main } from "./render/main.rs";
-import { render_readme } from './render/README.md';
-import { render_cargo } from './render/Cargo.toml';
 import { validateAsyncApi } from './validate';
-import { generateAsyncApi } from './generate';
+import { renderRustWsClientFromAsyncApi } from './render';
 // import { getAsyncApiYamlFiles } from './remote_file';
 
 interface TemplateParams {
@@ -15,7 +12,7 @@ interface TemplateParams {
   forceWrite?: boolean;
   // custom input
   validate: boolean;
-  generate: boolean;
+  render: boolean;
   // either provided, or derived from filename
   exchange: string;
   framework?: 'tokio-tungstenite' | 'async-tungstenite';
@@ -28,7 +25,6 @@ interface TemplateProps {
 
 
 export default async function ({ asyncapi, params }: TemplateProps) {
-  // parameter
   // validates a AsyncAPI file
   if (params.validate) {
     let missing = validateAsyncApi(asyncapi);
@@ -41,12 +37,12 @@ export default async function ({ asyncapi, params }: TemplateProps) {
   }
   let exchangeName = "binance";
 
-  // generates websocket client
-  if (params.generate) {
-    let result = [render_main(), render_readme(), render_cargo(exchangeName, asyncapi.info())];
-    let top_down = generateAsyncApi(asyncapi);
-    console.log("all files generated");
-    return result;
+  // renders websocket client
+  if (params.render) {
+    let rendered = renderRustWsClientFromAsyncApi(exchangeName, asyncapi);
+    console.log("all files rendered");
+    console.log(`render files: ${rendered.length}`);
+    return rendered;
   } else {
     return [];
   }
@@ -59,5 +55,5 @@ export default async function ({ asyncapi, params }: TemplateProps) {
 */
 export async function render_model(asyncapi: AsyncAPIDocumentV2) {
   const generator = new RustGenerator();
-  const models = await generator.generate(asyncapi);
+  // const models = await generator.render(asyncapi);
 }
