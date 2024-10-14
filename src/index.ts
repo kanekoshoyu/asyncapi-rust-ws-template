@@ -16,6 +16,8 @@ interface TemplateParams {
   // custom input
   validate: boolean;
   generate: boolean;
+  // either provided, or derived from filename
+  exchange: string;
   framework?: 'tokio-tungstenite' | 'async-tungstenite';
 }
 
@@ -26,6 +28,7 @@ interface TemplateProps {
 
 
 export default async function ({ asyncapi, params }: TemplateProps) {
+  // parameter
   // validates a AsyncAPI file
   if (params.validate) {
     let missing = validateAsyncApi(asyncapi);

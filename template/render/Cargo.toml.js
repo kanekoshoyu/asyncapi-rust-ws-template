@@ -4,7 +4,6 @@ exports.render_cargo = render_cargo;
 const tool_1 = require("./tool");
 function content(exchangeName, info) {
     var _a;
-    info.contact();
     return `
 [package]
 name = "exchange-collection-ws-${exchangeName}"

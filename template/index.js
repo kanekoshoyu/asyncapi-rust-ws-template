@@ -9,6 +9,8 @@ const Cargo_toml_1 = require("./render/Cargo.toml");
 const validate_1 = require("./validate");
 const generate_1 = require("./generate");
 async function default_1({ asyncapi, params }) {
+    // parameter
+    console.log("params: " + params);
     // validates a AsyncAPI file
     if (params.validate) {
         let missing = (0, validate_1.validateAsyncApi)(asyncapi);
