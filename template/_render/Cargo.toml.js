@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.render_cargo = render_cargo;
+exports.renderCargo = renderCargo;
 const tool_1 = require("./tool");
 function content(exchangeName, info) {
     var _a;
@@ -26,6 +26,6 @@ workspace = true
 workspace = true
 `;
 }
-function render_cargo(exchangeName, info) {
+function renderCargo(exchangeName, info) {
     return (0, tool_1.render)("Cargo.toml", content(exchangeName, info));
 }

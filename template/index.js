@@ -3,11 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = default_1;
 exports.render_model = render_model;
 const modelina_1 = require("@asyncapi/modelina");
-const main_rs_1 = require("./render/main.rs");
-const README_md_1 = require("./render/README.md");
-const Cargo_toml_1 = require("./render/Cargo.toml");
 const validate_1 = require("./validate");
-const generate_1 = require("./generate");
+const render_1 = require("./render");
 async function default_1({ asyncapi, params }) {
     // parameter
     console.log("params: " + params);
@@ -23,12 +20,12 @@ async function default_1({ asyncapi, params }) {
         }
     }
     let exchangeName = "binance";
-    // generates websocket client
-    if (params.generate) {
-        let result = [(0, main_rs_1.render_main)(), (0, README_md_1.render_readme)(), (0, Cargo_toml_1.render_cargo)(exchangeName, asyncapi.info())];
-        let top_down = (0, generate_1.generateAsyncApi)(asyncapi);
-        console.log("all files generated");
-        return result;
+    // renders websocket client
+    if (params.render) {
+        let rendered = (0, render_1.renderRustWsClientFromAsyncApi)(exchangeName, asyncapi);
+        console.log("all files rendered");
+        console.log(`render files: ${rendered.length}`);
+        return rendered;
     }
     else {
         return [];
@@ -40,5 +37,5 @@ async function default_1({ asyncapi, params }) {
 */
 async function render_model(asyncapi) {
     const generator = new modelina_1.RustGenerator();
-    const models = await generator.generate(asyncapi);
+    // const models = await generator.render(asyncapi);
 }

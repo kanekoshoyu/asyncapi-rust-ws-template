@@ -11,7 +11,7 @@ fn main() {
 `;
 }
 
-export function render_main() {
+export function renderMain() {
   const filename: string = "main.rs";
   // return <File name={filename} > {content()} </File>;
   return render("main.rs", content());

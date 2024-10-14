@@ -25,6 +25,6 @@ workspace = true
 `;
 }
 
-export function render_cargo(exchangeName: string, info: InfoInterface) {
+export function renderCargo(exchangeName: string, info: InfoInterface) {
     return render("Cargo.toml", content(exchangeName, info));
 }

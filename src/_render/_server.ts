@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.generate_rust_server_code = generate_rust_server_code;
-exports.render_rust_servers = render_rust_servers;
-const tool_1 = require("./tool");
-function generate_rust_server_code(server) {
+import { render } from './tool';
+import { ServersInterface, ServerInterface } from '@asyncapi/parser';
+
+export function render_rust_server_code(server: ServerInterface): string {
     return `
 use reqwest::Client;
 use std::sync::Arc;
@@ -39,13 +37,18 @@ async fn main() {
         Ok(response) => println!("Response: {}", response),
         Err(e) => eprintln!("Error: {}", e),
     }
-`;
+`
 }
-function render_rust_servers(servers) {
-    let render_file = [];
+
+export function renderRustServers(servers: & ServersInterface) {
+    let render_file: React.ReactElement[] = [];
+
+    let length = Object.entries(servers).length;
+    console.log(`server count: ${length}`);
     for (const [serverName, server] of Object.entries(servers)) {
-        let render_content = (0, tool_1.render)(`server/${server.id()}.rs`, generate_rust_server_code(server));
+        let render_content = render(`server_${serverName}.rs`, render_rust_server_code(server));
         render_file = render_file.concat(render_content);
+
     }
     return render_file;
 }
