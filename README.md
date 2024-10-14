@@ -3,9 +3,9 @@
 # asyncapi-rust-ws-template
 > AsyncAPI rust websocket client generator using react renderer
 
-![npm version](https://img.shields.io/npm/v/asyncapi-rust-ws-template.svg)  
-[![license](https://img.shields.io/github/license/kanekoshoyu/exchange-collection)](https://github.com/kanekoshoyu/exchange-collection/blob/master/LICENSE)  
-[![discord](https://img.shields.io/discord/1153997271294283827)](https://discord.gg/q3j5MYdwnm)  
+![npm version](https://img.shields.io/npm/v/asyncapi-rust-ws-template.svg)
+[![license](https://img.shields.io/github/license/kanekoshoyu/exchange-collection)](https://github.com/kanekoshoyu/exchange-collection/blob/master/LICENSE)
+[![discord](https://img.shields.io/discord/1153997271294283827)](https://discord.gg/q3j5MYdwnm)
 ## design
 - renderer: react rather than nunjucks, for its versatility. for details, click [here](https://www.asyncapi.com/docs/tools/generator/file-templates)
 
