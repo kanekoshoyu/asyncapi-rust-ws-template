@@ -2,7 +2,6 @@ import { render } from './tool';
 import { InfoInterface } from '@asyncapi/parser';
 
 function content(exchangeName: string, info: InfoInterface) {
-    info.contact()
     return `
 [package]
 name = "exchange-collection-ws-${exchangeName}"
