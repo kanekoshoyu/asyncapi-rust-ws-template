@@ -6,15 +6,15 @@ const main_rs_1 = require("./_render/main.rs");
 const README_md_1 = require("./_render/README.md");
 const Cargo_toml_1 = require("./_render/Cargo.toml");
 /// render rust websocket client from asyncapi
-function renderRustWsClientFromAsyncApi(exchangeName, subject) {
-    let rendered = [(0, main_rs_1.renderMain)(), (0, README_md_1.renderReadme)(), (0, Cargo_toml_1.renderCargo)(exchangeName, subject.info())];
-    rendered = rendered.concat(renderInfo(subject.info()));
-    rendered = rendered.concat(renderServers(subject.servers()));
-    rendered = rendered.concat(renderChannels(subject.channels()));
-    rendered = rendered.concat(renderComponents(subject.components()));
+function renderRustWsClientFromAsyncApi(exchangeName, item) {
+    let rendered = [(0, main_rs_1.renderMain)(), (0, README_md_1.renderReadme)(), (0, Cargo_toml_1.renderCargo)(exchangeName, item.info())];
+    rendered = rendered.concat(renderInfo(item.info()));
+    rendered = rendered.concat(renderServers(item.servers()));
+    rendered = rendered.concat(renderChannels(item.channels()));
+    rendered = rendered.concat(renderComponents(item.components()));
     return rendered;
 }
-function renderInfo(subject) {
+function renderInfo(item) {
     let rendered = [];
     // let title = 'title';
     // rendered.push(title)
@@ -22,64 +22,55 @@ function renderInfo(subject) {
     // rendered.push(version)
     return rendered;
 }
-function renderServers(subject) {
+function renderServers(item) {
     let rendered = [];
-    rendered = rendered.concat((0, _server_1.renderRustServers)(subject));
+    rendered = rendered.concat((0, _server_1.renderRustServers)(item));
     return rendered;
 }
-function renderServer(subject) {
+function renderServer(item) {
     let rendered = [];
     // let url = 'url';
     // rendered.push(url)
     // let protocol = 'protocol';
     // rendered.push(protocol)
     let variables = 'variables';
-    rendered = rendered.concat(renderServerVariables(subject.variables()));
+    rendered = rendered.concat(renderServerVariables(item.variables()));
     return rendered;
 }
-function renderServerVariables(subject) {
+function renderServerVariables(item) {
     let rendered = [];
-    for (const [_, variable] of Object.entries(subject)) {
+    for (const [_, variable] of Object.entries(item)) {
         rendered = rendered.concat(renderServerVariable(variable));
     }
     return rendered;
 }
-function renderServerVariable(subject) {
+function renderServerVariable(item) {
     let rendered = [];
-    // if (!subject.defaultValue()) {
-    //   rendered.push(`subject rendered default value`);
+    // if (!item.defaultValue()) {
+    //   rendered.push(`item rendered default value`);
     // }
     return rendered;
 }
-function renderChannels(subject) {
+function renderChannels(channels) {
     let rendered = [];
-    for (const [_, channel] of Object.entries(subject)) {
-        rendered = rendered.concat(renderChannel(channel));
+    for (let channel of channels) {
+        console.log(channel);
     }
     return rendered;
 }
-// TODO set up hte channel converter
-function renderChannel(subject) {
+function renderMessages(item) {
     let rendered = [];
-    let messages = 'messages';
-    if (subject.messages == undefined) {
-        rendered = rendered.concat(renderMessages(subject.messages()));
-    }
-    return rendered;
-}
-function renderMessages(subject) {
-    let rendered = [];
-    // if (Object.keys(subject).length == 0) {
+    // if (Object.keys(item).length == 0) {
     //   rendered.push('rendered messages');
     // }
     return rendered;
 }
-function renderComponents(subject) {
+function renderComponents(item) {
     let rendered = [];
-    // if (Object.keys(subject.messages()).length == 0) {
+    // if (Object.keys(item.messages()).length == 0) {
     //   rendered.push('rendered messages');
     // }
-    // if (Object.keys(subject.schemas()).length == 0) {
+    // if (Object.keys(item.schemas()).length == 0) {
     //   rendered.push('rendered schemas');
     // }
     return rendered;

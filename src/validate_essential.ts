@@ -12,154 +12,148 @@ export function write_json(data: string, filename: string) {
 }
 
 
-export function validateAsyncApi(subject: AsyncAPIDocumentInterface): string[] {
+export function validateAsyncApi(item: AsyncAPIDocumentInterface): string[] {
   let missing: string[] = [];
-  let alias = 'root.';
-  if (subject.info == undefined) {
-    missing.push(alias + 'info');
+  if (item.info == undefined) {
+    missing.push('info');
   } else {
-    missing = missing.concat(validateInfo(subject.info()));
+    missing = missing.concat(validateInfo(item.info()));
   }
 
-  if (subject.servers == undefined) {
-    missing.push(alias + 'servers')
+  if (item.servers == undefined) {
+    missing.push('servers')
   } else {
-    missing = missing.concat(validateServers(subject.servers()))
+    missing = missing.concat(validateServers(item.servers()))
   }
 
-  if (subject.channels == undefined) {
-    missing.push(alias + 'channels')
+  if (item.channels == undefined) {
+    missing.push('channels')
   } else {
-    missing = missing.concat(validateChannels(subject.channels()))
+    missing = missing.concat(validateChannels(item.channels()))
   }
 
-  if (subject.components == undefined) {
-    missing.push(alias + 'components')
+  if (item.components == undefined) {
+    missing.push('components')
   } else {
-    missing = missing.concat(validateComponents(subject.components()))
+    missing = missing.concat(validateComponents(item.components()))
   }
 
-  if (subject.operations == undefined) {
-    missing.push(alias + 'operations')
+  if (item.operations == undefined) {
+    missing.push('operations')
   }
 
-  if (subject.operations == undefined) {
-    missing.push(alias + 'operations')
+  if (item.operations == undefined) {
+    missing.push('operations')
   }
 
-  return missing;
+  return missing.map(i => 'root.' + i);
 }
 
-function validateInfo(subject: & InfoInterface): string[] {
+function validateInfo(item: & InfoInterface): string[] {
   let missing: string[] = [];
 
   let title = 'title';
-  if (subject.title == undefined) {
+  if (item.title == undefined) {
     missing.push(title)
   }
 
   let version = 'version';
-  if (subject.version == undefined) {
+  if (item.version == undefined) {
     missing.push(version)
   }
 
-  return missing;
+  return missing.map(i => 'info' + i);;
 }
 
 
-function validateServers(subject: & ServersInterface): string[] {
+function validateServers(items: & ServersInterface): string[] {
   let missing: string[] = [];
 
-  for (const [serverName, server] of Object.entries(subject)) {
-    missing = missing.concat(validateServer(server))
+  for (let item of items) {
+    missing = missing.concat(validateServer(item))
   }
 
-  return missing;
+  return missing.map(i => 'servers.' + i);
 }
 
-function validateServer(subject: & ServerInterface): string[] {
+function validateServer(item: & ServerInterface): string[] {
   let missing: string[] = [];
 
-  let url = 'url';
-  if (subject.url == undefined) {
-    missing.push(url)
+  if (item.url == undefined) {
+    missing.push('url')
+  }
+  if (item.protocol == undefined) {
+    missing.push('protocol')
+  }
+  if (item.variables != undefined) {
+    missing = missing.concat(validateServerVariables(item.variables()))
   }
 
-  let protocol = 'protocol';
-  if (subject.protocol == undefined) {
-    missing.push(protocol)
-  }
-
-  let variables = 'variables';
-  if (subject.variables == undefined) {
-    missing = missing.concat(validateServerVariables(subject.variables()))
-  }
-
-  return missing;
+  return missing.map(i => 'server.' + i);
 }
 
-function validateServerVariables(subject: & ServerVariablesInterface): string[] {
+function validateServerVariables(variables: & ServerVariablesInterface): string[] {
   let missing: string[] = [];
 
-  for (const [_, variable] of Object.entries(subject)) {
+  for (let variable of variables) {
     missing = missing.concat(validateServerVariable(variable))
   }
 
-  return missing;
+  return missing.map(i => 'variables.' + i);
 }
 
 
-function validateServerVariable(subject: & ServerVariableInterface): string[] {
+function validateServerVariable(item: & ServerVariableInterface): string[] {
   let missing: string[] = [];
 
-  if (!subject.defaultValue()) {
-    missing.push(`subject missing default value`);
+  if (item.defaultValue == undefined) {
+    missing.push(`item missing default value`);
   }
 
-  return missing;
+  return missing.map(i => 'variable.' + i);;
 }
 
-function validateChannels(subject: & ChannelsInterface): string[] {
+function validateChannels(channels: & ChannelsInterface): string[] {
   let missing: string[] = [];
 
-  for (const [_, channel] of Object.entries(subject)) {
+  for (let channel of channels) {
     missing = missing.concat(validateChannel(channel))
   }
 
-  return missing;
+  return missing.map(i => 'channels.' + i);
 }
 
-function validateChannel(subject: & ChannelInterface): string[] {
+function validateChannel(item: & ChannelInterface): string[] {
   let missing: string[] = [];
 
-  if (subject.messages == undefined) {
+  if (item.messages == undefined) {
     missing.push(`message`)
   } else {
-    missing = missing.concat(validateMessages(subject.messages()))
+    missing = missing.concat(validateMessages(item.messages()))
   }
 
   return missing.map(i => "channel." + i);
 }
 
-function validateMessages(subject: & MessagesInterface): string[] {
+function validateMessages(items: & MessagesInterface): string[] {
   let missing: string[] = [];
 
-  if (Object.keys(subject).length == 0) {
+  if (items.length == 0) {
     missing.push('missing messages');
   }
-  return missing;
+  return missing.map(i => 'messages.' + i);
 }
 
-function validateComponents(subject: & ComponentsInterface): string[] {
+function validateComponents(item: & ComponentsInterface): string[] {
   let missing: string[] = [];
 
-  if (Object.keys(subject.messages()).length == 0) {
-    missing.push('missing messages');
+  if (Object.keys(item.messages()).length == 0) {
+    missing.push('message');
   }
 
-  if (Object.keys(subject.schemas()).length == 0) {
-    missing.push('missing schemas');
+  if (Object.keys(item.schemas()).length == 0) {
+    missing.push('schema');
   }
 
-  return missing;
+  return missing.map(i => 'components.' + i);;
 }

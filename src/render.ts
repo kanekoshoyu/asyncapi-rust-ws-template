@@ -3,20 +3,21 @@ import { renderRustServers } from './_render/_server';
 import { renderMain } from './_render/main.rs';
 import { renderReadme } from './_render/README.md';
 import { renderCargo } from './_render/Cargo.toml';
+import { channel } from 'diagnostics_channel';
 
 /// render rust websocket client from asyncapi
-export function renderRustWsClientFromAsyncApi(exchangeName: string, subject: AsyncAPIDocumentInterface): React.ReactElement[] {
-  let rendered: React.ReactElement[] = [renderMain(), renderReadme(), renderCargo(exchangeName, subject.info())];
+export function renderRustWsClientFromAsyncApi(exchangeName: string, item: AsyncAPIDocumentInterface): React.ReactElement[] {
+  let rendered: React.ReactElement[] = [renderMain(), renderReadme(), renderCargo(exchangeName, item.info())];
 
-  rendered = rendered.concat(renderInfo(subject.info()));
-  rendered = rendered.concat(renderServers(subject.servers()))
-  rendered = rendered.concat(renderChannels(subject.channels()))
-  rendered = rendered.concat(renderComponents(subject.components()))
+  rendered = rendered.concat(renderInfo(item.info()));
+  rendered = rendered.concat(renderServers(item.servers()))
+  rendered = rendered.concat(renderChannels(item.channels()))
+  rendered = rendered.concat(renderComponents(item.components()))
 
   return rendered;
 }
 
-function renderInfo(subject: & InfoInterface): React.ReactElement[] {
+function renderInfo(item: & InfoInterface): React.ReactElement[] {
   let rendered: React.ReactElement[] = [];
 
   // let title = 'title';
@@ -29,15 +30,15 @@ function renderInfo(subject: & InfoInterface): React.ReactElement[] {
 }
 
 
-function renderServers(subject: & ServersInterface): React.ReactElement[] {
+function renderServers(item: & ServersInterface): React.ReactElement[] {
   let rendered: React.ReactElement[] = [];
 
-  rendered = rendered.concat(renderRustServers(subject));
+  rendered = rendered.concat(renderRustServers(item));
 
   return rendered;
 }
 
-function renderServer(subject: & ServerInterface): React.ReactElement[] {
+function renderServer(item: & ServerInterface): React.ReactElement[] {
   let rendered: React.ReactElement[] = [];
 
   // let url = 'url';
@@ -49,16 +50,16 @@ function renderServer(subject: & ServerInterface): React.ReactElement[] {
 
 
   let variables = 'variables';
-  rendered = rendered.concat(renderServerVariables(subject.variables()))
+  rendered = rendered.concat(renderServerVariables(item.variables()))
 
 
   return rendered;
 }
 
-function renderServerVariables(subject: & ServerVariablesInterface): React.ReactElement[] {
+function renderServerVariables(item: & ServerVariablesInterface): React.ReactElement[] {
   let rendered: React.ReactElement[] = [];
 
-  for (const [_, variable] of Object.entries(subject)) {
+  for (const [_, variable] of Object.entries(item)) {
     rendered = rendered.concat(renderServerVariable(variable))
   }
 
@@ -66,55 +67,43 @@ function renderServerVariables(subject: & ServerVariablesInterface): React.React
 }
 
 
-function renderServerVariable(subject: & ServerVariableInterface): React.ReactElement[] {
+function renderServerVariable(item: & ServerVariableInterface): React.ReactElement[] {
   let rendered: React.ReactElement[] = [];
 
-  // if (!subject.defaultValue()) {
-  //   rendered.push(`subject rendered default value`);
+  // if (!item.defaultValue()) {
+  //   rendered.push(`item rendered default value`);
   // }
 
   return rendered;
 }
 
-function renderChannels(subject: & ChannelsInterface): React.ReactElement[] {
+function renderChannels(channels: & ChannelsInterface): React.ReactElement[] {
   let rendered: React.ReactElement[] = [];
 
-  for (const [_, channel] of Object.entries(subject)) {
-    rendered = rendered.concat(renderChannel(channel))
+  for (let channel of channels) {
+    console.log(channel)
   }
 
   return rendered;
 }
 
-// TODO set up hte channel converter
-function renderChannel(subject: & ChannelInterface): React.ReactElement[] {
+function renderMessages(item: & MessagesInterface): React.ReactElement[] {
   let rendered: React.ReactElement[] = [];
 
-  let messages = 'messages';
-  if (subject.messages == undefined) {
-    rendered = rendered.concat(renderMessages(subject.messages()))
-  }
-
-  return rendered;
-}
-
-function renderMessages(subject: & MessagesInterface): React.ReactElement[] {
-  let rendered: React.ReactElement[] = [];
-
-  // if (Object.keys(subject).length == 0) {
+  // if (Object.keys(item).length == 0) {
   //   rendered.push('rendered messages');
   // }
   return rendered;
 }
 
-function renderComponents(subject: & ComponentsInterface): React.ReactElement[] {
+function renderComponents(item: & ComponentsInterface): React.ReactElement[] {
   let rendered: React.ReactElement[] = [];
 
-  // if (Object.keys(subject.messages()).length == 0) {
+  // if (Object.keys(item.messages()).length == 0) {
   //   rendered.push('rendered messages');
   // }
 
-  // if (Object.keys(subject.schemas()).length == 0) {
+  // if (Object.keys(item.schemas()).length == 0) {
   //   rendered.push('rendered schemas');
   // }
 

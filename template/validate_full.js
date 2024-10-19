@@ -12,57 +12,57 @@ function write_json(data, filename) {
         console.log('JSON file has been written successfully!');
     });
 }
-function validateAsyncApi(subject) {
+function validateAsyncApi(item) {
     let missing = [];
     // metadata
-    if (subject.version == undefined) {
+    if (item.version == undefined) {
         missing.push('version');
     }
-    if (subject.defaultContentType == undefined) {
+    if (item.defaultContentType == undefined) {
         missing.push('defaultContentType');
     }
-    if (subject.hasDefaultContentType == undefined) {
+    if (item.hasDefaultContentType == undefined) {
         missing.push('hasDefaultContentType');
     }
-    if (subject.info == undefined) {
+    if (item.info == undefined) {
         missing.push('info');
     }
     // root
-    if (subject.servers == undefined) {
+    if (item.servers == undefined) {
         missing.push('servers');
     }
-    if (subject.channels == undefined) {
+    if (item.channels == undefined) {
         missing.push('channels');
     }
-    if (subject.operations == undefined) {
+    if (item.operations == undefined) {
         missing.push('operations');
     }
-    if (subject.messages == undefined) {
+    if (item.messages == undefined) {
         missing.push('messages');
     }
-    if (subject.schemas == undefined) {
+    if (item.schemas == undefined) {
         missing.push('schemas');
     }
-    if (subject.securitySchemes == undefined) {
+    if (item.securitySchemes == undefined) {
         missing.push('securitySchemes');
     }
-    if (subject.components == undefined) {
+    if (item.components == undefined) {
         missing.push('components');
     }
     // all
-    if (subject.allServers == undefined) {
+    if (item.allServers == undefined) {
         missing.push('allServers');
     }
-    if (subject.allChannels == undefined) {
+    if (item.allChannels == undefined) {
         missing.push('allChannels');
     }
-    if (subject.allOperations == undefined) {
+    if (item.allOperations == undefined) {
         missing.push('allOperations');
     }
-    if (subject.allMessages == undefined) {
+    if (item.allMessages == undefined) {
         missing.push('allMessages');
     }
-    if (subject.allSchemas == undefined) {
+    if (item.allSchemas == undefined) {
         missing.push('allSchemas');
     }
     return missing.map(i => 'root.' + i);

@@ -12,121 +12,120 @@ function write_json(data, filename) {
         console.log('JSON file has been written successfully!');
     });
 }
-function validateAsyncApi(subject) {
+function validateAsyncApi(item) {
     let missing = [];
-    let alias = 'root.';
-    if (subject.info == undefined) {
-        missing.push(alias + 'info');
+    if (item.info == undefined) {
+        missing.push('info');
     }
     else {
-        missing = missing.concat(validateInfo(subject.info()));
+        missing = missing.concat(validateInfo(item.info()));
     }
-    if (subject.servers == undefined) {
-        missing.push(alias + 'servers');
-    }
-    else {
-        missing = missing.concat(validateServers(subject.servers()));
-    }
-    if (subject.channels == undefined) {
-        missing.push(alias + 'channels');
+    if (item.servers == undefined) {
+        missing.push('servers');
     }
     else {
-        missing = missing.concat(validateChannels(subject.channels()));
+        missing = missing.concat(validateServers(item.servers()));
     }
-    if (subject.components == undefined) {
-        missing.push(alias + 'components');
+    if (item.channels == undefined) {
+        missing.push('channels');
     }
     else {
-        missing = missing.concat(validateComponents(subject.components()));
+        missing = missing.concat(validateChannels(item.channels()));
     }
-    if (subject.operations == undefined) {
-        missing.push(alias + 'operations');
+    if (item.components == undefined) {
+        missing.push('components');
     }
-    if (subject.operations == undefined) {
-        missing.push(alias + 'operations');
+    else {
+        missing = missing.concat(validateComponents(item.components()));
     }
-    return missing;
+    if (item.operations == undefined) {
+        missing.push('operations');
+    }
+    if (item.operations == undefined) {
+        missing.push('operations');
+    }
+    return missing.map(i => 'root.' + i);
 }
-function validateInfo(subject) {
+function validateInfo(item) {
     let missing = [];
     let title = 'title';
-    if (subject.title == undefined) {
+    if (item.title == undefined) {
         missing.push(title);
     }
     let version = 'version';
-    if (subject.version == undefined) {
+    if (item.version == undefined) {
         missing.push(version);
     }
-    return missing;
+    return missing.map(i => 'info' + i);
+    ;
 }
-function validateServers(subject) {
+function validateServers(items) {
     let missing = [];
-    for (const [serverName, server] of Object.entries(subject)) {
-        missing = missing.concat(validateServer(server));
+    for (let item of items) {
+        missing = missing.concat(validateServer(item));
     }
-    return missing;
+    return missing.map(i => 'servers.' + i);
 }
-function validateServer(subject) {
+function validateServer(item) {
     let missing = [];
-    let url = 'url';
-    if (subject.url == undefined) {
-        missing.push(url);
+    if (item.url == undefined) {
+        missing.push('url');
     }
-    let protocol = 'protocol';
-    if (subject.protocol == undefined) {
-        missing.push(protocol);
+    if (item.protocol == undefined) {
+        missing.push('protocol');
     }
-    let variables = 'variables';
-    if (subject.variables == undefined) {
-        missing = missing.concat(validateServerVariables(subject.variables()));
+    if (item.variables != undefined) {
+        missing = missing.concat(validateServerVariables(item.variables()));
     }
-    return missing;
+    return missing.map(i => 'server.' + i);
 }
-function validateServerVariables(subject) {
+function validateServerVariables(variables) {
     let missing = [];
-    for (const [_, variable] of Object.entries(subject)) {
+    for (let variable of variables) {
         missing = missing.concat(validateServerVariable(variable));
     }
-    return missing;
+    return missing.map(i => 'variables.' + i);
 }
-function validateServerVariable(subject) {
+function validateServerVariable(item) {
     let missing = [];
-    if (!subject.defaultValue()) {
-        missing.push(`subject missing default value`);
+    if (item.defaultValue == undefined) {
+        missing.push(`item missing default value`);
     }
-    return missing;
+    return missing.map(i => 'variable.' + i);
+    ;
 }
-function validateChannels(subject) {
+function validateChannels(channels) {
     let missing = [];
-    for (const [_, channel] of Object.entries(subject)) {
+    for (let channel of channels) {
         missing = missing.concat(validateChannel(channel));
     }
-    return missing;
+    return missing.map(i => 'channels.' + i);
 }
-function validateChannel(subject) {
+function validateChannel(item) {
     let missing = [];
-    if (subject.messages == undefined) {
+    if (item.messages == undefined) {
         missing.push(`message`);
     }
     else {
-        missing = missing.concat(validateMessages(subject.messages()));
+        missing = missing.concat(validateMessages(item.messages()));
     }
     return missing.map(i => "channel." + i);
 }
-function validateMessages(subject) {
+function validateMessages(items) {
     let missing = [];
-    if (Object.keys(subject).length == 0) {
+    if (items.length == 0) {
         missing.push('missing messages');
     }
-    return missing;
+    return missing.map(i => 'messages.' + i);
 }
-function validateComponents(subject) {
+function validateComponents(item) {
     let missing = [];
-    if (Object.keys(subject.messages()).length == 0) {
-        missing.push('missing messages');
+    if (Object.keys(item.messages()).length == 0) {
+        missing.push('message');
     }
-    if (Object.keys(subject.schemas()).length == 0) {
-        missing.push('missing schemas');
+    if (Object.keys(item.schemas()).length == 0) {
+        missing.push('schema');
     }
-    return missing;
+    return missing.map(i => 'components.' + i);
+    ;
 }
