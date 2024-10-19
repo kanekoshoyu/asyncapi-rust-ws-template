@@ -1,27 +1,27 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.default = default_1;
 exports.render_model = render_model;
-const modelina_1 = require("@asyncapi/modelina");
-const validate_full_1 = require("./validate_full");
-const render_1 = require("./render");
+const modelina_1 = require('@asyncapi/modelina');
+const validate_full_1 = require('./validate_full');
+const render_1 = require('./render');
 async function default_1({ asyncapi, params }) {
     // validates a AsyncAPI file
     if (params.validate) {
         let missing = (0, validate_full_1.validateAsyncApi)(asyncapi);
         if (missing.length > 0) {
-            console.log("missing: " + missing);
+            console.log('missing: ' + missing);
             return [];
         }
         else {
-            console.log("all files verified");
+            console.log('all files verified');
         }
     }
-    let exchangeName = "binance";
+    let exchangeName = 'binance';
     // renders websocket client
     if (params.render) {
         let rendered = (0, render_1.renderRustWsClientFromAsyncApi)(exchangeName, asyncapi);
-        console.log("all files rendered");
+        console.log('all files rendered');
         console.log(`render files: ${rendered.length}`);
         return rendered;
     }

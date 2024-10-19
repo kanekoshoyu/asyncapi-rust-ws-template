@@ -101,7 +101,7 @@ function renderChannel(subject: & ChannelInterface): React.ReactElement[] {
 function renderMessages(subject: & MessagesInterface): React.ReactElement[] {
   let rendered: React.ReactElement[] = [];
 
-  // if (Object.keys(subject).length === 0) {
+  // if (Object.keys(subject).length == 0) {
   //   rendered.push('rendered messages');
   // }
   return rendered;
@@ -110,11 +110,11 @@ function renderMessages(subject: & MessagesInterface): React.ReactElement[] {
 function renderComponents(subject: & ComponentsInterface): React.ReactElement[] {
   let rendered: React.ReactElement[] = [];
 
-  // if (Object.keys(subject.messages()).length === 0) {
+  // if (Object.keys(subject.messages()).length == 0) {
   //   rendered.push('rendered messages');
   // }
 
-  // if (Object.keys(subject.schemas()).length === 0) {
+  // if (Object.keys(subject.schemas()).length == 0) {
   //   rendered.push('rendered schemas');
   // }
 

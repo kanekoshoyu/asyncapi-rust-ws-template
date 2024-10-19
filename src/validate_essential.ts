@@ -1,5 +1,4 @@
-import { AsyncAPIDocumentInterface, ChannelInterface, ChannelsInterface, ComponentsInterface, InfoInterface, MessageInterface, MessagesInterface, SchemaInterface, ServerInterface, ServersInterface, ServerVariableInterface, ServerVariablesInterface } from '@asyncapi/parser';
-
+import { AsyncAPIDocumentInterface, ChannelInterface, ChannelsInterface, ComponentsInterface, InfoInterface, MessagesInterface, ServerInterface, ServersInterface, ServerVariableInterface, ServerVariablesInterface } from '@asyncapi/parser';
 import { writeFile } from 'fs';
 
 export function write_json(data: string, filename: string) {
@@ -131,54 +130,21 @@ function validateChannels(subject: & ChannelsInterface): string[] {
 }
 
 function validateChannel(subject: & ChannelInterface): string[] {
-  let alias = "channel.";
   let missing: string[] = [];
 
-  if (subject.id == undefined) {
-    console.log(`${alias}id is missing`)
-  }
-
-  if (subject.address == undefined) {
-    console.log(`${alias}address is missing`)
-  }
-
-  if (subject.servers == undefined) {
-    console.log(`${alias}servers is missing`)
-  }
-
-  if (subject.operations == undefined) {
-    console.log(`${alias}operations is missing`)
-  }
-
   if (subject.messages == undefined) {
-    console.log(`${alias}messages is missing`)
-  }
-
-  if (subject.parameters === undefined) {
-    console.log(`${alias}parameters is missing`)
+    missing.push(`message`)
   } else {
-    let str = JSON.stringify(subject.parameters(), null, 2);
-    write_json(str, "./test.json");
-
+    missing = missing.concat(validateMessages(subject.messages()))
   }
 
-  if (subject.bindings == undefined) {
-    console.log(`${alias}bindings is missing`)
-  }
-
-  if (subject.meta == undefined) {
-    console.log(`${alias}meta is missing`)
-  }
-
-
-
-  return missing;
+  return missing.map(i => "channel." + i);
 }
 
 function validateMessages(subject: & MessagesInterface): string[] {
   let missing: string[] = [];
 
-  if (Object.keys(subject).length === 0) {
+  if (Object.keys(subject).length == 0) {
     missing.push('missing messages');
   }
   return missing;
@@ -187,11 +153,11 @@ function validateMessages(subject: & MessagesInterface): string[] {
 function validateComponents(subject: & ComponentsInterface): string[] {
   let missing: string[] = [];
 
-  if (Object.keys(subject.messages()).length === 0) {
+  if (Object.keys(subject.messages()).length == 0) {
     missing.push('missing messages');
   }
 
-  if (Object.keys(subject.schemas()).length === 0) {
+  if (Object.keys(subject.schemas()).length == 0) {
     missing.push('missing schemas');
   }
 

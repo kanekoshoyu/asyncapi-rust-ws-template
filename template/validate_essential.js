@@ -104,51 +104,28 @@ function validateChannels(subject) {
     return missing;
 }
 function validateChannel(subject) {
-    let alias = "channel.";
     let missing = [];
-    if (subject.id == undefined) {
-        console.log(`${alias}id is missing`);
-    }
-    if (subject.address == undefined) {
-        console.log(`${alias}address is missing`);
-    }
-    if (subject.servers == undefined) {
-        console.log(`${alias}servers is missing`);
-    }
-    if (subject.operations == undefined) {
-        console.log(`${alias}operations is missing`);
-    }
     if (subject.messages == undefined) {
-        console.log(`${alias}messages is missing`);
-    }
-    if (subject.parameters === undefined) {
-        console.log(`${alias}parameters is missing`);
+        missing.push(`message`);
     }
     else {
-        let str = JSON.stringify(subject.parameters(), null, 2);
-        write_json(str, "./test.json");
+        missing = missing.concat(validateMessages(subject.messages()));
     }
-    if (subject.bindings == undefined) {
-        console.log(`${alias}bindings is missing`);
-    }
-    if (subject.meta == undefined) {
-        console.log(`${alias}meta is missing`);
-    }
-    return missing;
+    return missing.map(i => "channel." + i);
 }
 function validateMessages(subject) {
     let missing = [];
-    if (Object.keys(subject).length === 0) {
+    if (Object.keys(subject).length == 0) {
         missing.push('missing messages');
     }
     return missing;
 }
 function validateComponents(subject) {
     let missing = [];
-    if (Object.keys(subject.messages()).length === 0) {
+    if (Object.keys(subject.messages()).length == 0) {
         missing.push('missing messages');
     }
-    if (Object.keys(subject.schemas()).length === 0) {
+    if (Object.keys(subject.schemas()).length == 0) {
         missing.push('missing schemas');
     }
     return missing;

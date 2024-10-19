@@ -1,4 +1,4 @@
-import { AsyncAPIDocumentV3, AsyncAPIDocumentInterface } from '@asyncapi/parser';
+import { AsyncAPIDocumentInterface } from '@asyncapi/parser';
 
 import { writeFile } from 'fs';
 
@@ -15,56 +15,57 @@ export function write_json(data: string, filename: string) {
 
 export function validateAsyncApi(subject: AsyncAPIDocumentInterface): string[] {
   let missing: string[] = [];
-  let alias = 'root.';
+
+  // metadata
   if (subject.version == undefined) {
-    missing.push(`${alias}version`);
+    missing.push('version');
   }
   if (subject.defaultContentType == undefined) {
-    missing.push(`${alias}defaultContentType`);
+    missing.push('defaultContentType');
   }
   if (subject.hasDefaultContentType == undefined) {
-    missing.push(`${alias}hasDefaultContentType`);
+    missing.push('hasDefaultContentType');
   }
   if (subject.info == undefined) {
-    missing.push(`${alias}info`);
+    missing.push('info');
   }
   // root
   if (subject.servers == undefined) {
-    missing.push(`${alias}servers`);
+    missing.push('servers');
   }
   if (subject.channels == undefined) {
-    missing.push(`${alias}channels`);
+    missing.push('channels');
   }
   if (subject.operations == undefined) {
-    missing.push(`${alias}operations`);
+    missing.push('operations');
   }
   if (subject.messages == undefined) {
-    missing.push(`${alias}messages`);
+    missing.push('messages');
   }
   if (subject.schemas == undefined) {
-    missing.push(`${alias}schemas`);
+    missing.push('schemas');
   }
   if (subject.securitySchemes == undefined) {
-    missing.push(`${alias}securitySchemes`);
+    missing.push('securitySchemes');
   }
   if (subject.components == undefined) {
-    missing.push(`${alias}components`);
+    missing.push('components');
   }
   // all
   if (subject.allServers == undefined) {
-    missing.push(`${alias}allServers`);
+    missing.push('allServers');
   }
   if (subject.allChannels == undefined) {
-    missing.push(`${alias}allChannels`);
+    missing.push('allChannels');
   }
   if (subject.allOperations == undefined) {
-    missing.push(`${alias}allOperations`);
+    missing.push('allOperations');
   }
   if (subject.allMessages == undefined) {
-    missing.push(`${alias}allMessages`);
+    missing.push('allMessages');
   }
   if (subject.allSchemas == undefined) {
-    missing.push(`${alias}allSchemas`);
+    missing.push('allSchemas');
   }
-  return missing;
+  return missing.map(i => 'root.' + i);
 }

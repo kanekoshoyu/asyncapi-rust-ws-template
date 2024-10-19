@@ -69,17 +69,17 @@ function renderChannel(subject) {
 }
 function renderMessages(subject) {
     let rendered = [];
-    // if (Object.keys(subject).length === 0) {
+    // if (Object.keys(subject).length == 0) {
     //   rendered.push('rendered messages');
     // }
     return rendered;
 }
 function renderComponents(subject) {
     let rendered = [];
-    // if (Object.keys(subject.messages()).length === 0) {
+    // if (Object.keys(subject.messages()).length == 0) {
     //   rendered.push('rendered messages');
     // }
-    // if (Object.keys(subject.schemas()).length === 0) {
+    // if (Object.keys(subject.schemas()).length == 0) {
     //   rendered.push('rendered schemas');
     // }
     return rendered;

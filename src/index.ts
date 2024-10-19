@@ -29,18 +29,18 @@ export default async function ({ asyncapi, params }: TemplateProps) {
   if (params.validate) {
     let missing = validateAsyncApi(asyncapi);
     if (missing.length > 0) {
-      console.log("missing: " + missing);
+      console.log('missing: ' + missing);
       return [];
     } else {
-      console.log("all files verified");
+      console.log('all files verified');
     }
   }
-  let exchangeName = "binance";
+  let exchangeName = 'binance';
 
   // renders websocket client
   if (params.render) {
     let rendered = renderRustWsClientFromAsyncApi(exchangeName, asyncapi);
-    console.log("all files rendered");
+    console.log('all files rendered');
     console.log(`render files: ${rendered.length}`);
     return rendered;
   } else {
