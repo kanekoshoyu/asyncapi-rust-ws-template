@@ -1,51 +1,60 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.containSubFunction = containSubFunction;
+exports.write_json = write_json;
 exports.validateAsyncApi = validateAsyncApi;
-/// determines the sub function availability
-function containSubFunction(object, funcName) {
-    return (typeof object[funcName] === 'function');
+const fs_1 = require("fs");
+function write_json(data, filename) {
+    (0, fs_1.writeFile)(filename, data, 'utf8', (err) => {
+        if (err) {
+            console.error('Error writing to the file:', err);
+            return;
+        }
+        console.log('JSON file has been written successfully!');
+    });
 }
 function validateAsyncApi(subject) {
     let missing = [];
-    let info = 'info';
-    if (!containSubFunction(subject, info)) {
-        missing.push(info);
+    let alias = 'root.';
+    if (subject.info == undefined) {
+        missing.push(alias + 'info');
     }
     else {
         missing = missing.concat(validateInfo(subject.info()));
     }
-    let servers = 'servers';
-    if (!containSubFunction(subject, servers)) {
-        missing.push(servers);
+    if (subject.servers == undefined) {
+        missing.push(alias + 'servers');
     }
     else {
         missing = missing.concat(validateServers(subject.servers()));
     }
-    let channels = 'channels';
-    if (!containSubFunction(subject, channels)) {
-        missing.push(channels);
+    if (subject.channels == undefined) {
+        missing.push(alias + 'channels');
     }
     else {
         missing = missing.concat(validateChannels(subject.channels()));
     }
-    let components = 'components';
-    if (!containSubFunction(subject, components)) {
-        missing.push(components);
+    if (subject.components == undefined) {
+        missing.push(alias + 'components');
     }
     else {
         missing = missing.concat(validateComponents(subject.components()));
+    }
+    if (subject.operations == undefined) {
+        missing.push(alias + 'operations');
+    }
+    if (subject.operations == undefined) {
+        missing.push(alias + 'operations');
     }
     return missing;
 }
 function validateInfo(subject) {
     let missing = [];
     let title = 'title';
-    if (!containSubFunction(subject, title)) {
+    if (subject.title == undefined) {
         missing.push(title);
     }
     let version = 'version';
-    if (!containSubFunction(subject, version)) {
+    if (subject.version == undefined) {
         missing.push(version);
     }
     return missing;
@@ -60,15 +69,15 @@ function validateServers(subject) {
 function validateServer(subject) {
     let missing = [];
     let url = 'url';
-    if (!containSubFunction(subject, url)) {
+    if (subject.url == undefined) {
         missing.push(url);
     }
     let protocol = 'protocol';
-    if (!containSubFunction(subject, protocol)) {
+    if (subject.protocol == undefined) {
         missing.push(protocol);
     }
     let variables = 'variables';
-    if (containSubFunction(subject, variables)) {
+    if (subject.variables == undefined) {
         missing = missing.concat(validateServerVariables(subject.variables()));
     }
     return missing;
@@ -95,10 +104,35 @@ function validateChannels(subject) {
     return missing;
 }
 function validateChannel(subject) {
+    let alias = "channel.";
     let missing = [];
-    let messages = 'messages';
-    if (containSubFunction(subject, messages)) {
-        missing = missing.concat(validateMessages(subject.messages()));
+    if (subject.id == undefined) {
+        console.log(`${alias}id is missing`);
+    }
+    if (subject.address == undefined) {
+        console.log(`${alias}address is missing`);
+    }
+    if (subject.servers == undefined) {
+        console.log(`${alias}servers is missing`);
+    }
+    if (subject.operations == undefined) {
+        console.log(`${alias}operations is missing`);
+    }
+    if (subject.messages == undefined) {
+        console.log(`${alias}messages is missing`);
+    }
+    if (subject.parameters === undefined) {
+        console.log(`${alias}parameters is missing`);
+    }
+    else {
+        let str = JSON.stringify(subject.parameters(), null, 2);
+        write_json(str, "./test.json");
+    }
+    if (subject.bindings == undefined) {
+        console.log(`${alias}bindings is missing`);
+    }
+    if (subject.meta == undefined) {
+        console.log(`${alias}meta is missing`);
     }
     return missing;
 }

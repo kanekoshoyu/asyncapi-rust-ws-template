@@ -1,5 +1,4 @@
 import { AsyncAPIDocumentV2, ChannelInterface, ChannelsInterface, ComponentsInterface, InfoInterface, MessageInterface, MessagesInterface, SchemaInterface, ServerInterface, ServersInterface, ServerVariableInterface, ServerVariablesInterface } from '@asyncapi/parser';
-import { containSubFunction } from "./validate";
 import { renderRustServers } from './_render/_server';
 import { renderMain } from './_render/main.rs';
 import { renderReadme } from './_render/README.md';
@@ -87,11 +86,12 @@ function renderChannels(subject: & ChannelsInterface): React.ReactElement[] {
   return rendered;
 }
 
+// TODO set up hte channel converter
 function renderChannel(subject: & ChannelInterface): React.ReactElement[] {
   let rendered: React.ReactElement[] = [];
 
   let messages = 'messages';
-  if (containSubFunction(subject, messages)) {
+  if (subject.messages == undefined) {
     rendered = rendered.concat(renderMessages(subject.messages()))
   }
 

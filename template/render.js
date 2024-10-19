@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.renderRustWsClientFromAsyncApi = renderRustWsClientFromAsyncApi;
-const validate_1 = require("./validate");
 const _server_1 = require("./_render/_server");
 const main_rs_1 = require("./_render/main.rs");
 const README_md_1 = require("./_render/README.md");
@@ -59,10 +58,11 @@ function renderChannels(subject) {
     }
     return rendered;
 }
+// TODO set up hte channel converter
 function renderChannel(subject) {
     let rendered = [];
     let messages = 'messages';
-    if ((0, validate_1.containSubFunction)(subject, messages)) {
+    if (subject.messages == undefined) {
         rendered = rendered.concat(renderMessages(subject.messages()));
     }
     return rendered;

@@ -3,12 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = default_1;
 exports.render_model = render_model;
 const modelina_1 = require("@asyncapi/modelina");
-const validate_1 = require("./validate");
+const validate_full_1 = require("./validate_full");
 const render_1 = require("./render");
 async function default_1({ asyncapi, params }) {
     // validates a AsyncAPI file
     if (params.validate) {
-        let missing = (0, validate_1.validateAsyncApi)(asyncapi);
+        let missing = (0, validate_full_1.validateAsyncApi)(asyncapi);
         if (missing.length > 0) {
             console.log("missing: " + missing);
             return [];

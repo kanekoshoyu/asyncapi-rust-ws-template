@@ -1,7 +1,7 @@
 
 import { AsyncAPIDocumentV2, ChannelInterface, ComponentsInterface, InfoInterface, SchemaInterface, ServerInterface } from '@asyncapi/parser';
 import { RustGenerator } from '@asyncapi/modelina';
-import { validateAsyncApi } from './validate';
+import { validateAsyncApi } from './validate_full';
 import { renderRustWsClientFromAsyncApi } from './render';
 // import { getAsyncApiYamlFiles } from './remote_file';
 
