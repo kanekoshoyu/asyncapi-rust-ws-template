@@ -4,44 +4,50 @@ exports.render_rust_ws_client_code = render_rust_ws_client_code;
 exports.render_rust_ws_client_mod = render_rust_ws_client_mod;
 exports.renderClientDir = renderClientDir;
 const tool_1 = require("./tool");
-// ThisForm
-function pascalcase(s) {
-    return s.replace('_', '').replace(' ', '');
-}
-// thisForm
-function camelcase(s) {
-    return s.replace('_', '').replace(' ', '');
-}
-// this_form
-function underscore(s) {
-    return s.replace(' ', '_').toLowerCase();
-}
-function render_rust_ws_client_code(server) {
+const format_1 = require("../format");
+function render_rust_ws_client_code(exchangeName, server) {
     return `
-use reqwest::Client;
-use std::sync::Arc;
+use futures_util::{StreamExt, SinkExt};
+use tokio::net::TcpStream;
+use tokio_tungstenite::{connect_async, tungstenite::protocol::Message, WebSocketStream};
+use tokio_tungstenite::tungstenite::Error as WsError;
+use serde::{Deserialize, Serialize};
+use std::time::Duration;
 
-pub struct ${pascalcase(server.id())}Client {
-    url: String,
-    port: u16,
-    protocol: String,
-    client: Arc<Client>,
+const url = "${server.url()}";
+
+#[derive(Debug)]
+pub struct ${(0, format_1.pascalcase)(exchangeName)}${(0, format_1.pascalcase)(server.id())}Client {
+    ws_stream: WebSocketStream<TcpStream>,
 }
 
-impl ${pascalcase(server.id())}Client {
-    pub fn new(url: &str, port: u16, protocol: &str) -> Self {
-        Self {
-            url: url.to_string(),
-            port,
-            protocol: protocol.to_string(),
-            client: Arc::new(Client::new()),
-        }
+impl ${(0, format_1.pascalcase)(exchangeName)}${(0, format_1.pascalcase)(server.id())}Client {
+    /// connect to the ${exchangeName} websocket server
+    pub async fn new() -> Result<Self, WsError> {
+        let url = url::Url::parse(url).expect("Invalid URL");
+
+        let (ws_stream, _) = connect_async(url).await.map_err(|err| {
+            eprintln!("Failed to connect: {:?}", err);
+            err
+        })?;
+
+        println!("Connected to {}", url);
+        Ok(Self { ws_stream })
     }
 
-    pub async fn make_request(&self, endpoint: &str) -> Result<String, reqwest::Error> {
-        let url = format!("{}://{}:{}{}", self.protocol, self.url, self.port, endpoint);
-        let response = self.client.get(&url).send().await?.text().await?;
-        Ok(response)
+    /// Send a message through the WebSocket connection.
+    pub async fn send_message(&mut self, msg: &str) -> Result<(), WsError> {
+        self.ws_stream.send(Message::Text(msg.to_string())).await
+    }
+
+    /// Receive a message from the WebSocket connection.
+    pub async fn receive_message(&mut self) -> Option<Result<Message, WsError>> {
+        self.ws_stream.next().await
+    }
+
+    /// Close the WebSocket connection.
+    pub async fn close(&mut self) -> Result<(), WsError> {
+        self.ws_stream.close(None).await
     }
 }
 `;
@@ -52,14 +58,14 @@ mod
 `;
 }
 // TODO set up the render function where we can set up directories as well directly
-function renderClientDir(servers) {
+function renderClientDir(exchangeName, servers) {
     let files = [];
     console.log(`server count: ${servers.length}`);
     for (let server of servers) {
-        let serverName = underscore(server.id());
-        let file = (0, tool_1.render)(`client_${serverName}.rs`, render_rust_ws_client_code(server));
+        let serverName = (0, format_1.underscore)(server.id());
+        let file = (0, tool_1.render)(`src_client_${serverName}.rs`, render_rust_ws_client_code(exchangeName, server));
         files = files.concat(file);
     }
-    let file = (0, tool_1.render)(`client_mod.rs`, render_rust_ws_client_mod(servers));
+    let file = (0, tool_1.render)(`src_client_mod.rs`, render_rust_ws_client_mod(servers));
     return files;
 }

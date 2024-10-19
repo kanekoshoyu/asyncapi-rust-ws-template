@@ -10,20 +10,14 @@ name = "exchange-collection-ws-${exchangeName}"
 version = "${info.version()}"
 description = "${(_a = info.description()) === null || _a === void 0 ? void 0 : _a.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"
 
-[dependencies.reqwest]
-workspace = true
+# use workspace when needed
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+tokio-tungstenite = "0.15"
+futures = "0.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1.0"
 
-[dependencies.serde]
-workspace = true
-
-[dependencies.serde_json]
-workspace = true
-
-[dependencies.serde_yaml]
-workspace = true
-
-[dependencies.url]
-workspace = true
 `;
 }
 function renderCargo(exchangeName, info) {
