@@ -1,5 +1,5 @@
 
-import { AsyncAPIDocumentV2, ChannelInterface, ComponentsInterface, InfoInterface, SchemaInterface, ServerInterface } from '@asyncapi/parser';
+import { AsyncAPIDocumentInterface, ChannelInterface, ComponentsInterface, InfoInterface, SchemaInterface, ServerInterface } from '@asyncapi/parser';
 import { RustGenerator } from '@asyncapi/modelina';
 import { validateAsyncApi } from './validate_full';
 import { renderRustWsClientFromAsyncApi } from './render';
@@ -19,7 +19,7 @@ interface TemplateParams {
 }
 
 interface TemplateProps {
-  asyncapi: AsyncAPIDocumentV2;
+  asyncapi: AsyncAPIDocumentInterface;
   params: TemplateParams;
 }
 
@@ -53,7 +53,7 @@ export default async function ({ asyncapi, params }: TemplateProps) {
 * Experimental use of modellina
 * TODO: complete this
 */
-export async function render_model(asyncapi: AsyncAPIDocumentV2) {
+export async function render_model(asyncapi: AsyncAPIDocumentInterface) {
   const generator = new RustGenerator();
   // const models = await generator.render(asyncapi);
 }

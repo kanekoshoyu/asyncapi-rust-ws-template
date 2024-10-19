@@ -1,11 +1,11 @@
-import { AsyncAPIDocumentV2, ChannelInterface, ChannelsInterface, ComponentsInterface, InfoInterface, MessageInterface, MessagesInterface, SchemaInterface, ServerInterface, ServersInterface, ServerVariableInterface, ServerVariablesInterface } from '@asyncapi/parser';
+import { AsyncAPIDocumentInterface, ChannelInterface, ChannelsInterface, ComponentsInterface, InfoInterface, MessageInterface, MessagesInterface, SchemaInterface, ServerInterface, ServersInterface, ServerVariableInterface, ServerVariablesInterface } from '@asyncapi/parser';
 import { renderRustServers } from './_render/_server';
 import { renderMain } from './_render/main.rs';
 import { renderReadme } from './_render/README.md';
 import { renderCargo } from './_render/Cargo.toml';
 
 /// render rust websocket client from asyncapi
-export function renderRustWsClientFromAsyncApi(exchangeName: string, subject: AsyncAPIDocumentV2): React.ReactElement[] {
+export function renderRustWsClientFromAsyncApi(exchangeName: string, subject: AsyncAPIDocumentInterface): React.ReactElement[] {
   let rendered: React.ReactElement[] = [renderMain(), renderReadme(), renderCargo(exchangeName, subject.info())];
 
   rendered = rendered.concat(renderInfo(subject.info()));

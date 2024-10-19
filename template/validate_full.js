@@ -13,33 +13,57 @@ function write_json(data, filename) {
     });
 }
 function validateAsyncApi(subject) {
-    const missing = [];
-    const alias = 'root.';
-    // List of method names to check
-    const methodNames = [
-        'version',
-        'defaultContentType',
-        'hasDefaultContentType',
-        'info',
-        'servers',
-        'channels',
-        'operations',
-        'messages',
-        'schemas',
-        'securitySchemes',
-        'components',
-        'allServers',
-        'allChannels',
-        'allOperations',
-        'allMessages',
-        'allSchemas',
-        'extensions',
-    ];
-    // Loop through the method names and check if they are undefined
-    methodNames.forEach((methodName) => {
-        if (typeof subject[methodName] === 'undefined') {
-            missing.push(`${alias}${methodName}`);
-        }
-    });
+    let missing = [];
+    let alias = 'root.';
+    if (subject.version == undefined) {
+        missing.push(`${alias}version`);
+    }
+    if (subject.defaultContentType == undefined) {
+        missing.push(`${alias}defaultContentType`);
+    }
+    if (subject.hasDefaultContentType == undefined) {
+        missing.push(`${alias}hasDefaultContentType`);
+    }
+    if (subject.info == undefined) {
+        missing.push(`${alias}info`);
+    }
+    // root
+    if (subject.servers == undefined) {
+        missing.push(`${alias}servers`);
+    }
+    if (subject.channels == undefined) {
+        missing.push(`${alias}channels`);
+    }
+    if (subject.operations == undefined) {
+        missing.push(`${alias}operations`);
+    }
+    if (subject.messages == undefined) {
+        missing.push(`${alias}messages`);
+    }
+    if (subject.schemas == undefined) {
+        missing.push(`${alias}schemas`);
+    }
+    if (subject.securitySchemes == undefined) {
+        missing.push(`${alias}securitySchemes`);
+    }
+    if (subject.components == undefined) {
+        missing.push(`${alias}components`);
+    }
+    // all
+    if (subject.allServers == undefined) {
+        missing.push(`${alias}allServers`);
+    }
+    if (subject.allChannels == undefined) {
+        missing.push(`${alias}allChannels`);
+    }
+    if (subject.allOperations == undefined) {
+        missing.push(`${alias}allOperations`);
+    }
+    if (subject.allMessages == undefined) {
+        missing.push(`${alias}allMessages`);
+    }
+    if (subject.allSchemas == undefined) {
+        missing.push(`${alias}allSchemas`);
+    }
     return missing;
 }

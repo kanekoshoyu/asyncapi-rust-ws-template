@@ -1,4 +1,4 @@
-import { AsyncAPIDocumentV2, ChannelInterface, ChannelsInterface, ComponentsInterface, InfoInterface, MessageInterface, MessagesInterface, SchemaInterface, ServerInterface, ServersInterface, ServerVariableInterface, ServerVariablesInterface } from '@asyncapi/parser';
+import { AsyncAPIDocumentInterface, ChannelInterface, ChannelsInterface, ComponentsInterface, InfoInterface, MessageInterface, MessagesInterface, SchemaInterface, ServerInterface, ServersInterface, ServerVariableInterface, ServerVariablesInterface } from '@asyncapi/parser';
 
 import { writeFile } from 'fs';
 
@@ -13,7 +13,7 @@ export function write_json(data: string, filename: string) {
 }
 
 
-export function validateAsyncApi(subject: AsyncAPIDocumentV2): string[] {
+export function validateAsyncApi(subject: AsyncAPIDocumentInterface): string[] {
   let missing: string[] = [];
   let alias = 'root.';
   if (subject.info == undefined) {
