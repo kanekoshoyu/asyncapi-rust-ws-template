@@ -45,6 +45,7 @@
   },
   "generator": {
     "renderer": "react",
+    "apiVersion": "v3",
     "generator": ">=1.3.0 <3.0.0",
     "parameters": {
       "validate": {
