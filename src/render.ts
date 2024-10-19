@@ -1,5 +1,5 @@
-import { AsyncAPIDocumentInterface, ChannelInterface, ChannelsInterface, ComponentsInterface, InfoInterface, MessageInterface, MessagesInterface, SchemaInterface, ServerInterface, ServersInterface, ServerVariableInterface, ServerVariablesInterface } from '@asyncapi/parser';
-import { renderRustServers } from './_render/_server';
+import { AsyncAPIDocumentInterface, ChannelsInterface, ComponentsInterface, InfoInterface, MessagesInterface, } from '@asyncapi/parser';
+import { renderClientDir } from './_render/_client';
 import { renderMain } from './_render/main.rs';
 import { renderReadme } from './_render/README.md';
 import { renderCargo } from './_render/Cargo.toml';
@@ -10,10 +10,9 @@ export function renderRustWsClientFromAsyncApi(exchangeName: string, item: Async
   let rendered: React.ReactElement[] = [renderMain(), renderReadme(), renderCargo(exchangeName, item.info())];
 
   rendered = rendered.concat(renderInfo(item.info()));
-  rendered = rendered.concat(renderServers(item.servers()))
+  rendered = rendered.concat(renderClientDir(item.servers()));
   rendered = rendered.concat(renderChannels(item.channels()))
   rendered = rendered.concat(renderComponents(item.components()))
-
   return rendered;
 }
 
@@ -29,60 +28,12 @@ function renderInfo(item: & InfoInterface): React.ReactElement[] {
   return rendered;
 }
 
-
-function renderServers(item: & ServersInterface): React.ReactElement[] {
-  let rendered: React.ReactElement[] = [];
-
-  rendered = rendered.concat(renderRustServers(item));
-
-  return rendered;
-}
-
-function renderServer(item: & ServerInterface): React.ReactElement[] {
-  let rendered: React.ReactElement[] = [];
-
-  // let url = 'url';
-  // rendered.push(url)
-
-
-  // let protocol = 'protocol';
-  // rendered.push(protocol)
-
-
-  let variables = 'variables';
-  rendered = rendered.concat(renderServerVariables(item.variables()))
-
-
-  return rendered;
-}
-
-function renderServerVariables(item: & ServerVariablesInterface): React.ReactElement[] {
-  let rendered: React.ReactElement[] = [];
-
-  for (const [_, variable] of Object.entries(item)) {
-    rendered = rendered.concat(renderServerVariable(variable))
-  }
-
-  return rendered;
-}
-
-
-function renderServerVariable(item: & ServerVariableInterface): React.ReactElement[] {
-  let rendered: React.ReactElement[] = [];
-
-  // if (!item.defaultValue()) {
-  //   rendered.push(`item rendered default value`);
-  // }
-
-  return rendered;
-}
-
 function renderChannels(channels: & ChannelsInterface): React.ReactElement[] {
   let rendered: React.ReactElement[] = [];
 
-  for (let channel of channels) {
-    console.log(channel)
-  }
+  // for (let channel of channels) {
+  //   console.log(channel.id())
+  // }
 
   return rendered;
 }

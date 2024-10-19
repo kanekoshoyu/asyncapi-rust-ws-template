@@ -3,6 +3,7 @@ import { AsyncAPIDocumentInterface, ChannelInterface, ComponentsInterface, InfoI
 import { RustGenerator } from '@asyncapi/modelina';
 import { validateAsyncApi } from './validate_essential';
 import { renderRustWsClientFromAsyncApi } from './render';
+import { write_json } from './validate_full';
 // import { getAsyncApiYamlFiles } from './remote_file';
 
 interface TemplateParams {
@@ -27,6 +28,7 @@ interface TemplateProps {
 export default async function ({ asyncapi, params }: TemplateProps) {
   // validates a AsyncAPI file
   if (params.validate) {
+    console.log('validating');
     let missing_items = validateAsyncApi(asyncapi);
     if (missing_items.length > 0) {
       console.log('missing below');
@@ -40,15 +42,16 @@ export default async function ({ asyncapi, params }: TemplateProps) {
   }
   let exchangeName = 'binance';
 
-  // // renders websocket client
-  // if (params.render) {
-  //   let rendered = renderRustWsClientFromAsyncApi(exchangeName, asyncapi);
-  //   console.log('all files rendered');
-  //   console.log(`render files: ${rendered.length}`);
-  //   return rendered;
-  // } else {
-  //   return [];
-  // }
+  // renders websocket client
+  if (params.render) {
+    console.log('rendering');
+    let rendered = renderRustWsClientFromAsyncApi(exchangeName, asyncapi);
+    console.log('all files rendered');
+    console.log(`render files: ${rendered.length}`);
+    return rendered;
+  } else {
+    return [];
+  }
 }
 
 

@@ -4,9 +4,11 @@ exports.default = default_1;
 exports.render_model = render_model;
 const modelina_1 = require("@asyncapi/modelina");
 const validate_essential_1 = require("./validate_essential");
+const render_1 = require("./render");
 async function default_1({ asyncapi, params }) {
     // validates a AsyncAPI file
     if (params.validate) {
+        console.log('validating');
         let missing_items = (0, validate_essential_1.validateAsyncApi)(asyncapi);
         if (missing_items.length > 0) {
             console.log('missing below');
@@ -20,15 +22,17 @@ async function default_1({ asyncapi, params }) {
         }
     }
     let exchangeName = 'binance';
-    // // renders websocket client
-    // if (params.render) {
-    //   let rendered = renderRustWsClientFromAsyncApi(exchangeName, asyncapi);
-    //   console.log('all files rendered');
-    //   console.log(`render files: ${rendered.length}`);
-    //   return rendered;
-    // } else {
-    //   return [];
-    // }
+    // renders websocket client
+    if (params.render) {
+        console.log('rendering');
+        let rendered = (0, render_1.renderRustWsClientFromAsyncApi)(exchangeName, asyncapi);
+        console.log('all files rendered');
+        console.log(`render files: ${rendered.length}`);
+        return rendered;
+    }
+    else {
+        return [];
+    }
 }
 /**
 * Experimental use of modellina
