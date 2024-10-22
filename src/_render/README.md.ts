@@ -8,5 +8,5 @@ rendered by [async-rust-ws-template](https://github.com/kanekoshoyu/asyncapi-rus
 }
 
 export function renderReadme() {
-  return render("README.md", content());
+  return render("src_client_README.md", content());
 }

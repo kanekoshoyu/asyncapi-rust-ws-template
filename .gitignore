@@ -1,4 +1,5 @@
 # generated code
 /node_modules
 /output
+/test/output/
 /__transpiled

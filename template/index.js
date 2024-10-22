@@ -6,6 +6,7 @@ const modelina_1 = require("@asyncapi/modelina");
 const validate_essential_1 = require("./validate_essential");
 const render_1 = require("./render");
 async function default_1({ asyncapi, params }) {
+    console.log(params);
     // validates a AsyncAPI file
     if (params.validate) {
         console.log('validating');

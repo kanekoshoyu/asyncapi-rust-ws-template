@@ -21,16 +21,16 @@
     "start": "tsc --watch",
     "build": "tsc",
     "release": "semantic-release",
-    "test_v2": "npm run clear_all && npm run build && npm run validate_render_v2",
-    "test_v3": "npm run clear_all && npm run build && npm run validate_render_v3",
-    "validate_v2": "asyncapi-generator sample/v2.yaml ./ -o output -p validate=true",
-    "validate_v3": "asyncapi-generator sample/v3.yaml ./ -o output -p validate=true",
-    "render_v2": "asyncapi-generator sample/v2.yaml ./ -o output -p render=true",
-    "render_v3": "asyncapi-generator sample/v3.yaml ./ -o output -p render=true",
-    "validate_render_v2": "asyncapi-generator sample/v2.yaml ./ -o output -p validate=true -p render=true",
-    "validate_render_v3": "asyncapi-generator sample/v3.yaml ./ -o output -p validate=true -p render=true",
+    "test_v2": "npm run clear_all && npm run build && clear && npm run render_v2",
+    "test_v3": "npm run clear_all && npm run build && clear && npm run render_v3",
+    "validate_v2": "ag test/input/v2.yaml ./ -o test/output/v2 -p validate=true",
+    "validate_v3": "ag test/input/v3.yaml ./ -o test/output/v3 -p validate=true",
+    "render_v2": "ag test/input/v2.yaml ./ -o test/output/v2 -p render=true --debug",
+    "render_v3": "ag test/input/v3.yaml ./ -o test/output/v3 -p render=true",
+    "validate_render_v2": "ag test/input/v2.yaml ./ -o test/output/v2 -p validate=true -p render=true",
+    "validate_render_v3": "ag test/input/v3.yaml ./ -o test/output/v3 -p validate=true -p render=true",
     "clear_template": "rm -rf template",
-    "clear_output": "rm -rf output",
+    "clear_output": "rm -rf test/output",
     "clear_all": "npm run clear_template && npm run clear_output",
     "lint": "echo \"No linter specified yet\"",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
@@ -59,7 +59,10 @@
       "framework": {
         "description": "type of websocket framework to render: [tokio-tungstenite, async-tungstenite]",
         "default": "tokio-tungstenite"
-      }
+      },
+      "nonRenderableFiles": [
+        "_render"
+      ]
     }
   },
   "devDependencies": {

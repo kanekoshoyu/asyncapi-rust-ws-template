@@ -1,8 +1,11 @@
-import { render } from './tool';
-import { ServersInterface, ServerInterface } from '@asyncapi/parser';
-import { pascalcase, underscore } from '../format';
-
-export function render_rust_ws_client_code(exchangeName: string, server: ServerInterface): string {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.render_rust_ws_client_code = render_rust_ws_client_code;
+exports.render_rust_ws_client_mod = render_rust_ws_client_mod;
+exports.renderClientDir = renderClientDir;
+const tool_1 = require("../../_render/tool");
+const format_1 = require("../../format");
+function render_rust_ws_client_code(exchangeName, server) {
     return `
 use futures_util::{StreamExt, SinkExt};
 use tokio::net::TcpStream;
@@ -11,24 +14,24 @@ use tokio_tungstenite::tungstenite::Error as WsError;
 use serde::{Deserialize, Serialize};
 use std::time::Duration;
 
-const url = "${server.url()}";
+const URL: &str = "${server.url()}";
 
 #[derive(Debug)]
-pub struct ${pascalcase(exchangeName)}${pascalcase(server.id())}Client {
+pub struct ${(0, format_1.pascalcase)(exchangeName)}${(0, format_1.pascalcase)(server.id())}Client {
     ws_stream: WebSocketStream<TcpStream>,
 }
 
-impl ${pascalcase(exchangeName)}${pascalcase(server.id())}Client {
+impl ${(0, format_1.pascalcase)(exchangeName)}${(0, format_1.pascalcase)(server.id())}Client {
     /// connect to the ${exchangeName} websocket server
     pub async fn new() -> Result<Self, WsError> {
-        let url = url::Url::parse(url).expect("Invalid URL");
+        let url = url::Url::parse(URL).expect("Invalid URL");
 
-        let (ws_stream, _) = connect_async(url).await.map_err(|err| {
+        let (ws_stream, _) = connect_async(URL).await.map_err(|err| {
             eprintln!("Failed to connect: {:?}", err);
             err
         })?;
 
-        println!("Connected to {}", url);
+        println!("Connected to {}", URL);
         Ok(Self { ws_stream })
     }
 
@@ -47,28 +50,22 @@ impl ${pascalcase(exchangeName)}${pascalcase(server.id())}Client {
         self.ws_stream.close(None).await
     }
 }
-`
+`;
 }
-
-
-export function render_rust_ws_client_mod(servers: ServersInterface): string {
+function render_rust_ws_client_mod(servers) {
     return `
 mod 
-`
+`;
 }
-
 // TODO set up the render function where we can set up directories as well directly
-export function renderClientDir(exchangeName: string, servers: & ServersInterface) {
-    let files: React.ReactElement[] = [];
-    console.log(`server count: ${servers.length}`);
-
+function renderClientDir(exchangeName, servers) {
+    let files = [];
     for (let server of servers) {
-        let serverName = underscore(server.id());
-        let file = render(`src_client_${serverName}.rs`, render_rust_ws_client_code(exchangeName, server));
+        let serverName = (0, format_1.underscore)(server.id());
+        let file = (0, tool_1.render)(`src_client_${serverName}.rs`, render_rust_ws_client_code(exchangeName, server));
         files = files.concat(file);
     }
-    let file = render(`src_client_mod.rs`, render_rust_ws_client_mod(servers));
-
-
+    let file = (0, tool_1.render)(`src_client_mod.rs`, render_rust_ws_client_mod(servers));
+    files = files.concat(file);
     return files;
 }

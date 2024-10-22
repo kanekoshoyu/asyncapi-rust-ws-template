@@ -1,20 +1,16 @@
 
 import { AsyncAPIDocumentInterface, ChannelInterface, ComponentsInterface, InfoInterface, SchemaInterface, ServerInterface } from '@asyncapi/parser';
 import { RustGenerator } from '@asyncapi/modelina';
+import { File, } from '@asyncapi/generator-react-sdk';
 import { validateAsyncApi } from './validate_essential';
 import { renderRustWsClientFromAsyncApi } from './render';
 import { write_json } from './validate_full';
 // import { getAsyncApiYamlFiles } from './remote_file';
 
 interface TemplateParams {
-  // Generator standard parameters (if used)
-  server?: string;
-  schema?: string;
-  forceWrite?: boolean;
-  // custom input
+  package: string;
   validate: boolean;
   render: boolean;
-  // either provided, or derived from filename
   exchange: string;
   framework?: 'tokio-tungstenite' | 'async-tungstenite';
 }
@@ -26,6 +22,8 @@ interface TemplateProps {
 
 
 export default async function ({ asyncapi, params }: TemplateProps) {
+
+  console.log(params);
   // validates a AsyncAPI file
   if (params.validate) {
     console.log('validating');
