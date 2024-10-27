@@ -1,4 +1,4 @@
-import { RenderFile } from './tool';
+import { RenderFile } from './renderFile';
 
 function content(): string {
   return `

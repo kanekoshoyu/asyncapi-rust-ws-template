@@ -17,7 +17,6 @@
     "template"
   ],
   "main": "index.js",
-  "types": "index.d.ts",
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
@@ -55,11 +54,11 @@
     "parameters": {
       "validate": {
         "description": "validate a file: [true: default, false]",
-        "default": false
+        "default": true
       },
       "render": {
         "description": "render websocket client: [true: default, false]",
-        "default": false
+        "default": true
       },
       "framework": {
         "description": "type of websocket framework to render: [tokio-tungstenite, async-tungstenite]",

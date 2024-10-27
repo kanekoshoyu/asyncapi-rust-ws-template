@@ -1,4 +1,4 @@
-import { RenderFile } from './tool';
+import { RenderFile } from './renderFile';
 import { InfoInterface } from '@asyncapi/parser';
 
 function content(exchangeName: string, info: InfoInterface): string {

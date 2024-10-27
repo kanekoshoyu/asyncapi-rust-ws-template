@@ -1,10 +1,10 @@
 import { AsyncAPIDocumentInterface, } from '@asyncapi/parser';
-import { renderClientDir } from './src/client/_client';
-import { renderReadme } from './_render/README.md';
-import { renderCargo } from './_render/Cargo.toml';
-import { renderModels } from './src/model/_model';
-import { renderLibRs } from './_render/lib.rs';
-import { RenderFile } from './_render/tool';
+import { renderClientDir } from './renderClient';
+import { renderReadme } from './renderReadMe';
+import { renderCargo } from './renderCargo';
+import { renderModels } from './renderModel';
+import { renderLibRs } from './renderLib';
+import { RenderFile } from './renderFile';
 
 /// render rust websocket client from asyncapi
 export async function renderRustWsClientFromAsyncApi(exchangeName: string, doc: AsyncAPIDocumentInterface): Promise<RenderFile[]> {

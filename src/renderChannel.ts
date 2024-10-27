@@ -1,5 +1,5 @@
 import { ChannelInterface } from '@asyncapi/parser';
-import { RenderFile } from './tool';
+import { RenderFile } from './renderFile';
 
 // TODO set up the channel converter
 function renderChannel(item: & ChannelInterface): RenderFile[] {

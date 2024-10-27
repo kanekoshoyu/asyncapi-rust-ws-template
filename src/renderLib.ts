@@ -1,12 +1,12 @@
-import { RenderFile } from './tool';
+import { RenderFile } from './renderFile';
 import { AsyncAPIDocumentInterface } from '@asyncapi/parser';
-import { pascalcase, underscore } from '../format';
+import { FormatHelpers } from '@asyncapi/modelina';
 
 function content(doc: AsyncAPIDocumentInterface): string {
   let texts: string[] = [];
 
   for (let server of doc.servers()) {
-    let serverName = pascalcase(server.id());
+    let serverName = FormatHelpers.toPascalCase(server.id());
     let text = `
       mod client_${serverName}.rs;
     `;

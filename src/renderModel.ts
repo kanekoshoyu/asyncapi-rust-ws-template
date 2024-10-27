@@ -1,6 +1,6 @@
 import { RustGenerator, RUST_DEFAULT_PRESET, FormatHelpers } from '@asyncapi/modelina'
-import { AsyncAPIDocumentInterface, SchemasInterface } from '@asyncapi/parser';
-import { RenderFile } from '../../_render/tool';
+import { AsyncAPIDocumentInterface } from '@asyncapi/parser';
+import { RenderFile } from './renderFile';
 
 // Initialize the Rust generator with desired options
 const rustGenerator = new RustGenerator({

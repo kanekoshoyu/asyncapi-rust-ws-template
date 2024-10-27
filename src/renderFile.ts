@@ -1,7 +1,6 @@
 import React from 'react';
 import * as path from 'path';
 import { File } from '@asyncapi/generator-react-sdk';
-import { permission } from 'process';
 
 export class RenderFile {
   filePath: string;

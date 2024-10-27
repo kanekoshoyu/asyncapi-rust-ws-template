@@ -1,7 +1,6 @@
-import { RenderFile } from '../../_render/tool';
 import { ServersInterface, ServerInterface } from '@asyncapi/parser';
 import { FormatHelpers } from '@asyncapi/modelina';
-import { pascalcase, underscore } from '../../format';
+import { RenderFile } from './renderFile';
 
 export function render_rust_ws_client_code(exchangeName: string, server: ServerInterface): string {
     return `
@@ -15,11 +14,11 @@ use std::time::Duration;
 const URL: &str = "${server.url()}";
 
 #[derive(Debug)]
-pub struct ${pascalcase(exchangeName)}${pascalcase(server.id())}Client {
+pub struct ${FormatHelpers.toPascalCase(exchangeName)}${FormatHelpers.toPascalCase(server.id())}Client {
     ws_stream: WebSocketStream<TcpStream>,
 }
 
-impl ${pascalcase(exchangeName)}${pascalcase(server.id())}Client {
+impl ${FormatHelpers.toPascalCase(exchangeName)}${FormatHelpers.toPascalCase(server.id())}Client {
     /// connect to the ${exchangeName} websocket server
     pub async fn new() -> Result<Self, WsError> {
         let url = url::Url::parse(URL).expect("Invalid URL");
