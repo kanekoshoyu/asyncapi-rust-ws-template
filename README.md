@@ -10,15 +10,15 @@
 - renderer: react rather than nunjucks, for its versatility. for details, click [here](https://www.asyncapi.com/docs/tools/generator/file-templates)
 
 ## contents
-| name                             | description                                                                            |
-| -------------------------------- | -------------------------------------------------------------------------------------- |
-| [src](./src/)                    | TypeScript source code, transpiles into `template` directory that                      |
-| [src/index.js](./src/index.js)   | main react template entry code, exposing the function for `asyncapi generator` command |
-| [test/input](./test/)            | local sample AsyncAPI document for testing purpose                                     |
-| [test/output](./test/)           | local test output directory                                                            |
-| [package.json](./package.json)   | NPM package definition                                                                 |
-| [tsconfig.json](./tsconfig.json) | TypeScript transpile definition                                                        |
-| [CHANGELOG](./CHANGELOG.md)      | change log                                                                             |
+| name                             | description                                                                                                   |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| [src](./src/)                    | TypeScript source code, transpiles into `template` directory that                                             |
+| [src/index.ts](./src/index.ts)   | transpiles to main template entry `template/index.js`, exposing the function for `asyncapi generator` command |
+| [test/input](./test/)            | local sample AsyncAPI document for testing purpose                                                            |
+| [test/output](./test/)           | local test output directory                                                                                   |
+| [package.json](./package.json)   | NPM package definition                                                                                        |
+| [tsconfig.json](./tsconfig.json) | TypeScript transpile definition                                                                               |
+| [CHANGELOG](./CHANGELOG.md)      | change log                                                                                                    |
 
 ## command
 render using npm build
