@@ -20,7 +20,6 @@ interface TemplateProps {
 
 export default async function ({ asyncapi, params }: TemplateProps) {
 
-  console.log(params);
   // validates a AsyncAPI file
   if (params.validate) {
     console.log('validating');
@@ -39,14 +38,12 @@ export default async function ({ asyncapi, params }: TemplateProps) {
 
   // renders websocket client
   if (params.render) {
-    console.log('rendering');
     let files = await renderRustWsClientFromAsyncApi(exchangeName, asyncapi);
     console.log(`render files: ${files.length}`);
     let collection: React.ReactElement[] = [];
     for (let file of files) {
       collection.push(file.render());
     }
-    console.log(`gathered collection: ${collection.length}`);
     return collection;
     // return rendered;
   } else {

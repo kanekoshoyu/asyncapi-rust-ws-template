@@ -11,7 +11,6 @@ export async function renderRustWsClientFromAsyncApi(exchangeName: string, doc: 
   let root: RenderFile[] = [renderLibRs(doc), renderReadme(), renderCargo(exchangeName, doc.info())];
   let model: RenderFile[] = await renderModels(doc);
   model = appendFileNamePrefix(model, 'src_model_');
-  console.log(`models\n ${model}`);
 
   let rendered: RenderFile[] = [];
   // root, model, client

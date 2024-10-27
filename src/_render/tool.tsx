@@ -17,7 +17,6 @@ export class RenderFile {
   }
 
   render(): React.ReactElement {
-    console.log(this.getDirName());
     return <File name={this.filePath}>{this.content}</File>;
   }
 }

@@ -17,6 +17,7 @@
     "template"
   ],
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
@@ -40,8 +41,8 @@
     "@asyncapi/generator-hooks": "0.1.0",
     "@asyncapi/generator-react-sdk": "1.1.2",
     "@asyncapi/modelina": "3.7.0",
-    "react": "^18.3.1",
-    "node-fetch": "3.3.2"
+    "node-fetch": "3.3.2",
+    "react": "^18.3.1"
   },
   "generator": {
     "renderer": "react",

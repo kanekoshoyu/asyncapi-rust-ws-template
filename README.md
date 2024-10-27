@@ -13,7 +13,7 @@
 | name                                     | description                                                                            |
 | ---------------------------------------- | -------------------------------------------------------------------------------------- |
 | [src](./src/)                            | TypeScript source code (edit this)                                                     |
-| [template](./template/)                  | TypeScript transpiled into javascript for nodejs (do not edit this manually)           |
+| [template](./template/)                  | TypeScript d.ts definitions generated from src  by `tsc` command (do not edit manually). index.ts exposes            |
 | [template/index.js](./template/index.js) | main react template entry code, exposing the function for `asyncapi generator` command |
 | [sample](./sample/)                      | local sample AsyncAPI document for testing purpose                                     |
 | [package.json](./package.json)           | NPM package definition                                                                 |
