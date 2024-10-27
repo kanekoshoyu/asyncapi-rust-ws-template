@@ -19,6 +19,6 @@ serde_json = "1.0"
 `;
 }
 
-export function renderCargo(exchangeName: string, info: InfoInterface) {
+export function renderCargo(exchangeName: string, info: InfoInterface): React.ReactElement {
     return render("Cargo.toml", content(exchangeName, info));
 }

@@ -1,8 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = default_1;
-exports.render_model = render_model;
-const modelina_1 = require("@asyncapi/modelina");
 const validate_essential_1 = require("./validate_essential");
 const render_1 = require("./render");
 async function default_1({ asyncapi, params }) {
@@ -26,7 +24,7 @@ async function default_1({ asyncapi, params }) {
     // renders websocket client
     if (params.render) {
         console.log('rendering');
-        let rendered = (0, render_1.renderRustWsClientFromAsyncApi)(exchangeName, asyncapi);
+        let rendered = await (0, render_1.renderRustWsClientFromAsyncApi)(exchangeName, asyncapi);
         console.log('all files rendered');
         console.log(`render files: ${rendered.length}`);
         return rendered;
@@ -34,12 +32,4 @@ async function default_1({ asyncapi, params }) {
     else {
         return [];
     }
-}
-/**
-* Experimental use of modellina
-* TODO: complete this
-*/
-async function render_model(asyncapi) {
-    const generator = new modelina_1.RustGenerator();
-    // const models = await generator.render(asyncapi);
 }

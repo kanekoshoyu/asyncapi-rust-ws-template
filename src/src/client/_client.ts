@@ -59,7 +59,7 @@ mod
 }
 
 // TODO set up the render function where we can set up directories as well directly
-export function renderClientDir(exchangeName: string, servers: & ServersInterface) {
+export function renderClientDir(exchangeName: string, servers: & ServersInterface): React.ReactElement[] {
     let files: React.ReactElement[] = [];
 
     for (let server of servers) {

@@ -1,10 +1,7 @@
 
-import { AsyncAPIDocumentInterface, ChannelInterface, ComponentsInterface, InfoInterface, SchemaInterface, ServerInterface } from '@asyncapi/parser';
-import { RustGenerator } from '@asyncapi/modelina';
-import { File, } from '@asyncapi/generator-react-sdk';
+import { AsyncAPIDocumentInterface } from '@asyncapi/parser';
 import { validateAsyncApi } from './validate_essential';
 import { renderRustWsClientFromAsyncApi } from './render';
-import { write_json } from './validate_full';
 // import { getAsyncApiYamlFiles } from './remote_file';
 
 interface TemplateParams {
@@ -43,21 +40,11 @@ export default async function ({ asyncapi, params }: TemplateProps) {
   // renders websocket client
   if (params.render) {
     console.log('rendering');
-    let rendered = renderRustWsClientFromAsyncApi(exchangeName, asyncapi);
+    let rendered = await renderRustWsClientFromAsyncApi(exchangeName, asyncapi);
     console.log('all files rendered');
     console.log(`render files: ${rendered.length}`);
     return rendered;
   } else {
     return [];
   }
-}
-
-
-/**
-* Experimental use of modellina
-* TODO: complete this
-*/
-export async function render_model(asyncapi: AsyncAPIDocumentInterface) {
-  const generator = new RustGenerator();
-  // const models = await generator.render(asyncapi);
 }
