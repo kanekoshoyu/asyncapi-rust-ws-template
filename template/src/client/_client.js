@@ -4,6 +4,7 @@ exports.render_rust_ws_client_code = render_rust_ws_client_code;
 exports.render_rust_ws_client_mod = render_rust_ws_client_mod;
 exports.renderClientDir = renderClientDir;
 const tool_1 = require("../../_render/tool");
+const modelina_1 = require("@asyncapi/modelina");
 const format_1 = require("../../format");
 function render_rust_ws_client_code(exchangeName, server) {
     return `
@@ -61,11 +62,9 @@ mod
 function renderClientDir(exchangeName, servers) {
     let files = [];
     for (let server of servers) {
-        let serverName = (0, format_1.underscore)(server.id());
-        let file = (0, tool_1.render)(`src_client_${serverName}.rs`, render_rust_ws_client_code(exchangeName, server));
-        files = files.concat(file);
+        let serverName = modelina_1.FormatHelpers.toSnakeCase(server.id());
+        files = files.concat(new tool_1.RenderFile(`src_client_${serverName}.rs`, render_rust_ws_client_code(exchangeName, server)));
     }
-    let file = (0, tool_1.render)(`src_client_mod.rs`, render_rust_ws_client_mod(servers));
-    files = files.concat(file);
+    files = files.concat(new tool_1.RenderFile(`src_client_mod.rs`, render_rust_ws_client_mod(servers)));
     return files;
 }

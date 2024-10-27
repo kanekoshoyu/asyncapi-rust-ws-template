@@ -14,8 +14,8 @@ async function renderModels(document) {
     const models = await rustGenerator.generate(document);
     let files = [];
     for (let model of models) {
-        const modelFileName = `${modelina_1.FormatHelpers.toPascalCase(model.modelName)}.rs`;
-        files.push((0, tool_1.render)(modelFileName, model.result));
+        const modelFileName = `${modelina_1.FormatHelpers.toSnakeCase(model.modelName)}.rs`;
+        files.push(new tool_1.RenderFile(modelFileName, model.result));
     }
     return files;
 }

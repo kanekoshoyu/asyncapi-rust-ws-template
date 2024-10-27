@@ -1,5 +1,6 @@
-import { render } from '../../_render/tool';
+import { RenderFile } from '../../_render/tool';
 import { ServersInterface, ServerInterface } from '@asyncapi/parser';
+import { FormatHelpers } from '@asyncapi/modelina';
 import { pascalcase, underscore } from '../../format';
 
 export function render_rust_ws_client_code(exchangeName: string, server: ServerInterface): string {
@@ -59,17 +60,14 @@ mod
 }
 
 // TODO set up the render function where we can set up directories as well directly
-export function renderClientDir(exchangeName: string, servers: & ServersInterface): React.ReactElement[] {
-    let files: React.ReactElement[] = [];
+export function renderClientDir(exchangeName: string, servers: & ServersInterface): RenderFile[] {
+    let files: RenderFile[] = [];
 
     for (let server of servers) {
-        let serverName = underscore(server.id());
-        let file = render(`src_client_${serverName}.rs`, render_rust_ws_client_code(exchangeName, server));
-        files = files.concat(file);
+        let serverName = FormatHelpers.toSnakeCase(server.id());
+        files = files.concat(new RenderFile(`src_client_${serverName}.rs`, render_rust_ws_client_code(exchangeName, server)));
     }
-
-    let file = render(`src_client_mod.rs`, render_rust_ws_client_mod(servers));
-    files = files.concat(file);
+    files = files.concat(new RenderFile(`src_client_mod.rs`, render_rust_ws_client_mod(servers)));
 
     return files;
 }

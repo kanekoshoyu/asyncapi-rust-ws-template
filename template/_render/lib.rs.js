@@ -19,5 +19,5 @@ ${texts}
 }
 // TODO store src/lib.rs
 function renderLibRs(doc) {
-    return (0, tool_1.render)("src_lib.rs", content(doc));
+    return new tool_1.RenderFile("src_lib.rs", content(doc));
 }

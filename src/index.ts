@@ -40,11 +40,17 @@ export default async function ({ asyncapi, params }: TemplateProps) {
   // renders websocket client
   if (params.render) {
     console.log('rendering');
-    let rendered = await renderRustWsClientFromAsyncApi(exchangeName, asyncapi);
-    console.log('all files rendered');
-    console.log(`render files: ${rendered.length}`);
-    return rendered;
+    let files = await renderRustWsClientFromAsyncApi(exchangeName, asyncapi);
+    console.log(`render files: ${files.length}`);
+    let collection: React.ReactElement[] = [];
+    for (let file of files) {
+      collection.push(file.render());
+    }
+    console.log(`gathered collection: ${collection.length}`);
+    return collection;
+    // return rendered;
   } else {
     return [];
   }
 }
+

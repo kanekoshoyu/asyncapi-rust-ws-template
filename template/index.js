@@ -24,10 +24,15 @@ async function default_1({ asyncapi, params }) {
     // renders websocket client
     if (params.render) {
         console.log('rendering');
-        let rendered = await (0, render_1.renderRustWsClientFromAsyncApi)(exchangeName, asyncapi);
-        console.log('all files rendered');
-        console.log(`render files: ${rendered.length}`);
-        return rendered;
+        let files = await (0, render_1.renderRustWsClientFromAsyncApi)(exchangeName, asyncapi);
+        console.log(`render files: ${files.length}`);
+        let collection = [];
+        for (let file of files) {
+            collection.push(file.render());
+        }
+        console.log(`gathered collection: ${collection.length}`);
+        return collection;
+        // return rendered;
     }
     else {
         return [];

@@ -9,5 +9,5 @@ rendered by [async-rust-ws-template](https://github.com/kanekoshoyu/asyncapi-rus
   `;
 }
 function renderReadme() {
-    return (0, tool_1.render)("src_client_README.md", content());
+    return new tool_1.RenderFile("src_client_README.md", content());
 }

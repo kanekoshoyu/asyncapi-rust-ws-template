@@ -21,5 +21,5 @@ serde_json = "1.0"
 `;
 }
 function renderCargo(exchangeName, info) {
-    return (0, tool_1.render)("Cargo.toml", content(exchangeName, info));
+    return new tool_1.RenderFile("Cargo.toml", content(exchangeName, info));
 }

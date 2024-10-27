@@ -3,10 +3,22 @@ import * as path from 'path';
 import { File } from '@asyncapi/generator-react-sdk';
 import { permission } from 'process';
 
+export class RenderFile {
+  filePath: string;
+  content: string;
 
-export function render(filePath: string, content: string): React.ReactElement {
-  let dirname = path.dirname(filePath);
-  console.log(dirname);
-  return <File name={filePath}> {content} </File >;
+  constructor(filePath: string, content: string) {
+    this.filePath = filePath;
+    this.content = content;
+  }
+
+  getDirName(): string {
+    return path.dirname(this.filePath);
+  }
+
+  render(): React.ReactElement {
+    console.log(this.getDirName());
+    return <File name={this.filePath}>{this.content}</File>;
+  }
 }
 

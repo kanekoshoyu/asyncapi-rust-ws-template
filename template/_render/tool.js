@@ -23,12 +23,21 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.render = render;
+exports.RenderFile = void 0;
 const jsx_runtime_1 = require("react/jsx-runtime");
 const path = __importStar(require("path"));
 const generator_react_sdk_1 = require("@asyncapi/generator-react-sdk");
-function render(filePath, content) {
-    let dirname = path.dirname(filePath);
-    console.log(dirname);
-    return (0, jsx_runtime_1.jsxs)(generator_react_sdk_1.File, { name: filePath, children: [" ", content, " "] });
+class RenderFile {
+    constructor(filePath, content) {
+        this.filePath = filePath;
+        this.content = content;
+    }
+    getDirName() {
+        return path.dirname(this.filePath);
+    }
+    render() {
+        console.log(this.getDirName());
+        return (0, jsx_runtime_1.jsx)(generator_react_sdk_1.File, { name: this.filePath, children: this.content });
+    }
 }
+exports.RenderFile = RenderFile;

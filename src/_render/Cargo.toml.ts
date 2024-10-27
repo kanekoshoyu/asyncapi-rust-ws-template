@@ -1,7 +1,7 @@
-import { render } from './tool';
+import { RenderFile } from './tool';
 import { InfoInterface } from '@asyncapi/parser';
 
-function content(exchangeName: string, info: InfoInterface) {
+function content(exchangeName: string, info: InfoInterface): string {
     return `
 [package]
 name = "exchange-collection-ws-${exchangeName}"
@@ -19,6 +19,6 @@ serde_json = "1.0"
 `;
 }
 
-export function renderCargo(exchangeName: string, info: InfoInterface): React.ReactElement {
-    return render("Cargo.toml", content(exchangeName, info));
+export function renderCargo(exchangeName: string, info: InfoInterface): RenderFile {
+    return new RenderFile("Cargo.toml", content(exchangeName, info));
 }
