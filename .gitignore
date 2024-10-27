@@ -1,5 +1,7 @@
 # generated code
 /node_modules
-/output
-/test/output/
+# transpiled directory, do not edit
+/template
 /__transpiled
+# output directory
+/test/output/

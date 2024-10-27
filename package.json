@@ -20,9 +20,10 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
+    "prepare": "npm run build",
     "release": "semantic-release",
-    "test_v2": "npm run clear_all && npm run build && clear && npm run render_v2",
-    "test_v3": "npm run clear_all && npm run build && clear && npm run render_v3",
+    "test_v2": "npm run clear_all && npm run build && npm run render_v2",
+    "test_v3": "npm run clear_all && npm run build && npm run render_v3",
     "validate_v2": "ag test/input/v2.yaml ./ -o test/output/v2 -p validate=true",
     "validate_v3": "ag test/input/v3.yaml ./ -o test/output/v3 -p validate=true",
     "render_v2": "ag test/input/v2.yaml ./ -o test/output/v2 -p render=true --debug",
@@ -35,6 +36,9 @@
     "lint": "echo \"No linter specified yet\"",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
   },
+  "files": [
+    "template"
+  ],
   "dependencies": {
     "@asyncapi/generator-filters": "2.1.0",
     "@asyncapi/generator-hooks": "0.1.0",
