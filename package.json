@@ -1,6 +1,6 @@
 {
   "name": "asyncapi-rust-ws-template",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "Rust WebSocket client template for AsyncAPI Generator",
   "author": "Sho Kaneko <kanekoshoyu@gmail.com>",
   "license": "MIT",
@@ -17,6 +17,7 @@
     "template"
   ],
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",

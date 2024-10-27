@@ -5,3 +5,6 @@
 /__transpiled
 # output directory
 /test/output/
+# package directory
+.DS_Store
+*.tgz
