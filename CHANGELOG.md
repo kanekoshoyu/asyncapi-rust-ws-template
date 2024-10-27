@@ -1,9 +1,11 @@
 # [asyncapi-rust-websocket-template](./README.md) changelog
 All notable changes to the template will be documented in this file.
 
-## [0.1.4] - 2024-10-28
+## [0.1.5] - 2024-10-28
 ### Added
 - hooks (before and after)
+### Modified
+- output sub-directory generation
 ### Removed
 - d.ts files that went into template file
 - 

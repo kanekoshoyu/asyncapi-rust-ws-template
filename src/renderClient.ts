@@ -64,9 +64,9 @@ export function renderClientDir(exchangeName: string, servers: & ServersInterfac
 
     for (let server of servers) {
         let serverName = FormatHelpers.toSnakeCase(server.id());
-        files = files.concat(new RenderFile(`src_client_${serverName}.rs`, render_rust_ws_client_code(exchangeName, server)));
+        files = files.concat(new RenderFile(`src/client/${serverName}.rs`, render_rust_ws_client_code(exchangeName, server)));
     }
-    files = files.concat(new RenderFile(`src_client_mod.rs`, render_rust_ws_client_mod(servers)));
+    files = files.concat(new RenderFile(`src/client/mod.rs`, render_rust_ws_client_mod(servers)));
 
     return files;
 }

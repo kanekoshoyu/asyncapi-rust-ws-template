@@ -22,7 +22,6 @@ export default async function ({ asyncapi, params }: TemplateProps) {
 
   // validates a AsyncAPI file
   if (params.validate) {
-    console.log('validating');
     let missing_items = validateAsyncApi(asyncapi);
     if (missing_items.length > 0) {
       console.log('missing below');

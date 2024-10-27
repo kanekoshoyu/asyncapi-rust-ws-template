@@ -10,7 +10,7 @@ import { RenderFile } from './renderFile';
 export async function renderRustWsClientFromAsyncApi(exchangeName: string, doc: AsyncAPIDocumentInterface): Promise<RenderFile[]> {
   let root: RenderFile[] = [renderLibRs(doc), renderReadme(), renderCargo(exchangeName, doc.info())];
   let model: RenderFile[] = await renderModels(doc);
-  model = appendFileNamePrefix(model, 'src_model_');
+  model = appendFileNamePrefix(model, 'src/model/');
 
   let rendered: RenderFile[] = [];
   // root, model, client
