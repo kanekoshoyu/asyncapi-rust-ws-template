@@ -11,7 +11,7 @@ description = "${info.description()?.replace(/"/g, '\\"').replace(/\n/g, '\\n')}
 # use workspace when needed
 [dependencies]
 tokio = { version = "1", features = ["full"] }
-tokio-tungstenite = "0.15"
+tokio-tungstenite = "0.24"
 futures = "0.3"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1.0"

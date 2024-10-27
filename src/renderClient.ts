@@ -52,10 +52,18 @@ impl ${FormatHelpers.toPascalCase(exchangeName)}${FormatHelpers.toPascalCase(ser
 }
 
 
-export function render_rust_ws_client_mod(servers: ServersInterface): string {
-    return `
-mod 
+function mod_client(server: ServerInterface): string {
+    return `/// ${server.description()}
+mod ${FormatHelpers.toSnakeCase(server.id())};
 `
+}
+
+export function render_rust_ws_client_mod(servers: ServersInterface): string {
+    let result = '';
+    for (const server of servers) {
+        result += mod_client(server);
+    }
+    return result;
 }
 
 // TODO set up the render function where we can set up directories as well directly
