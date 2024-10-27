@@ -4,6 +4,7 @@ All notable changes to the template will be documented in this file.
 ## [0.1.5] - 2024-10-28
 ### Added
 - hooks (before and after)
+- output module complete
 ### Modified
 - output sub-directory generation
 ### Removed
