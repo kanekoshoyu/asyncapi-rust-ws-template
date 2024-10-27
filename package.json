@@ -18,12 +18,10 @@
   ],
   "main": "index.js",
   "scripts": {
-    "start": "tsc --watch",
-    "build": "tsc",
-    "prepare": "npm run build",
+    "prepare": "tsc",
     "release": "semantic-release",
-    "test_v2": "npm run clear_all && npm run build && npm run render_v2",
-    "test_v3": "npm run clear_all && npm run build && npm run render_v3",
+    "test_v2": "npm run clear_all && npm run prepare && npm run render_v2",
+    "test_v3": "npm run clear_all && npm run prepare && npm run render_v3",
     "validate_v2": "ag test/input/v2.yaml ./ -o test/output/v2 -p validate=true",
     "validate_v3": "ag test/input/v3.yaml ./ -o test/output/v3 -p validate=true",
     "render_v2": "ag test/input/v2.yaml ./ -o test/output/v2 -p render=true --debug",
@@ -63,9 +61,11 @@
       "framework": {
         "description": "type of websocket framework to render: [tokio-tungstenite, async-tungstenite]",
         "default": "tokio-tungstenite"
-      },
-      "nonRenderableFiles": []
-    }
+      }
+    },
+    "nonRenderableFiles": [],
+    "filters": [],
+    "hooks": {}
   },
   "devDependencies": {
     "@types/node": "^22.7.4",

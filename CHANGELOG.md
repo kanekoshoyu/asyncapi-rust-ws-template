@@ -3,6 +3,12 @@ All notable changes to the template will be documented in this file.
 
 ## [0.1.4] - 2024-10-28
 ### Added
+- hooks (before and after)
+### Removed
+- d.ts files that went into template file
+- 
+## [0.1.4] - 2024-10-28
+### Added
 - support both JS & TS
 - support both V2 & V3
 - test environment
