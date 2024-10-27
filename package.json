@@ -21,6 +21,7 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
+    "build_index": "tsc -p tsconfig.index.json",
     "release": "semantic-release",
     "test_v2": "npm run clear_all && npm run build && clear && npm run render_v2",
     "test_v3": "npm run clear_all && npm run build && clear && npm run render_v3",
