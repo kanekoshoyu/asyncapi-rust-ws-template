@@ -20,8 +20,8 @@
   "scripts": {
     "prepare": "tsc",
     "release": "semantic-release",
-    "test_v2": "npm run clear_template && npm run clear_output_v2 && npm run prepare && npm run render_v2",
-    "test_v3": "npm run clear_template && npm run clear_output_v3 && npm run prepare && npm run render_v3",
+    "test_v2": "npm run clear_template && npm run clear_output_v2 && npm run prepare && npm run render_v2 && npm run cargo_check_v2",
+    "test_v3": "npm run clear_template && npm run clear_output_v3 && npm run prepare && npm run render_v3 && npm run cargo_check_v3",
     "validate_v2": "ag test/input/v2.yaml ./ -o test/output/v2 -p validate=true",
     "validate_v3": "ag test/input/v3.yaml ./ -o test/output/v3 -p validate=true",
     "render_v2": "ag test/input/v2.yaml ./ -o test/output/v2 -p render=true --debug",
@@ -32,6 +32,8 @@
     "clear_output": "rm -rf test/output",
     "clear_output_v2": "rm -rf test/output/v2",
     "clear_output_v3": "rm -rf test/output/v3",
+    "cargo_check_v2": "cd test/output/v2 && cargo check",
+    "cargo_check_v3": "cd test/output/v3 && cargo check",
     "lint": "echo \"No linter specified yet\"",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
   },
