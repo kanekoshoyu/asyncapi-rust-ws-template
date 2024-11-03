@@ -48,7 +48,7 @@ export async function renderModels(document: AsyncAPIDocumentInterface): Promise
     // TODO sort models by their name
     for (let model of models) {
         if (model.modelName == "" && model.result == "") {
-            console.log("found anonymous model, skipping");
+            console.log("found empty anonymous model, skipping");
             continue;
         }
         const modelFileName = `${FormatHelpers.toSnakeCase(model.modelName)}.rs`;
