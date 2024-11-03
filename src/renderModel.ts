@@ -15,11 +15,6 @@ use serde::{Deserialize, Serialize};
 ${modelResult}
 `;
     // brute force formatting, too lazy to get into the 
-    const found = modelResult.search("crate::");
-    if (found) {
-        console.log("\n\nORIGINAL");
-        console.log(modelResult);
-    }
     const stdDerive = "#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]";
     let result = content
         .replaceAll("#[derive(Clone, Debug, Deserialize, Serialize)]", stdDerive)
@@ -28,11 +23,6 @@ ${modelResult}
         .replaceAll("crate::", "")
         .replaceAll("Serde_json", "serde_json")
         .replaceAll("Number_", "Number");
-
-    if (found) {
-        console.log("\n\nRESULT");
-        console.log(result);
-    }
     return result;
 }
 
