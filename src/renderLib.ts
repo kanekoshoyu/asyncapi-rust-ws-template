@@ -3,8 +3,7 @@ import { AsyncAPIDocumentInterface } from '@asyncapi/parser';
 
 function contentModule(nameModule: string, description: string): String {
   return `/// ${description}
-mod ${nameModule};
-`
+pub mod ${nameModule};`
 }
 
 function content(): string {

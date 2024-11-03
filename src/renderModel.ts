@@ -8,12 +8,42 @@ const rustGenerator = new RustGenerator({
 });
 
 function content(modelResult: string): string {
-    return `
+    let content = `#[allow(unused)]
+use super::*;
 use serde::{Deserialize, Serialize};
 
 ${modelResult}
 `;
+    // brute force formatting, too lazy to get into the 
+    const found = modelResult.search("crate::");
+    if (found) {
+        console.log("\n\nORIGINAL");
+        console.log(modelResult);
+    }
+    const stdDerive = "#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]";
+    let result = content
+        .replaceAll("#[derive(Clone, Debug, Deserialize, Serialize)]", stdDerive)
+        .replaceAll("#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]", stdDerive)
+        .replaceAll("#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]", stdDerive)
+        .replaceAll("crate::", "")
+        .replaceAll("Serde_json", "serde_json")
+        .replaceAll("Number_", "NUMBER_");
+
+    if (found) {
+        console.log("\n\nRESULT");
+        console.log(result);
+    }
+    return result;
 }
+
+function contentPerModModel(model: OutputModel): string {
+    let modelName = FormatHelpers.toSnakeCase(model.modelName);
+    return `/// ${model.modelName}
+pub mod ${modelName};
+pub use ${modelName}::*;
+`
+}
+
 
 /**
  * Function description goes here.
@@ -33,15 +63,9 @@ export async function renderModels(document: AsyncAPIDocumentInterface): Promise
         }
         const modelFileName = `${FormatHelpers.toSnakeCase(model.modelName)}.rs`;
         files.push(new RenderFile(modelFileName, content(model.result)))
-        modStr += modModel(model);
+        modStr += contentPerModModel(model);
     }
 
     files.push(new RenderFile("mod.rs", modStr))
     return files;
-}
-
-function modModel(model: OutputModel): string {
-    return `/// ${model.modelName}
-mod ${FormatHelpers.toSnakeCase(model.modelName)};
-`
 }
