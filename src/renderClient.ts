@@ -4,46 +4,46 @@ import { RenderFile } from './renderFile';
 
 export function render_rust_ws_client_code(exchangeName: string, server: ServerInterface): string {
     return `
-use futures_util::{StreamExt, SinkExt};
+use futures_util::{SinkExt, StreamExt};
 use tokio::net::TcpStream;
-use tokio_tungstenite::{connect_async, tungstenite::protocol::Message, WebSocketStream};
-use tokio_tungstenite::tungstenite::Error as WsError;
-use serde::{Deserialize, Serialize};
-use std::time::Duration;
+use tokio_tungstenite::tungstenite::client::IntoClientRequest;
+use tokio_tungstenite::tungstenite::protocol::Message;
+use tokio_tungstenite::tungstenite::Result;
+use tokio_tungstenite::{connect_async, MaybeTlsStream, WebSocketStream};
 
-const URL: &str = "${server.url()}";
+const WS_URL: &str = "${server.url()}";
 
 #[derive(Debug)]
 pub struct ${FormatHelpers.toPascalCase(exchangeName)}${FormatHelpers.toPascalCase(server.id())}Client {
-    ws_stream: WebSocketStream<TcpStream>,
+    ws_stream: WebSocketStream<MaybeTlsStream<TcpStream>>,
 }
 
 impl ${FormatHelpers.toPascalCase(exchangeName)}${FormatHelpers.toPascalCase(server.id())}Client {
     /// connect to the ${exchangeName} websocket server
-    pub async fn new() -> Result<Self, WsError> {
-        let client = URL.into_client_request().map_err(|e| e.into())?;
+    pub async fn new() -> Result<Self> {
+        let client = WS_URL.into_client_request()?;
 
         let (ws_stream, _) = connect_async(client).await.map_err(|err| {
             eprintln!("Failed to connect: {:?}", err);
             err
         })?;
 
-        println!("Connected to {}", URL);
+        println!("Connected to {}", WS_URL);
         Ok(Self { ws_stream })
     }
 
     /// Send a message through the WebSocket connection.
-    pub async fn send_message(&mut self, msg: &str) -> Result<(), WsError> {
+    pub async fn send_message(&mut self, msg: &str) -> Result<()> {
         self.ws_stream.send(Message::Text(msg.to_string())).await
     }
 
     /// Receive a message from the WebSocket connection.
-    pub async fn receive_message(&mut self) -> Option<Result<Message, WsError>> {
+    pub async fn receive_message(&mut self) -> Option<Result<Message>> {
         self.ws_stream.next().await
     }
 
     /// Close the WebSocket connection.
-    pub async fn close(&mut self) -> Result<(), WsError> {
+    pub async fn close(&mut self) -> Result<()> {
         self.ws_stream.close(None).await
     }
 }
