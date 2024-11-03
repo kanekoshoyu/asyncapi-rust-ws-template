@@ -1,6 +1,16 @@
 # [asyncapi-rust-websocket-template](./README.md) changelog
 All notable changes to the template will be documented in this file.
 
+## [0.2.0] - 2024-11-03
+### Added
+- standardized trait derive as "#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]"
+- make models globally accessible from eachother
+- cargo check pass
+- linting pass
+- vs code setting for rust analyzer to locate test projects
+### Modified
+- use ES2021 for replaceAll()
+
 ## [0.1.5] - 2024-10-28
 ### Added
 - hooks (before and after)
@@ -9,7 +19,7 @@ All notable changes to the template will be documented in this file.
 - output sub-directory generation
 ### Removed
 - d.ts files that went into template file
-- 
+
 ## [0.1.4] - 2024-10-28
 ### Added
 - support both JS & TS
