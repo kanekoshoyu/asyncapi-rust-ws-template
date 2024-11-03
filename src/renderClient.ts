@@ -1,8 +1,30 @@
-import { ServersInterface, ServerInterface } from '@asyncapi/parser';
+import { ServersInterface, ServerInterface, ChannelsInterface, OperationInterface, ChannelInterface } from '@asyncapi/parser';
 import { FormatHelpers } from '@asyncapi/modelina';
 import { RenderFile } from './renderFile';
 
-export function render_rust_ws_client_code(exchangeName: string, server: ServerInterface): string {
+/** client function from operations */
+export function contentClientFunction(channel: ChannelInterface): string {
+    let params = channel.parameters();
+    for (const param of params) {
+        console.log(`param: ${param}`)
+    }
+    let contentLogic = 'todo!();';
+    let returnValue = '';
+    return `    /// ${channel.description()}
+    async fn ${FormatHelpers.toSnakeCase(channel.id())}(&self) ${returnValue}{
+        ${contentLogic}
+    } 
+`;
+}
+
+/** client code from server */
+export function contentClient(exchangeName: string, server: ServerInterface): string {
+
+    let contentClientFunctions = '';
+    for (const channel of server.channels()) {
+        let fn = contentClientFunction(channel);
+        contentClientFunctions = contentClientFunctions.concat(fn);
+    }
     return `
 use futures_util::{SinkExt, StreamExt};
 use tokio::net::TcpStream;
@@ -46,22 +68,24 @@ impl ${FormatHelpers.toPascalCase(exchangeName)}${FormatHelpers.toPascalCase(ser
     pub async fn close(&mut self) -> Result<()> {
         self.ws_stream.close(None).await
     }
+
+${contentClientFunctions}
 }
 `
 
 }
 
 
-function mod_client(server: ServerInterface): string {
+function contentModClientItem(server: ServerInterface): string {
     return `/// ${server.description()}
 mod ${FormatHelpers.toSnakeCase(server.id())};
 `
 }
 
-export function render_rust_ws_client_mod(servers: ServersInterface): string {
+export function contentModClient(servers: ServersInterface): string {
     let result = '';
     for (const server of servers) {
-        result += mod_client(server);
+        result += contentModClientItem(server);
     }
     return result;
 }
@@ -70,11 +94,15 @@ export function render_rust_ws_client_mod(servers: ServersInterface): string {
 export function renderClientDir(exchangeName: string, servers: & ServersInterface): RenderFile[] {
     let files: RenderFile[] = [];
 
-    for (let server of servers) {
+    // every server
+    for (const server of servers) {
         const serverName = FormatHelpers.toSnakeCase(server.id());
-        files = files.concat(new RenderFile(`src/client/${serverName}.rs`, render_rust_ws_client_code(exchangeName, server)));
+
+        // operations within conentClient
+        files = files.concat(new RenderFile(`src/client/${serverName}.rs`, contentClient(exchangeName, server)));
     }
-    files = files.concat(new RenderFile(`src/client/mod.rs`, render_rust_ws_client_mod(servers)));
+
+    files = files.concat(new RenderFile(`src/client/mod.rs`, contentModClient(servers)));
 
     return files;
 }

@@ -2,7 +2,7 @@ import { RustGenerator, RUST_DEFAULT_PRESET, FormatHelpers, OutputModel } from '
 import { AsyncAPIDocumentInterface } from '@asyncapi/parser';
 import { RenderFile } from './renderFile';
 
-// Initialize the Rust generator with desired options
+/** modelina rust model generator */
 const rustGenerator = new RustGenerator({
     presets: [RUST_DEFAULT_PRESET],
 });
@@ -35,16 +35,12 @@ pub use ${modelName}::*;
 }
 
 
-/**
- * Function description goes here.
- */
+/** render models */
 export async function renderModels(document: AsyncAPIDocumentInterface): Promise<RenderFile[]> {
     const models = await rustGenerator.generate(document);
     let files: RenderFile[] = [];
 
     let modStr = '';
-    let countUntitled = 0;
-
     // TODO sort models by their name
     for (let model of models) {
         if (model.modelName == "" && model.result == "") {
