@@ -27,7 +27,7 @@ ${modelResult}
         .replaceAll("#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]", stdDerive)
         .replaceAll("crate::", "")
         .replaceAll("Serde_json", "serde_json")
-        .replaceAll("Number_", "NUMBER_");
+        .replaceAll("Number_", "Number");
 
     if (found) {
         console.log("\n\nRESULT");
