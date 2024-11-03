@@ -1,8 +1,8 @@
 
 import { AsyncAPIDocumentInterface } from '@asyncapi/parser';
-import { validateAsyncApi } from './validate_essential';
+import { validateAsyncApi } from './validateEssential';
 import { renderRustWsClientFromAsyncApi } from './render';
-// import { getAsyncApiYamlFiles } from './remote_file';
+// import { getAsyncApiYamlFiles } from './fetchRemoteConfig';
 
 interface TemplateParams {
   package: string;

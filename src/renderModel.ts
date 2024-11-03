@@ -7,6 +7,14 @@ const rustGenerator = new RustGenerator({
     presets: [RUST_DEFAULT_PRESET],
 });
 
+function content(modelResult: string): string {
+    return `
+use serde::{Deserialize, Serialize};
+
+${modelResult}
+`;
+}
+
 /**
  * Function description goes here.
  */
@@ -15,11 +23,19 @@ export async function renderModels(document: AsyncAPIDocumentInterface): Promise
     let files: RenderFile[] = [];
 
     let modStr = '';
+    let countUntitled = 0;
+
+    // TODO sort models by their name
     for (let model of models) {
+        if (model.modelName == "" && model.result == "") {
+            console.log("found anonymous model, skipping");
+            continue;
+        }
         const modelFileName = `${FormatHelpers.toSnakeCase(model.modelName)}.rs`;
-        files.push(new RenderFile(modelFileName, model.result))
+        files.push(new RenderFile(modelFileName, content(model.result)))
         modStr += modModel(model);
     }
+
     files.push(new RenderFile("mod.rs", modStr))
     return files;
 }

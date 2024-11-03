@@ -21,9 +21,9 @@ pub struct ${FormatHelpers.toPascalCase(exchangeName)}${FormatHelpers.toPascalCa
 impl ${FormatHelpers.toPascalCase(exchangeName)}${FormatHelpers.toPascalCase(server.id())}Client {
     /// connect to the ${exchangeName} websocket server
     pub async fn new() -> Result<Self, WsError> {
-        let url = url::Url::parse(URL).expect("Invalid URL");
+        let client = URL.into_client_request().map_err(|e| e.into())?;
 
-        let (ws_stream, _) = connect_async(URL).await.map_err(|err| {
+        let (ws_stream, _) = connect_async(client).await.map_err(|err| {
             eprintln!("Failed to connect: {:?}", err);
             err
         })?;
@@ -71,7 +71,7 @@ export function renderClientDir(exchangeName: string, servers: & ServersInterfac
     let files: RenderFile[] = [];
 
     for (let server of servers) {
-        let serverName = FormatHelpers.toSnakeCase(server.id());
+        const serverName = FormatHelpers.toSnakeCase(server.id());
         files = files.concat(new RenderFile(`src/client/${serverName}.rs`, render_rust_ws_client_code(exchangeName, server)));
     }
     files = files.concat(new RenderFile(`src/client/mod.rs`, render_rust_ws_client_mod(servers)));
