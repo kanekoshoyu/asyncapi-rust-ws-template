@@ -1,10 +1,12 @@
 # generated code
-/node_modules
-# transpiled directory, do not edit
-/template
-/__transpiled
+node_modules
+# transpiled javascript directory, do not edit manually
+template
+# transpile metadata
+__transpiled
 # output directory
-/test/output/
+test/output
 # package directory
 .DS_Store
+# package output
 *.tgz

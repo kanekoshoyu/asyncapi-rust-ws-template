@@ -8,21 +8,27 @@
 [![discord](https://img.shields.io/discord/1153997271294283827)](https://discord.gg/q3j5MYdwnm)
 ## design
 - renderer: react rather than nunjucks, for its versatility. for details, click [here](https://www.asyncapi.com/docs/tools/generator/file-templates)
-- client (server)
+- generated code are derived as below 
+  - client (server)
   - client function (channel)
-    - logic (operation)
-      - struct (model)
+  - client function logic (operation)
+  - client function struct (model/schema)
+- logic cases:
+  - user send data
+    - single [publish(v2) or receive(v3)]
+    - optional reply
 
 ## contents
-| name                             | description                                                                                                   |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| [src](./src/)                    | TypeScript source code, transpiles into `template` directory that                                             |
-| [src/index.ts](./src/index.ts)   | transpiles to main template entry `template/index.js`, exposing the function for `asyncapi generator` command |
-| [test/input](./test/)            | local sample AsyncAPI document for testing purpose                                                            |
-| [test/output](./test/)           | local test output directory                                                                                   |
-| [package.json](./package.json)   | NPM package definition                                                                                        |
-| [tsconfig.json](./tsconfig.json) | TypeScript transpile definition                                                                               |
-| [CHANGELOG](./CHANGELOG.md)      | change log                                                                                                    |
+| name                            | description                                                                                                   |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| [src/](/src/)                   | TypeScript source code, transpiles into `template` directory that                                             |
+| [src/index.ts](/src/index.ts)   | transpiles to main template entry `template/index.js`, exposing the function for `asyncapi generator` command |
+| [hooks/](/hooks/after.js)       | transpiles to main template entry `template/index.js`, exposing the function for `asyncapi generator` command |
+| [test/input](/test/)            | local test input, AsyncAPI document                                                                           |
+| [test/output](/test/)           | local test output, rust client crate (git-ignore)                                                             |
+| [package.json](/package.json)   | NPM package definition, defines template configs                                                              |
+| [tsconfig.json](/tsconfig.json) | TypeScript transpile definition, defined transcribed datas                                                    |
+| [CHANGELOG](/CHANGELOG.md)      | change log                                                                                                    |
 
 ## command
 npm build, local YAML
@@ -96,3 +102,4 @@ I am not a TS expert, so I would love to have an expert to accelarate developmen
 - [guilder](https://github.com/kanekoshoyu/guilder) - Unopinionated Cross-Exchange Crypto Trading Library
 - [exchange-collection](https://github.com/kanekoshoyu/exchange-collection) - Crypto Exchange OpenAPI(REST) / AsyncAPI(WS) and Clients
 - [kucoin-arbitrage](https://github.com/kanekoshoyu/kucoin_arbitrage) - KuCoin Cyclic Arbitrage, in Tokio Rust (legacy)
+
