@@ -14,7 +14,8 @@
   - client function logic (operation)
   - client function struct (model/schema)
 - logic cases:
-  - user transactionally send data to server
+  - case 0: todo
+  - case 1: user transactionally send data to server
     - single [publish(v2) or receive(v3)]
     - no [subscribe(v2) or send(v3)]
     - optional single reply
