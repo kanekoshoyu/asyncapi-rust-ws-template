@@ -2,9 +2,13 @@
 All notable changes to the template will be documented in this file.
 
 
+## [0.2.2] - 2024-11-11
+### Added
+- hook into into npm package, can generate code now with `asyncapi generate fromTemplate` command
+
 ## [0.2.1] - 2024-11-11
 ### Added
-- case diider
+- case divider
 
 ## [0.2.0] - 2024-11-03
 ### Added

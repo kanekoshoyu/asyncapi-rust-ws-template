@@ -36,15 +36,11 @@
 ## how to run terminal command
 npm build, local YAML
 ```
-ag sample/a.yaml "asyncapi-rust-ws-template" -o output -p validate=true -p render=true
-```
-local build, remote YAML
-```
-ag https://raw.githubusercontent.com/kanekoshoyu/exchange-collection/main/asset/binance_ws_asyncapi.yaml ./ -o output  -p validate=true -p render=true
+asyncapi generate fromTemplate test/input/v3.yaml asyncapi-rust-ws-template -o  ~/Desktop/output
 ```
 local build, local YAML
 ```
-ag sample/a.yaml ./ -o output -p validate=true -p render=true
+ag test/input/v3.yaml ./ -o ~/Desktop/otuput-p validate=true -p render=true
 ```
 
 ## template input (AsyncAPI)
@@ -100,6 +96,9 @@ changelog: please check [here](./CHANGELOG.md)
 #### TypeScript AsyncAPI Template Developer
 I am not a TS expert, so I would love to have an expert to accelarate development for websocket genrator in the following output languages:
 - `typescript`, `go`, `python`  
+
+## changelog
+[here](./CHANGELOG.md)
 
 ## see also
 - [guilder](https://github.com/kanekoshoyu/guilder) - Unopinionated Cross-Exchange Crypto Trading Library
