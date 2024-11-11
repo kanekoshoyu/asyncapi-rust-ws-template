@@ -1,6 +1,11 @@
 # [asyncapi-rust-websocket-template](./README.md) changelog
 All notable changes to the template will be documented in this file.
 
+
+## [0.2.1] - 2024-11-11
+### Added
+- case diider
+
 ## [0.2.0] - 2024-11-03
 ### Added
 - standardized trait derive as "#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]"
