@@ -1,6 +1,6 @@
 {
   "name": "asyncapi-rust-ws-template",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Rust WebSocket client template for AsyncAPI Generator",
   "author": "Sho Kaneko <kanekoshoyu@gmail.com>",
   "license": "MIT",
@@ -38,7 +38,8 @@
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
   },
   "files": [
-    "template"
+    "template",
+    "hooks"
   ],
   "dependencies": {
     "@asyncapi/generator-filters": "2.1.0",
@@ -46,6 +47,7 @@
     "@asyncapi/generator-react-sdk": "1.1.2",
     "@asyncapi/modelina": "3.7.0",
     "node-fetch": "3.3.2",
+    "punycode2": "^1.0.1",
     "react": "^18.3.1"
   },
   "generator": {
