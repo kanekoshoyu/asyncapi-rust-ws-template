@@ -1,38 +1,81 @@
-import { ChannelInterface } from '@asyncapi/parser';
+import { ChannelInterface, SchemaInterface } from '@asyncapi/parser';
 import { FormatHelpers } from '@asyncapi/modelina';
 
 /** client function for case 0, undefined */
-export function contentClientFunctionTodo(channel: ChannelInterface): string {
+export function contentClientFunctionUnmapped(channel: ChannelInterface): string {
     return `
 /// ${channel.description()}
-async fn ${FormatHelpers.toSnakeCase(channel.id())}(&self) {
-    todo!("uncovered case, check the logic and implement this case");
+pub async fn ${FormatHelpers.toSnakeCase(channel.id())}(&self) {
+    todo!("unmapped case, check the logic and implement this case");
 } 
 `;
 }
 
-/** client function logics for case 1, undefined */
-export function contentClientFunctionTransactionReceive(channel: ChannelInterface): string {
-    const rx = channel.operations().filterByReceive()[0];
-    const messages = rx.messages();
-    // input
-    let input = rx.reply();
-    // output 
-    let output = 'None';
-    // logic
-    let contentLogic = 'todo!();';
-
+/** client function for 1 pub, 1 sub */
+export function contentClientFunctionPubSub(channel: ChannelInterface): string {
+    // pub
+    const pubMessage = channel.operations().filterByReceive()[0].messages()[0];
+    const pubPayload = pubMessage.payload();
+    let pubPayloadId = "undefined";
+    if (pubPayload) {
+        pubPayloadId = FormatHelpers.toPascalCase(pubPayload.id());
+    }
+    // sub
+    const subMessage = channel.operations().filterBySend()[0].messages()[0];
+    const subPayload = subMessage.payload();
+    let subPayloadId = "undefined";
+    if (subPayload) {
+        subPayloadId = FormatHelpers.toPascalCase(subPayload.id());
+    }
+    // result
     return `
 /// ${channel.description()}
-/// input: ${input}
-/// output: ${output}
-async fn ${FormatHelpers.toSnakeCase(channel.id())}(&self) ${output} {
-    ${contentLogic}
+/// publish: ${pubPayloadId}
+/// subscribe: ${subPayloadId}
+pub async fn ${FormatHelpers.toSnakeCase(channel.id())}(&mut self, input: &${pubPayloadId}) -> Result<${subPayloadId}> {
+    let err_parse = Error::Protocol(ProtocolError::InvalidCloseSequence);
+    // pub
+    let json_str = serde_json::to_string(input).map_err(|_| err_parse)?;
+    self.send_message(&json_str).await?;
+    // sub
+    match self.receive_message().await {
+        Some(Ok(Message::Text(json_str))) => {
+            let err_parse = Error::Protocol(ProtocolError::InvalidCloseSequence);
+            serde_json::from_str(&json_str).map_err(|_| err_parse)
+        }
+        _ => todo!(),
+    }
 } 
 `;
 }
 
-/** client function logics that is generated from channel's operations */
+
+/** client function for 0 pub, 1 sub */
+export function contentClientFunctionSub(channel: ChannelInterface): string {
+    // sub
+    const subMessage = channel.operations().filterBySend()[0].messages()[0];
+    const subPayload = subMessage.payload();
+    let subPayloadId = "undefined";
+    if (subPayload) {
+        subPayloadId = FormatHelpers.toPascalCase(subPayload.id());
+    }
+// result
+    return `
+/// ${channel.description()}
+/// subscribe: ${subPayloadId}
+pub async fn ${FormatHelpers.toSnakeCase(channel.id())}(&mut self) -> Result<${subPayloadId}> {
+    match self.receive_message().await {
+        Some(Ok(Message::Text(json_str))) => {
+            let err_parse = Error::Protocol(ProtocolError::InvalidCloseSequence);
+            serde_json::from_str(&json_str).map_err(|_| err_parse)
+        }
+        _ => todo!(),
+    }
+} 
+`;
+}
+
+/** client function generated according to channel's operation patterns */
 export function contentClientFunction(channel: ChannelInterface): string {
     const params = channel.parameters();
     for (const param of params) {
@@ -42,9 +85,15 @@ export function contentClientFunction(channel: ChannelInterface): string {
     // select function logic accordingly
     const rxOperations = channel.operations().filterByReceive();
     const txOperations = channel.operations().filterBySend();
-    if (rxOperations.length == 1 && txOperations.length == 0) {
-        return contentClientFunctionTransactionReceive(channel);
+    const rxCount = rxOperations.length;
+    const txCount = txOperations.length;
+
+
+    if (rxCount == 0 && txCount == 1) {
+        return contentClientFunctionSub(channel);
+    } else if (rxCount == 1 && txCount == 1) {
+        return contentClientFunctionPubSub(channel);
     } else {
-        return contentClientFunctionTodo(channel);
+        return contentClientFunctionUnmapped(channel);
     }
 }

@@ -97,8 +97,11 @@ changelog: please check [here](./CHANGELOG.md)
 I am not a TS expert, so I would love to have an expert to accelarate development for websocket genrator in the following output languages:
 - `typescript`, `go`, `python`  
 
-## changelog
-[here](./CHANGELOG.md)
+## notes
+- changelog [here](./CHANGELOG.md)
+- v2 and v3 terminology are flipped. 
+  - v2 calls operations ["publish", "subscribe"] from client's perspective
+  - v3 calls operations ["receive", "send"] from server's perspective
 
 ## see also
 - [guilder](https://github.com/kanekoshoyu/guilder) - Unopinionated Cross-Exchange Crypto Trading Library

@@ -15,12 +15,14 @@ export function contentClient(exchangeName: string, server: ServerInterface): st
     return `
 use futures_util::{SinkExt, StreamExt};
 use tokio::net::TcpStream;
-use tokio_tungstenite::tungstenite::client::IntoClientRequest;
-use tokio_tungstenite::tungstenite::protocol::Message;
-use tokio_tungstenite::tungstenite::Result;
+use crate::model::*;
+use tokio_tungstenite::tungstenite as tung;
 use tokio_tungstenite::{connect_async, MaybeTlsStream, WebSocketStream};
+use tung::{Error, Result};
+use tung::client::IntoClientRequest;
+use tung::protocol::Message;
+use tung::error::ProtocolError;
 
-const WS_URL: &str = "${server.url()}";
 
 #[derive(Debug)]
 pub struct ${FormatHelpers.toPascalCase(exchangeName)}${FormatHelpers.toPascalCase(server.id())}Client {
@@ -30,6 +32,7 @@ pub struct ${FormatHelpers.toPascalCase(exchangeName)}${FormatHelpers.toPascalCa
 impl ${FormatHelpers.toPascalCase(exchangeName)}${FormatHelpers.toPascalCase(server.id())}Client {
     /// connect to the ${exchangeName} websocket server
     pub async fn new() -> Result<Self> {
+        const WS_URL: &str = "${server.url()}";
         let client = WS_URL.into_client_request()?;
 
         let (ws_stream, _) = connect_async(client).await.map_err(|err| {
@@ -41,19 +44,21 @@ impl ${FormatHelpers.toPascalCase(exchangeName)}${FormatHelpers.toPascalCase(ser
         Ok(Self { ws_stream })
     }
 
+    /// Close the WebSocket connection.
+    pub async fn close(&mut self) -> Result<()> {
+        self.ws_stream.close(None).await
+    }
+
     /// Send a message through the WebSocket connection.
-    pub async fn send_message(&mut self, msg: &str) -> Result<()> {
+    #[allow(unused)]
+    async fn send_message(&mut self, msg: &str) -> Result<()> {
         self.ws_stream.send(Message::Text(msg.to_string())).await
     }
 
     /// Receive a message from the WebSocket connection.
-    pub async fn receive_message(&mut self) -> Option<Result<Message>> {
+    #[allow(unused)]
+    async fn receive_message(&mut self) -> Option<Result<Message>> {
         self.ws_stream.next().await
-    }
-
-    /// Close the WebSocket connection.
-    pub async fn close(&mut self) -> Result<()> {
-        self.ws_stream.close(None).await
     }
 ${prependTabToLines(contentClientFunctions)}
 }
@@ -63,7 +68,7 @@ ${prependTabToLines(contentClientFunctions)}
 
 function contentModClientItem(server: ServerInterface): string {
     return `/// ${server.description()}
-mod ${FormatHelpers.toSnakeCase(server.id())};
+pub mod ${FormatHelpers.toSnakeCase(server.id())};
 `
 }
 
