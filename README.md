@@ -86,9 +86,9 @@ changelog: please check [here](./CHANGELOG.md)
   - [x] study nunjucks vs react (decided to use react)
 - [ ] code generation
   - [x] define code structure
-  - [ ] websocket client function from `operation`
-  - [ ] pubsub function from `channel`
-  - [ ] fix modelina referencing other model as `crate::*`;
+  - [x] websocket client function from `operation`
+  - [x] pubsub function from `channel`
+  - [x] fix modelina referencing other model as `crate::*`;
 - [ ] code testing
   - [ ] unit test
 

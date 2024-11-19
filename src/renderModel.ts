@@ -1,4 +1,4 @@
-import { RustGenerator, RUST_DEFAULT_PRESET, FormatHelpers, OutputModel } from '@asyncapi/modelina'
+import { RustGenerator, RUST_DEFAULT_PRESET, FormatHelpers, OutputModel, MetaModel, ConstrainedMetaModel } from '@asyncapi/modelina'
 import { AsyncAPIDocumentInterface } from '@asyncapi/parser';
 import { RenderFile } from './renderFile';
 
@@ -7,31 +7,57 @@ const rustGenerator = new RustGenerator({
 	presets: [RUST_DEFAULT_PRESET],
 });
 
-function content(modelResult: string): string {
-	const content = `#[allow(unused)]
+function contentModel(modelResult: string): string {
+	const stdDerive = "#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]";
+
+	return `
+#[allow(unused)]
 use super::*;
 use serde::{Deserialize, Serialize};
 
 ${modelResult}
-`;
-	// brute force formatting, too lazy to get into the 
-	const stdDerive = "#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]";
-	const result = content
+`
+		.trimStart()
 		.replaceAll("#[derive(Clone, Debug, Deserialize, Serialize)]", stdDerive)
 		.replaceAll("#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]", stdDerive)
 		.replaceAll("#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]", stdDerive)
 		.replaceAll("crate::", "")
 		.replaceAll("Serde_json", "serde_json")
-		.replaceAll("Number_", "Number");
-	return result;
+		.replaceAll("Number_", "Number")
+		.replaceAll("//", "///");
+}
+
+function contentMeta(meta: ConstrainedMetaModel): string {
+	return `
+#[allow(unused)]
+use super::*;
+use serde::{Deserialize, Serialize};
+
+/// ${meta.name}
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+pub struct ${meta.name}(${meta.type});
+`
+		.trimStart()
+		.replaceAll("crate::", "")
+		.replaceAll("Std", "std");
 }
 
 function contentPerModModel(model: OutputModel): string {
 	const modelName = FormatHelpers.toSnakeCase(model.modelName);
-	return `/// ${model.modelName}
+	return `
+/// ${modelName}
 pub mod ${modelName};
 pub use ${modelName}::*;
-`
+`.trimStart()
+}
+
+function contentPerModMeta(model: MetaModel): string {
+	const modelName = FormatHelpers.toSnakeCase(model.name);
+	return `
+/// ${modelName}
+pub mod ${modelName};
+pub use ${modelName}::*;
+`.trimStart()
 }
 
 
@@ -43,13 +69,19 @@ export async function renderModels(document: AsyncAPIDocumentInterface): Promise
 	let modStr = '';
 	// TODO sort models by their name
 	for (const model of models) {
+
 		if (model.modelName == "" && model.result == "") {
-			console.log("found empty anonymous model, skipping");
-			continue;
+			// meta model
+			const metamodel = model.model;
+			const modelFileName = `${FormatHelpers.toSnakeCase(metamodel.name)}.rs`;
+			files.push(new RenderFile(modelFileName, contentMeta(metamodel)))
+			modStr += contentPerModMeta(metamodel);
+		} else {
+			// model
+			const modelFileName = `${FormatHelpers.toSnakeCase(model.modelName)}.rs`;
+			files.push(new RenderFile(modelFileName, contentModel(model.result)))
+			modStr += contentPerModModel(model);
 		}
-		const modelFileName = `${FormatHelpers.toSnakeCase(model.modelName)}.rs`;
-		files.push(new RenderFile(modelFileName, content(model.result)))
-		modStr += contentPerModModel(model);
 	}
 
 	files.push(new RenderFile("mod.rs", modStr))

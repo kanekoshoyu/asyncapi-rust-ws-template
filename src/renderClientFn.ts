@@ -107,13 +107,13 @@ pub async fn ${channelId}(&mut self) -> Result<${subPayloadId}> {
 export function contentClientFunctionSubDocTest(channel: ChannelInterface): string {
 	const channelId = FormatHelpers.toSnakeCase(channel.id());
 	return `
-		#[tokio::main]
-		async fn main() {
-			let mut client = Client::new().await.expect("failed to setup client");
-			let result = client.${channelId}().await;
-			let status = result.is_ok();
-			client.close().await;
-			assert!(status);
-		}
-	`.trim().replaceAll("\t\t", "");
+#[tokio::main]
+async fn main() {
+	let mut client = Client::new().await.expect("failed to setup client");
+	let result = client.${channelId}().await;
+	let status = result.is_ok();
+	client.close().await;
+	assert!(status);
+}
+`.trim().replaceAll("\t", "    ");
 }
