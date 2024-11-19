@@ -1,7 +1,7 @@
 # [asyncapi-rust-websocket-template](./README.md) changelog
 All notable changes to the template will be documented in this file.
 
-## [0.2.3] - 2024-11-11
+## [0.2.3] - 2024-11-19
 ### Added
 - complete mapping of sub and pub/sub cases in client function
 - generate meta models like AdditionalProperties as a struct wrapper
