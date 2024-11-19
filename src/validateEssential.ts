@@ -2,158 +2,158 @@ import { AsyncAPIDocumentInterface, ChannelInterface, ChannelsInterface, Compone
 import { writeFile } from 'fs';
 
 export function write_json(data: string, filename: string) {
-  writeFile(filename, data, 'utf8', (err) => {
-    if (err) {
-      console.error('Error writing to the file:', err);
-      return;
-    }
-    console.log('JSON file has been written successfully!');
-  });
+	writeFile(filename, data, 'utf8', (err) => {
+		if (err) {
+			console.error('Error writing to the file:', err);
+			return;
+		}
+		console.log('JSON file has been written successfully!');
+	});
 }
 
 
 export function validateAsyncApi(item: AsyncAPIDocumentInterface): string[] {
-  let missing: string[] = [];
-  if (item.info == undefined) {
-    missing.push('info');
-  } else {
-    missing = missing.concat(validateInfo(item.info()));
-  }
+	let missing: string[] = [];
+	if (item.info == undefined) {
+		missing.push('info');
+	} else {
+		missing = missing.concat(validateInfo(item.info()));
+	}
 
-  if (item.servers == undefined) {
-    missing.push('servers')
-  } else {
-    missing = missing.concat(validateServers(item.servers()))
-  }
+	if (item.servers == undefined) {
+		missing.push('servers')
+	} else {
+		missing = missing.concat(validateServers(item.servers()))
+	}
 
-  if (item.channels == undefined) {
-    missing.push('channels')
-  } else {
-    missing = missing.concat(validateChannels(item.channels()))
-  }
+	if (item.channels == undefined) {
+		missing.push('channels')
+	} else {
+		missing = missing.concat(validateChannels(item.channels()))
+	}
 
-  if (item.components == undefined) {
-    missing.push('components')
-  } else {
-    missing = missing.concat(validateComponents(item.components()))
-  }
+	if (item.components == undefined) {
+		missing.push('components')
+	} else {
+		missing = missing.concat(validateComponents(item.components()))
+	}
 
-  if (item.operations == undefined) {
-    missing.push('operations')
-  }
+	if (item.operations == undefined) {
+		missing.push('operations')
+	}
 
-  if (item.operations == undefined) {
-    missing.push('operations')
-  }
+	if (item.operations == undefined) {
+		missing.push('operations')
+	}
 
-  return missing.map(i => 'root.' + i);
+	return missing.map(i => 'root.' + i);
 }
 
 function validateInfo(item: & InfoInterface): string[] {
-  let missing: string[] = [];
+	const missing: string[] = [];
 
-  let title = 'title';
-  if (item.title == undefined) {
-    missing.push(title)
-  }
+	const title = 'title';
+	if (item.title == undefined) {
+		missing.push(title)
+	}
 
-  let version = 'version';
-  if (item.version == undefined) {
-    missing.push(version)
-  }
+	const version = 'version';
+	if (item.version == undefined) {
+		missing.push(version)
+	}
 
-  return missing.map(i => 'info' + i);;
+	return missing.map(i => 'info' + i);;
 }
 
 
 function validateServers(items: & ServersInterface): string[] {
-  let missing: string[] = [];
+	let missing: string[] = [];
 
-  for (let item of items) {
-    missing = missing.concat(validateServer(item))
-  }
+	for (const item of items) {
+		missing = missing.concat(validateServer(item))
+	}
 
-  return missing.map(i => 'servers.' + i);
+	return missing.map(i => 'servers.' + i);
 }
 
 function validateServer(item: & ServerInterface): string[] {
-  let missing: string[] = [];
+	let missing: string[] = [];
 
-  if (item.url == undefined) {
-    missing.push('url')
-  }
-  if (item.protocol == undefined) {
-    missing.push('protocol')
-  }
-  if (item.variables != undefined) {
-    missing = missing.concat(validateServerVariables(item.variables()))
-  }
+	if (item.url == undefined) {
+		missing.push('url')
+	}
+	if (item.protocol == undefined) {
+		missing.push('protocol')
+	}
+	if (item.variables != undefined) {
+		missing = missing.concat(validateServerVariables(item.variables()))
+	}
 
-  return missing.map(i => 'server.' + i);
+	return missing.map(i => 'server.' + i);
 }
 
 function validateServerVariables(variables: & ServerVariablesInterface): string[] {
-  let missing: string[] = [];
+	let missing: string[] = [];
 
-  for (let variable of variables) {
-    missing = missing.concat(validateServerVariable(variable))
-  }
+	for (const variable of variables) {
+		missing = missing.concat(validateServerVariable(variable))
+	}
 
-  return missing.map(i => 'variables.' + i);
+	return missing.map(i => 'variables.' + i);
 }
 
 
 function validateServerVariable(item: & ServerVariableInterface): string[] {
-  let missing: string[] = [];
+	const missing: string[] = [];
 
-  if (item.defaultValue == undefined) {
-    missing.push(`item missing default value`);
-  }
+	if (item.defaultValue == undefined) {
+		missing.push(`item missing default value`);
+	}
 
-  return missing.map(i => 'variable.' + i);;
+	return missing.map(i => 'variable.' + i);;
 }
 
 function validateChannels(channels: & ChannelsInterface): string[] {
-  let missing: string[] = [];
+	let missing: string[] = [];
 
-  for (let channel of channels) {
-    missing = missing.concat(validateChannel(channel))
-  }
+	for (const channel of channels) {
+		missing = missing.concat(validateChannel(channel))
+	}
 
-  return missing.map(i => 'channels.' + i);
+	return missing.map(i => 'channels.' + i);
 }
 
 function validateChannel(item: & ChannelInterface): string[] {
-  let missing: string[] = [];
+	let missing: string[] = [];
 
-  if (item.messages == undefined) {
-    missing.push(`message`)
-  } else {
-    missing = missing.concat(validateMessages(item.messages()))
-  }
+	if (item.messages == undefined) {
+		missing.push(`message`)
+	} else {
+		missing = missing.concat(validateMessages(item.messages()))
+	}
 
-  return missing.map(i => "channel." + i);
+	return missing.map(i => "channel." + i);
 }
 
 function validateMessages(items: & MessagesInterface): string[] {
-  let missing: string[] = [];
+	const missing: string[] = [];
 
-  if (items.length == 0) {
-    missing.push('missing messages');
-  }
-  return missing.map(i => 'messages.' + i);
+	if (items.length == 0) {
+		missing.push('missing messages');
+	}
+	return missing.map(i => 'messages.' + i);
 }
 
 function validateComponents(item: & ComponentsInterface): string[] {
-  let missing: string[] = [];
+	const missing: string[] = [];
 
-  if (Object.keys(item.messages()).length == 0) {
-    missing.push('message');
-  }
+	if (Object.keys(item.messages()).length == 0) {
+		missing.push('message');
+	}
 
-  if (Object.keys(item.schemas()).length == 0) {
-    missing.push('schema');
-  }
+	if (Object.keys(item.schemas()).length == 0) {
+		missing.push('schema');
+	}
 
-  return missing.map(i => 'components.' + i);;
+	return missing.map(i => 'components.' + i);;
 }

@@ -1,6 +1,15 @@
 {
-    "rust-analyzer.linkedProjects": [
-        "test/output/v2/Cargo.toml",
-        "test/output/v3/Cargo.toml"
-    ]
+	"rust-analyzer.linkedProjects": [
+		"test/output/v2/Cargo.toml",
+		"test/output/v3/Cargo.toml"
+	],
+	"editor.insertSpaces": false,
+	"editor.tabSize": 4,
+	"editor.indentSize": "tabSize",
+	"eslint.enable": true,
+	"eslint.validate": [
+		"typescript",
+		"javascript",
+		"json"
+	],
 }

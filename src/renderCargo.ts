@@ -2,7 +2,7 @@ import { RenderFile } from './renderFile';
 import { InfoInterface } from '@asyncapi/parser';
 
 function content(exchangeName: string, info: InfoInterface): string {
-    return `
+	return `
 [package]
 name = "exchange-collection-ws-${exchangeName}"
 version = "${info.version()}"
@@ -22,5 +22,5 @@ serde_json = "1.0.132"
 }
 
 export function renderCargo(exchangeName: string, info: InfoInterface): RenderFile {
-    return new RenderFile("Cargo.toml", content(exchangeName, info));
+	return new RenderFile("Cargo.toml", content(exchangeName, info));
 }

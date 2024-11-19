@@ -1,4 +1,4 @@
 "use strict";
 module.exports = {
-    'generate:after': generator => console.log('generation complete')
+	'generate:after': generator => console.log('generation complete')
 };
