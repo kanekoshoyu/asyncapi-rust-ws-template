@@ -37,6 +37,7 @@ pub async fn ${FormatHelpers.toSnakeCase(channel.id())}(&self) {
 
 /** client function for 1 pub, 1 sub */
 export function contentClientFunctionPubSub(channel: ChannelInterface): string {
+	const channelId = FormatHelpers.toSnakeCase(channel.id());
 	// pub
 	const pubMessage = channel.operations().filterByReceive()[0].messages()[0];
 	const pubPayload = pubMessage.payload();
@@ -56,19 +57,15 @@ export function contentClientFunctionPubSub(channel: ChannelInterface): string {
 /// ${channel.description()}  
 /// publish: ${pubPayloadId}  
 /// subscribe: ${subPayloadId}  
-pub async fn ${FormatHelpers.toSnakeCase(channel.id())}(&mut self, input: &${pubPayloadId}) -> Result<${subPayloadId}> {
-	let err_parse = Error::Protocol(ProtocolError::InvalidCloseSequence);
-	// pub
-	let json_str = serde_json::to_string(input).map_err(|_| err_parse)?;
-	self.send_message(&json_str).await?;
-	// sub
-	match self.receive_message().await {
-		Some(Ok(Message::Text(json_str))) => {
-			let err_parse = Error::Protocol(ProtocolError::InvalidCloseSequence);
-			serde_json::from_str(&json_str).map_err(|_| err_parse)
-		}
-		_ => todo!(),
-	}
+pub async fn ${channelId}(&mut self) -> Result<Stream<${pubPayloadId}, ${subPayloadId}>> {
+	let endpooint_url = format!("{}{}", self.base_url, "${channel.address()}");
+
+	let(ws_stream, _) = connect_async(endpooint_url).await.map_err(| err | {
+		eprintln!("Failed to connect: {:?}", err);
+		err
+	}) ?;
+
+	Ok(TypedWebSocketStream::new(ws_stream))
 } 
 `.trim();
 }
@@ -91,14 +88,15 @@ export function contentClientFunctionSub(channel: ChannelInterface): string {
 /// \`\`\`
 ${prependLines(contentClientFunctionSubDocTest(channel), "/// ")}
 /// \`\`\`
-pub async fn ${channelId}(&mut self) -> Result<${subPayloadId}> {
-	match self.receive_message().await {
-		Some(Ok(Message::Text(json_str))) => {
-			let err_parse = Error::Protocol(ProtocolError::InvalidCloseSequence);
-			serde_json::from_str(&json_str).map_err(|_| err_parse)
-		}
-		_ => todo!(),
-	}
+pub async fn ${channelId}(&mut self) -> Result<Stream<(), ${subPayloadId}>> {
+	let endpooint_url = format!("{}{}", self.base_url, "${channel.address()}");
+
+	let(ws_stream, _) = connect_async(endpooint_url).await.map_err(| err | {
+		eprintln!("Failed to connect: {:?}", err);
+		err
+	}) ?;
+
+	Ok(TypedWebSocketStream::new(ws_stream))
 } 
 `.trim();
 }
@@ -109,11 +107,11 @@ export function contentClientFunctionSubDocTest(channel: ChannelInterface): stri
 	return `
 #[tokio::main]
 async fn main() {
-	let mut client = Client::new().await.expect("failed to setup client");
-	let result = client.${channelId}().await;
-	let status = result.is_ok();
-	client.close().await;
-	assert!(status);
+	use exchange_collection_ws_binance::client::public_endpoints::BinancePublicEndpointsClient;
+	let mut client = BinancePublicEndpointsClient::new().await;
+    let mut stream = client.${channelId}().await.expect("failed connecting websocket stream");
+    let message = stream.receive().await.expect("failed receiving message");
+    println!("{:?}", message);
 }
 `.trim().replaceAll("\t", "    ");
 }

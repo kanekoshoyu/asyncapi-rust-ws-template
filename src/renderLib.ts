@@ -4,7 +4,7 @@ function contentModule(nameModule: string, description: string): string {
 	return `
 /// ${description}
 pub mod ${nameModule};
-`.trim()
+`.trimStart()
 }
 
 function content(): string {

@@ -12,13 +12,13 @@ edition = "2018"
 # use workspace when needed
 [dependencies]
 tokio = { version = "1.41.0", features = ["full"] }
-tokio-tungstenite = "0.24.0"
+tokio-tungstenite = { version = "0.24.0", features = ["native-tls"] }
 futures = "0.3.31"
 futures-util = "0.3.31"
 serde = { version = "1.0.214", features = ["derive"] }
 serde_json = "1.0.132"
-
-`;
+typed-websocket = "0.1.0"
+`.trimStart();
 }
 
 export function renderCargo(exchangeName: string, info: InfoInterface): RenderFile {
