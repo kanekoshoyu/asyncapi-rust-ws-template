@@ -22,7 +22,7 @@
 ## contents
 | name                            | description                                                                                                   |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| [src/](/src/)                   | TypeScript ESM source code, transpiles into `template` directory                                                  |
+| [src/](/src/)                   | TypeScript ESM source code, transpiles into `template` directory                                              |
 | [src/index.ts](/src/index.ts)   | transpiles to main template entry `template/index.js`, exposing the function for `asyncapi generator` command |
 | [hooks/](/hooks/after.js)       | AsyncAPI hooks for pre-process and post-process that cannot be derived by AsyncAPI (in CommonJS)              |
 | [template/](/template/)         | Javascript transcribed source code for template                                                               |
@@ -88,8 +88,10 @@ changelog: please check [here](./CHANGELOG.md)
   - [x] websocket client function from `operation`
   - [x] pubsub function from `channel`
   - [x] fix modelina referencing other model as `crate::*`;
-- [ ] code testing
-  - [ ] unit test
+- [x] code testing
+  - [x] add unit test
+  - [ ] make server name configurable 
+  - [ ] loads server name into unit test
 
 ## recruitment
 #### TypeScript AsyncAPI Template Developer
