@@ -33,11 +33,11 @@ export default async function ({ asyncapi, params }: TemplateProps) {
 			console.log('all files verified');
 		}
 	}
-	const exchangeName = 'binance';
+	const exchangeName = params.exchange ? params.exchange : 'Exchange';
 
 	// renders websocket client
 	if (params.render) {
-		const files = await renderRustWsClientFromAsyncApi(exchangeName, asyncapi);
+		const files = await renderRustWsClientFromAsyncApi(asyncapi, exchangeName);
 		console.log(`render files: ${files.length}`);
 		const collection: React.ReactElement[] = [];
 		for (const file of files) {

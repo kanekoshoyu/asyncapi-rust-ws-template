@@ -22,10 +22,8 @@
 		"release": "npm publish",
 		"test_v2": "npm run clear_template && npm run clear_output_v2 && npm run prepare && npm run render_v2 && npm run cargo_check_v2",
 		"test_v3": "npm run clear_template && npm run clear_output_v3 && npm run prepare && npm run render_v3 && npm run cargo_check_v3",
-		"render_v2": "ag test/input/v2.yaml ./ -o test/output/v2 -p render=true",
-		"render_v3": "ag test/input/v3.yaml ./ -o test/output/v3 -p render=true",
-		"validate_render_v2": "ag test/input/v2.yaml ./ -o test/output/v2 -p validate=true -p render=true",
-		"validate_render_v3": "ag test/input/v3.yaml ./ -o test/output/v3 -p validate=true -p render=true",
+		"render_v2": "ag test/input/v2.yaml ./ -o test/output/v2 -p render=true -p exchange=Bitwyre",
+		"render_v3": "ag test/input/v3.yaml ./ -o test/output/v3 -p render=true, -p exchange=Hyperliquid",
 		"clear_template": "rm -rf template",
 		"clear_output": "rm -rf test/output",
 		"clear_output_v2": "rm -rf test/output/v2",
@@ -53,6 +51,10 @@
 		"apiVersion": "v3",
 		"generator": ">=1.3.0 <3.0.0",
 		"parameters": {
+			"exchange": {
+				"description": "name of the exchange, in snake case",
+				"required": true
+			},
 			"validate": {
 				"description": "validate a file: [true: default, false]",
 				"default": true

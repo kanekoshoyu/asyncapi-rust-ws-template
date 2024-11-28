@@ -1,10 +1,12 @@
+import { FormatHelpers } from '@asyncapi/modelina';
 import { RenderFile } from './renderFile';
 import { InfoInterface } from '@asyncapi/parser';
 
-function content(exchangeName: string, info: InfoInterface): string {
+function content(info: InfoInterface, exchangeName: string): string {
+	const exchange = FormatHelpers.toSnakeCase(exchangeName);
 	return `
 [package]
-name = "exchange-collection-ws-${exchangeName}"
+name = "exchange-collection-ws-${exchange}"
 version = "${info.version()}"
 description = "${info.description()?.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"
 edition = "2018"
@@ -21,6 +23,6 @@ typed-websocket = "0.1.0"
 `.trimStart();
 }
 
-export function renderCargo(exchangeName: string, info: InfoInterface): RenderFile {
-	return new RenderFile("Cargo.toml", content(exchangeName, info));
+export function renderCargo(info: InfoInterface, exchangeName: string): RenderFile {
+	return new RenderFile("Cargo.toml", content(info, exchangeName));
 }

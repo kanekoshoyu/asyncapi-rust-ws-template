@@ -7,8 +7,8 @@ import { renderLibRs } from './renderLib';
 import { RenderFile } from './renderFile';
 
 /// render rust websocket client from asyncapi
-export async function renderRustWsClientFromAsyncApi(exchangeName: string, doc: AsyncAPIDocumentInterface): Promise<RenderFile[]> {
-	const root: RenderFile[] = [renderLibRs(), renderReadme(), renderCargo(exchangeName, doc.info())];
+export async function renderRustWsClientFromAsyncApi(doc: AsyncAPIDocumentInterface, exchangeName: string): Promise<RenderFile[]> {
+	const root: RenderFile[] = [renderLibRs(), renderReadme(exchangeName), renderCargo(doc.info(), exchangeName)];
 	let model: RenderFile[] = await renderModels(doc);
 	model = appendFileNamePrefix(model, 'src/model/');
 
@@ -16,7 +16,7 @@ export async function renderRustWsClientFromAsyncApi(exchangeName: string, doc: 
 	// root, model, client
 	rendered.push(...root);
 	rendered.push(...model);
-	rendered.push(...renderClientDir(exchangeName, doc.servers()));
+	rendered.push(...renderClientDir(doc.servers(), exchangeName));
 
 	// in the end we just have to return the dir
 	return rendered;

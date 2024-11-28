@@ -1,12 +1,14 @@
+import { FormatHelpers } from '@asyncapi/modelina';
 import { RenderFile } from './renderFile';
 
-function content(): string {
+function content(exchangeName: string): string {
+	const exchange = FormatHelpers.toPascalCase(exchangeName);
 	return `
-# WebSocket Client
+# ${exchange} WebSocket Client
 rendered by [async-rust-ws-template](https://github.com/kanekoshoyu/asyncapi-rust-ws-template)
 `.trimStart();
 }
 
-export function renderReadme(): RenderFile {
-	return new RenderFile("README.md", content());
+export function renderReadme(exchangeName: string): RenderFile {
+	return new RenderFile("README.md", content(exchangeName));
 }

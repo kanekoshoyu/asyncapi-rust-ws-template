@@ -6,11 +6,11 @@ import { prependLines } from './tool';
 
 
 /** client code from server */
-export function contentClient(exchangeName: string, server: ServerInterface): string {
+export function contentClient(server: ServerInterface, exchangeName: string): string {
 
 	let contentClientFunctions = '';
 	for (const channel of server.channels()) {
-		const fn = contentClientFunction(channel);
+		const fn = contentClientFunction(channel, exchangeName);
 		contentClientFunctions = contentClientFunctions.concat(`\n${fn}`);
 	}
 	return `
@@ -56,7 +56,7 @@ export function contentModClient(servers: ServersInterface): string {
 }
 
 // TODO set up the render function where we can set up directories as well directly
-export function renderClientDir(exchangeName: string, servers: & ServersInterface): RenderFile[] {
+export function renderClientDir(servers: ServersInterface, exchangeName: string): RenderFile[] {
 	let files: RenderFile[] = [];
 
 	// every server
@@ -64,7 +64,7 @@ export function renderClientDir(exchangeName: string, servers: & ServersInterfac
 		const serverName = FormatHelpers.toSnakeCase(server.id());
 
 		// operations within conentClient
-		files = files.concat(new RenderFile(`src/client/${serverName}.rs`, contentClient(exchangeName, server)));
+		files = files.concat(new RenderFile(`src/client/${serverName}.rs`, contentClient(server, exchangeName)));
 	}
 
 	files = files.concat(new RenderFile(`src/client/mod.rs`, contentModClient(servers)));
