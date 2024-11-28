@@ -35,11 +35,11 @@
 ## how to run terminal command
 npm build, local YAML
 ```
-asyncapi generate fromTemplate test/input/v3.yaml asyncapi-rust-ws-template -o  ~/Desktop/output
+$ asyncapi generate fromTemplate ASYNCAPI_DIR asyncapi-rust-ws-template -p exchange=EXCHANGE_NAME -o OUTOUT_DIR
 ```
-local build, local YAML
+local build, local YAML (at the root of this project)
 ```
-ag test/input/v3.yaml ./ -o ~/Desktop/otuput-p validate=true -p render=true
+$ ag ASYNCAPI_DIR ./ -o OUTPUT_DIR 
 ```
 
 ## template input (AsyncAPI)
