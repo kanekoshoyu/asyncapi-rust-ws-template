@@ -7,10 +7,10 @@ import { prependLines } from './tool';
 
 /** client code from server */
 export function contentClient(server: ServerInterface, exchangeName: string): string {
-
+	const serverName = FormatHelpers.toSnakeCase(server.id());
 	let contentClientFunctions = '';
 	for (const channel of server.channels()) {
-		const fn = contentClientFunction(channel, exchangeName);
+		const fn = contentClientFunction(channel, exchangeName, serverName);
 		contentClientFunctions = contentClientFunctions.concat(`\n${fn}`);
 	}
 	return `

@@ -5,11 +5,14 @@ import { renderRustWsClientFromAsyncApi } from './render';
 // import { getAsyncApiYamlFiles } from './fetchRemoteConfig';
 
 interface TemplateParams {
-	package: string;
-	validate: boolean;
-	render: boolean;
+	// exchange name, required
 	exchange: string;
-	framework?: 'tokio-tungstenite' | 'async-tungstenite';
+	// to validate or not, default to true 
+	validate: boolean;
+	// to render or not, default to true
+	render: boolean;
+	// websocket library to generate, currently only supports tokio-tungstenite
+	library?: 'tokio-tungstenite' | 'async-tungstenite';
 }
 
 interface TemplateProps {

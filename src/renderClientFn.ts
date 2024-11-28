@@ -4,7 +4,7 @@ import { prependLines } from './tool';
 
 
 /** client function generated according to channel's operation patterns */
-export function contentClientFunction(channel: ChannelInterface, exchangeName: string): string {
+export function contentClientFunction(channel: ChannelInterface, exchangeName: string, serverName: string): string {
 	const params = channel.parameters();
 	for (const param of params) {
 		console.log(`param: ${param}`)
@@ -17,7 +17,7 @@ export function contentClientFunction(channel: ChannelInterface, exchangeName: s
 	const txCount = txOperations.length;
 
 	if (rxCount == 0 && txCount == 1) {
-		return contentClientFunctionSub(channel, exchangeName);
+		return contentClientFunctionSub(channel, exchangeName, serverName);
 	} else if (rxCount == 1 && txCount == 1) {
 		return contentClientFunctionPubSub(channel);
 	} else {
@@ -72,7 +72,7 @@ pub async fn ${channelId}(&mut self) -> Result<Stream<${pubPayloadId}, ${subPayl
 
 
 /** client function for 0 pub, 1 sub */
-export function contentClientFunctionSub(channel: ChannelInterface, exchangeName: string): string {
+export function contentClientFunctionSub(channel: ChannelInterface, exchangeName: string, serverName: string): string {
 	const channelId = FormatHelpers.toSnakeCase(channel.id());
 	// sub
 	const subMessage = channel.operations().filterBySend()[0].messages()[0];
@@ -86,7 +86,7 @@ export function contentClientFunctionSub(channel: ChannelInterface, exchangeName
 /// ${channel.description()}  
 /// subscribe: ${subPayloadId}  
 /// \`\`\`
-${prependLines(contentClientFunctionSubDocTest(channel, exchangeName), "/// ")}
+${prependLines(contentClientFunctionSubDocTest(channel, exchangeName, serverName), "/// ")}
 /// \`\`\`
 pub async fn ${channelId}(&mut self) -> Result<Stream<(), ${subPayloadId}>> {
 	let endpooint_url = format!("{}{}", self.base_url, "${channel.address()}");
@@ -102,15 +102,18 @@ pub async fn ${channelId}(&mut self) -> Result<Stream<(), ${subPayloadId}>> {
 }
 
 /** doctest for simple sub */
-export function contentClientFunctionSubDocTest(channel: ChannelInterface, exchangeName: string): string {
+export function contentClientFunctionSubDocTest(channel: ChannelInterface, exchangeName: string, serverName: string): string {
 	const channelId = FormatHelpers.toSnakeCase(channel.id());
 	const exchangeSnake = FormatHelpers.toSnakeCase(exchangeName);
 	const exchangePascal = FormatHelpers.toPascalCase(exchangeName);
+	const serverSnake = FormatHelpers.toSnakeCase(serverName);
+	const serverPascal = FormatHelpers.toPascalCase(serverName);
+	const clientName = `${exchangePascal}${serverPascal}Client`;
 	return `
 #[tokio::main]
 async fn main() {
-	use exchange_collection_ws_${exchangeSnake}::client::public_endpoints::${exchangePascal}PublicEndpointsClient;
-	let mut client = ${exchangePascal}PublicEndpointsClient::new().await;
+	use exchange_collection_ws_${exchangeSnake}::client::${serverSnake}::${clientName};
+	let mut client = ${clientName}::new().await;
     let mut stream = client.${channelId}().await.expect("failed connecting websocket stream");
     let message = stream.receive().await.expect("failed receiving message");
     println!("{:?}", message);

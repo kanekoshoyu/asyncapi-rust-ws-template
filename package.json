@@ -63,8 +63,8 @@
 				"description": "render websocket client: [true: default, false]",
 				"default": true
 			},
-			"framework": {
-				"description": "type of websocket framework to render: [tokio-tungstenite, async-tungstenite]",
+			"library": {
+				"description": "type of websocket library to render: [tokio-tungstenite, async-tungstenite]",
 				"default": "tokio-tungstenite"
 			}
 		},

@@ -1,6 +1,17 @@
 # [asyncapi-rust-websocket-template](./README.md) changelog
 All notable changes to the template will be documented in this file.
 
+## [0.3.0] - 2024-11-28
+### Added
+- ready to use `token-tungstenite` client :fire:
+- configurable exchange name
+# Modified
+- client sub function unit test is de-hardcoded
+
+## [0.2.4] - 2024-11-24
+### Modified
+- client function returns TypedWebSocketStream rather than as a function itself
+
 ## [0.2.3] - 2024-11-19
 ### Added
 - complete mapping of sub and pub/sub cases in client function

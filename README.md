@@ -90,8 +90,9 @@ changelog: please check [here](./CHANGELOG.md)
   - [x] fix modelina referencing other model as `crate::*`;
 - [x] code testing
   - [x] add unit test
-  - [ ] make server name configurable 
-  - [ ] loads server name into unit test
+  - [x] make server name configurable 
+  - [x] loads server name into unit test
+- [ ] support for `async-tungstenite` 
 
 ## recruitment
 #### TypeScript AsyncAPI Template Developer
@@ -108,4 +109,4 @@ I am not a TS expert, so I would love to have an expert to accelarate developmen
 - [guilder](https://github.com/kanekoshoyu/guilder) - Unopinionated Cross-Exchange Crypto Trading Library
 - [exchange-collection](https://github.com/kanekoshoyu/exchange-collection) - Crypto Exchange OpenAPI(REST) / AsyncAPI(WS) and Clients
 - [kucoin-arbitrage](https://github.com/kanekoshoyu/kucoin_arbitrage) - KuCoin Cyclic Arbitrage, in Tokio Rust (legacy)
-
+- [typed-websocket](https://github.com/kanekoshoyu/typed-websocket) - Typed WebsSocket Stream
