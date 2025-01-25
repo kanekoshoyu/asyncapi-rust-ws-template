@@ -11,15 +11,13 @@ export function contentClientFunction(channel: ChannelInterface, exchangeName: s
 	}
 
 	// select function logic accordingly
-	const rxOperations = channel.operations().filterByReceive();
-	const txOperations = channel.operations().filterBySend();
-	const rxCount = rxOperations.length;
-	const txCount = txOperations.length;
+	const txCount = channel.operations().filterBySend().length;
+	const rxCount = channel.operations().filterByReceive().length;
 
-	if (rxCount == 0 && txCount == 1) {
-		return contentClientFunctionSub(channel, exchangeName, serverName);
+	if (rxCount == 1 && txCount == 0) {
+		return contentClientFunctionReceive(channel, exchangeName, serverName);
 	} else if (rxCount == 1 && txCount == 1) {
-		return contentClientFunctionPubSub(channel);
+		return contentClientFunctionSendReceive(channel);
 	} else {
 		return contentClientFunctionUnmapped(channel);
 	}
@@ -27,37 +25,71 @@ export function contentClientFunction(channel: ChannelInterface, exchangeName: s
 
 /** client function for unmapped case */
 export function contentClientFunctionUnmapped(channel: ChannelInterface): string {
+	const txOperations = channel.operations().filterBySend();
+	const rxOperations = channel.operations().filterByReceive();
+	const txCount = txOperations.length;
+	const rxCount = rxOperations.length;
 	return `
 /// ${channel.description()}
 pub async fn ${FormatHelpers.toSnakeCase(channel.id())}(&self) {
-	todo!("unmapped case, check the logic and implement this case");
+	todo!("unmapped case, check the logic and implement this case, send=${txCount}, receive=${rxCount}");
 } 
 `.trim();
 }
 
-/** client function for 1 pub, 1 sub */
-export function contentClientFunctionPubSub(channel: ChannelInterface): string {
+/** client function for 0 send, 1 receive */
+export function contentClientFunctionReceive(channel: ChannelInterface, exchangeName: string, serverName: string): string {
 	const channelId = FormatHelpers.toSnakeCase(channel.id());
-	// pub
-	const pubMessage = channel.operations().filterByReceive()[0].messages()[0];
-	const pubPayload = pubMessage.payload();
-	let pubPayloadId = "undefined";
-	if (pubPayload) {
-		pubPayloadId = FormatHelpers.toPascalCase(pubPayload.id());
-	}
-	// sub
-	const subMessage = channel.operations().filterBySend()[0].messages()[0];
-	const subPayload = subMessage.payload();
-	let subPayloadId = "undefined";
-	if (subPayload) {
-		subPayloadId = FormatHelpers.toPascalCase(subPayload.id());
+	// receive
+	const rxMessage = channel.operations().filterByReceive()[0].messages()[0];
+	const rxPayload = rxMessage.payload();
+	let rxPayloadId = "undefined";
+	if (rxPayload) {
+		rxPayloadId = FormatHelpers.toPascalCase(rxPayload.id());
 	}
 	// result
 	return `
 /// ${channel.description()}  
-/// publish: ${pubPayloadId}  
-/// subscribe: ${subPayloadId}  
-pub async fn ${channelId}(&mut self) -> Result<Stream<${pubPayloadId}, ${subPayloadId}>> {
+/// receive: ${rxPayloadId}  
+/// \`\`\`
+${prependLines(contentClientFunctionRxDocTest(channel, exchangeName, serverName), "/// ")}
+/// \`\`\`
+pub async fn ${channelId}(&mut self) -> Result<Stream<(), ${rxPayloadId}>> {
+	let endpooint_url = format!("{}{}", self.base_url, "${channel.address()}");
+
+	let(ws_stream, _) = connect_async(endpooint_url).await.map_err(| err | {
+		eprintln!("Failed to connect: {:?}", err);
+		err
+	}) ?;
+
+	Ok(TypedWebSocketStream::new(ws_stream))
+} 
+`.trim();
+}
+
+/** client function for 1 send, 1 receive */
+export function contentClientFunctionSendReceive(channel: ChannelInterface): string {
+	const channelId = FormatHelpers.toSnakeCase(channel.id());
+	// send
+	const txMessage = channel.operations().filterBySend()[0].messages()[0];
+	const txPayload = txMessage.payload();
+	let txPayloadId = "undefined";
+	if (txPayload) {
+		txPayloadId = FormatHelpers.toPascalCase(txPayload.id());
+	}
+	// receive
+	const rxMessage = channel.operations().filterByReceive()[0].messages()[0];
+	const rxPayload = rxMessage.payload();
+	let rxPayloadId = "undefined";
+	if (rxPayload) {
+		rxPayloadId = FormatHelpers.toPascalCase(rxPayload.id());
+	}
+	// result
+	return `
+/// ${channel.description()}  
+/// send: ${txPayloadId}  
+/// receive: ${rxPayloadId}  
+pub async fn ${channelId}(&mut self) -> Result<Stream<${txPayloadId}, ${rxPayloadId}>> {
 	let endpooint_url = format!("{}{}", self.base_url, "${channel.address()}");
 
 	let(ws_stream, _) = connect_async(endpooint_url).await.map_err(| err | {
@@ -71,38 +103,8 @@ pub async fn ${channelId}(&mut self) -> Result<Stream<${pubPayloadId}, ${subPayl
 }
 
 
-/** client function for 0 pub, 1 sub */
-export function contentClientFunctionSub(channel: ChannelInterface, exchangeName: string, serverName: string): string {
-	const channelId = FormatHelpers.toSnakeCase(channel.id());
-	// sub
-	const subMessage = channel.operations().filterBySend()[0].messages()[0];
-	const subPayload = subMessage.payload();
-	let subPayloadId = "undefined";
-	if (subPayload) {
-		subPayloadId = FormatHelpers.toPascalCase(subPayload.id());
-	}
-	// result
-	return `
-/// ${channel.description()}  
-/// subscribe: ${subPayloadId}  
-/// \`\`\`
-${prependLines(contentClientFunctionSubDocTest(channel, exchangeName, serverName), "/// ")}
-/// \`\`\`
-pub async fn ${channelId}(&mut self) -> Result<Stream<(), ${subPayloadId}>> {
-	let endpooint_url = format!("{}{}", self.base_url, "${channel.address()}");
-
-	let(ws_stream, _) = connect_async(endpooint_url).await.map_err(| err | {
-		eprintln!("Failed to connect: {:?}", err);
-		err
-	}) ?;
-
-	Ok(TypedWebSocketStream::new(ws_stream))
-} 
-`.trim();
-}
-
-/** doctest for simple sub */
-export function contentClientFunctionSubDocTest(channel: ChannelInterface, exchangeName: string, serverName: string): string {
+/** doctest for simple receive */
+export function contentClientFunctionRxDocTest(channel: ChannelInterface, exchangeName: string, serverName: string): string {
 	const channelId = FormatHelpers.toSnakeCase(channel.id());
 	const exchangeSnake = FormatHelpers.toSnakeCase(exchangeName);
 	const exchangePascal = FormatHelpers.toPascalCase(exchangeName);

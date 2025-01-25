@@ -1,11 +1,16 @@
 # [asyncapi-rust-websocket-template](./README.md) changelog
 All notable changes to the template will be documented in this file.
 
+
+## [0.3.1] - 2025-1-25
+### Modified
+- change terminology, only accept client facing document (send request, receive response)
+
 ## [0.3.0] - 2024-11-28
 ### Added
 - ready to use `token-tungstenite` client :fire:
 - configurable exchange name
-# Modified
+### Modified
 - client sub function unit test is de-hardcoded
 
 ## [0.2.4] - 2024-11-24
