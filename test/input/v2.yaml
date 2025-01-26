@@ -15,15 +15,15 @@ servers:
 channels:
   /time:
     description: This helps in approximating the time difference between the server and client.
-    subscribe:
+    publish:
       message:
         $ref: "#/components/messages/timeMessage"
   /stream:
-    description: To subscribe to topics, send them as a comma-separated list in your connection string.
-    publish:
+    description: To publish to topics, send them as a comma-separated list in your connection string.
+    subscribe:
       message:
         $ref: "#/components/messages/StreamRequestMessage"
-    subscribe:
+    publish:
       message:
         $ref: "#/components/messages/StreamResponseMessage"
   /account/balance:
@@ -33,11 +33,11 @@ channels:
         - jwt: [] # JWT token based authentication (optional)
       authorization:
         - api_key:
-    publish:
+    subscribe:
       message:
         payload:
-          $ref: "#/components/schemas/accountBalanceSubscribeRequest"
-    subscribe:
+          $ref: "#/components/schemas/accountBalancepublishRequest"
+    publish:
       message:
         $ref: "#/components/messages/accountBalanceMessage"
   /account/statement:
@@ -47,11 +47,11 @@ channels:
         - jwt: [] # JWT token based authentication (optional)
       authorization:
         - api_key:
-    publish:
+    subscribe:
       message:
         payload:
-          $ref: "#/components/schemas/accountBalanceSubscribeRequest"
-    subscribe:
+          $ref: "#/components/schemas/accountBalancepublishRequest"
+    publish:
       message:
         $ref: "#/components/messages/accountStatementMessage"
   /orders/control:
@@ -61,11 +61,11 @@ channels:
         - jwt: []
       authorization:
         - api_key:
-    publish:
+    subscribe:
       message:
         payload:
-          $ref: "#/components/schemas/accountBalanceSubscribeRequest"
-    subscribe:
+          $ref: "#/components/schemas/accountBalancepublishRequest"
+    publish:
       message:
         $ref: "#/components/messages/OrderMessage"
   /orders/status:
@@ -75,25 +75,25 @@ channels:
         - jwt: []
       authorization:
         - api_key:
-    publish:
+    subscribe:
       message:
         payload:
-          $ref: "#/components/schemas/accountBalanceSubscribeRequest"
-    subscribe:
+          $ref: "#/components/schemas/accountBalancepublishRequest"
+    publish:
       message:
         $ref: "#/components/messages/OrderMessage"
   /orders/events:
-    description: Subscribe to eventual broadcasts on order status changes, can only be filtered by instrument/Asset Pair symbol.
+    description: publish to eventual broadcasts on order status changes, can only be filtered by instrument/Asset Pair symbol.
     bindings:
       security:
         - jwt: []
       authorization:
         - api_key:
-    publish:
+    subscribe:
       message:
         payload:
-          $ref: "#/components/schemas/accountBalanceSubscribeRequest"
-    subscribe:
+          $ref: "#/components/schemas/accountBalancepublishRequest"
+    publish:
       message:
         $ref: "#/components/messages/OrderMessage"
   /trades/history:
@@ -103,11 +103,11 @@ channels:
         - jwt: []
       authorization:
         - api_key:
-    publish:
+    subscribe:
       message:
         payload:
-          $ref: "#/components/schemas/accountBalanceSubscribeRequest"
-    subscribe:
+          $ref: "#/components/schemas/accountBalancepublishRequest"
+    publish:
       message:
         $ref: "#/components/messages/TradeHistoryMessage"
   /chat/:
@@ -117,11 +117,11 @@ channels:
         - jwt: []
       authorization:
         - api_key:
-    publish:
+    subscribe:
       message:
         payload:
-          $ref: "#/components/schemas/accountBalanceSubscribeRequest"
-    subscribe:
+          $ref: "#/components/schemas/accountBalancepublishRequest"
+    publish:
       message:
         $ref: "#/components/messages/ChatHistory"
   /chats:
@@ -131,11 +131,11 @@ channels:
         - jwt: []
       authorization:
         - api_key:
-    publish:
+    subscribe:
       message:
         payload:
-          $ref: "#/components/schemas/accountBalanceSubscribeRequest"
-    subscribe:
+          $ref: "#/components/schemas/accountBalancepublishRequest"
+    publish:
       message:
         $ref: "#/components/messages/sentMessage"
   /notifications:
@@ -145,11 +145,11 @@ channels:
         - jwt: []
       authorization:
         - api_key:
-    publish:
+    subscribe:
       message:
         payload:
-          $ref: "#/components/schemas/accountBalanceSubscribeRequest"
-    subscribe:
+          $ref: "#/components/schemas/accountBalancepublishRequest"
+    publish:
       message:
         $ref: "#/components/messages/notification"
 
@@ -203,7 +203,7 @@ components:
       properties:
         op:
           type: string
-          description: Operation type (e.g., "subscribe")
+          description: Operation type (e.g., "publish")
         args:
           type: array
           items:
@@ -412,7 +412,7 @@ components:
         maintenance_margin_base_value:
           type: string
           description: Maintenance margin base value
-    accountBalanceSubscribeRequest:
+    accountBalancepublishRequest:
       type: object
       required:
         - command

@@ -7,6 +7,11 @@
 [![license](https://img.shields.io/github/license/kanekoshoyu/exchange-collection)](https://github.com/kanekoshoyu/exchange-collection/blob/master/LICENSE)
 [![discord](https://img.shields.io/discord/1153997271294283827)](https://discord.gg/q3j5MYdwnm)
 
+## how it works
+- exchange name is provided
+- goes through each doc -> server -> channel
+- goes through each channel's send/receive messages, gets mapped into generated client function function and enum code
+- gets rendered with string operations
 
 ## how to run terminal command
 npm build, local YAML
@@ -21,7 +26,7 @@ $ ag ASYNCAPI_DIR ./ -o OUTPUT_DIR
 ## template input requirement (AsyncAPI)
 | spec                                      | requirement                                                                         |
 | ----------------------------------------- | ----------------------------------------------------------------------------------- |
-| format                                    | AsyncAPI v2.0.0+ (supports v3 as well)                                              |
+| format                                    | AsyncAPI v3 (pls check notes for its reason)                                        |
 | point of view                             | client (send request, receive reponse)                                              |
 | minimum content requirement for WS client | `info`, `servers`, `channels`, `components` , can be tested with `-p validate=true` |
 
@@ -107,9 +112,10 @@ I am not a TS expert, so I would love to have an expert to accelarate developmen
 
 ## notes
 - changelog [here](./CHANGELOG.md)
-- v2 and v3 terminology are flipped. 
+- support AsyncAPI V3 only because official v2 and v3 terminology on AsyncAPI are flipped. 
   - v2 calls operations ["publish", "subscribe"] from client's perspective
   - v3 calls operations ["receive", "send"] from server's perspective
+  - this is objectively confusing, so make sure the input is an AsyncAPI V3 on client's perspective, which follows **"send request, receive response"**
 
 ## see also
 - [guilder](https://github.com/kanekoshoyu/guilder) - Unopinionated Cross-Exchange Crypto Trading Library
