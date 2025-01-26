@@ -1,26 +1,33 @@
 import { ServersInterface, ServerInterface } from '@asyncapi/parser';
 import { FormatHelpers } from '@asyncapi/modelina';
 import { RenderFile } from './renderFile';
-import { contentClientFunction } from './renderClientFn';
-import { prependLines } from './tool';
+import { contentClientFn } from './renderClientFn';
+import { appendLines } from './tool';
 
 
 /** client code from server */
 export function contentClient(server: ServerInterface, exchangeName: string): string {
 	const serverName = FormatHelpers.toSnakeCase(server.id());
-	let contentClientFunctions = '';
+	let fnCode: string[] = [];
+	let enumCode: string[] = [];
+	// gather GeneratedCode
 	for (const channel of server.channels()) {
-		const fn = contentClientFunction(channel, exchangeName, serverName);
-		contentClientFunctions = contentClientFunctions.concat(`\n${fn}`);
+		const result = contentClientFn(channel, exchangeName, serverName);
+		fnCode = fnCode.concat(result.fnCode);
+		enumCode = enumCode.concat(result.enumCode);
 	}
+
 	return `
 use crate::model::*;
+use serde::{Deserialize, Serialize};
 use tokio::net::TcpStream;
 use tokio_tungstenite::tungstenite::Result;
 use tokio_tungstenite::{connect_async, MaybeTlsStream};
 use typed_websocket::TypedWebSocketStream;
+use typed_websocket::TypedWebSocketStream;
 
 pub type Stream<INPUT, OUTPUT> = TypedWebSocketStream<MaybeTlsStream<TcpStream>, INPUT, OUTPUT>;
+${appendLines(enumCode)}
 
 #[derive(Debug)]
 pub struct ${FormatHelpers.toPascalCase(exchangeName)}${FormatHelpers.toPascalCase(server.id())}Client {
@@ -34,7 +41,7 @@ impl ${FormatHelpers.toPascalCase(exchangeName)}${FormatHelpers.toPascalCase(ser
 			base_url: "${server.url()}".to_string(),
  		}
 	}
-${prependLines(contentClientFunctions, '\t')}
+${appendLines(fnCode)}
 }
 `.trimStart()
 }
