@@ -24,9 +24,9 @@ use tokio::net::TcpStream;
 use tokio_tungstenite::tungstenite::Result;
 use tokio_tungstenite::{connect_async, MaybeTlsStream};
 use typed_websocket::TypedWebSocketStream;
-use typed_websocket::TypedWebSocketStream;
 
 pub type Stream<INPUT, OUTPUT> = TypedWebSocketStream<MaybeTlsStream<TcpStream>, INPUT, OUTPUT>;
+
 ${appendLines(enumCode)}
 
 #[derive(Debug)]

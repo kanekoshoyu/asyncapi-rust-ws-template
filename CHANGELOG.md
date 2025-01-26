@@ -1,6 +1,10 @@
 # [asyncapi-rust-websocket-template](./README.md) changelog
 All notable changes to the template will be documented in this file.
 
+## [0.3.1] - 2025-1-25
+### Added
+- client generator returns GeneratedCode which has both enum and fn code
+- generates union enum code when there are multiple responses
 
 ## [0.3.1] - 2025-1-25
 ### Modified

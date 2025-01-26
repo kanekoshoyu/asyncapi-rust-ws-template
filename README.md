@@ -9,8 +9,9 @@
 
 ## how it works
 - exchange name is provided
-- goes through each doc -> server -> channel
-- goes through each channel's send/receive messages, gets mapped into generated client function function and enum code
+- goes through each doc -> server -> channel, each serving as a websocket stream
+- goes through each channel's send/receive operation, map their messages and payloads as stream input/output
+- union payload gets converted as enum
 - gets rendered with string operations
 
 ## how to run terminal command
@@ -102,8 +103,9 @@ changelog: please check [here](./CHANGELOG.md)
   - [x] add unit test
   - [x] make server name configurable 
   - [x] loads server name into unit test
+- [x] support N messages on an operation 
+- [x] check for cases when one channel supports multiple inputs 
 - [ ] support for `async-tungstenite` 
-- [ ] support many messages on an operation 
 
 ## recruitment
 #### TypeScript AsyncAPI Template Developer

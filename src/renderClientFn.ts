@@ -1,4 +1,4 @@
-import { ChannelInterface } from '@asyncapi/parser';
+import { ChannelInterface, MessageInterface } from '@asyncapi/parser';
 import { FormatHelpers } from '@asyncapi/modelina';
 import { prependLines } from './tool';
 
@@ -26,6 +26,7 @@ export function contentClientFn(channel: ChannelInterface, exchangeName: string,
 	} else if (txCount == 1) {
 		return contentClientFunctionS1RN(channel);
 	} else {
+		// S0R0, S0RN, S1R0, SN
 		return contentClientFunctionUnmapped(channel);
 
 	}
@@ -119,21 +120,30 @@ export function contentClientFunctionS1RN(channel: ChannelInterface): GeneratedC
 
 	// Receive as a union response
 	const rxOperations = channel.operations().filterByReceive();
-	const rxPayloads: string[] = [];
+	const rxMessages: MessageInterface[] = [];
 	for (const rxOperation of rxOperations) {
-		const rxPayload = rxOperation.messages()[0];
-		rxPayloads.push(rxPayload.id());
+		const rxMessage = rxOperation.messages()[0];
+		rxMessages.push(rxMessage);
 	}
 
-	// Generate enum for union response
-	const rxEnumName = `${FormatHelpers.toPascalCase(channelId)}EnumResponse`;
-	const rxEnumCode = `
+	// enum for union response
+	const rxChannelName = FormatHelpers.toPascalCase(channelId);
+	const rxEnumName = `${rxChannelName}EnumResponse`;
+	let rxEnumCode = `
+/// union response for channel: ${rxChannelName}
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum ${rxEnumName} {
-${rxPayloads.map(id => `    ${id}(${id}),`).join("\n")}
-}
+	`;
+	for (const rxMessage of rxMessages) {
+		const messageId = FormatHelpers.toPascalCase(rxMessage.id());
+		const payloadId = FormatHelpers.toPascalCase(rxMessage.payload()?.id() ?? "undefined");
+		rxEnumCode += `\t/// message: ${messageId}, payload: ${payloadId}\n\t${messageId}(${payloadId}),
 `;
-	// result
+	}
+	rxEnumCode += `}
+`;
+
+	// fn
 	const fnCode = `
 /// ${channel.description()}  
 /// send: ${txPayloadId}  
@@ -148,11 +158,11 @@ pub async fn ${channelId}(& mut self) -> Result<Stream<${txPayloadId}, ${rxEnumN
 
 		Ok(TypedWebSocketStream::new(ws_stream))
 }
-`.trim();
+`;
 
 	return {
-		enumCode: [rxEnumCode],
-		fnCode: [fnCode]
+		enumCode: [rxEnumCode.trim()],
+		fnCode: [fnCode.trim()]
 	};
 }
 
